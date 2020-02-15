@@ -19,7 +19,7 @@ namespace OpenRedding.Data
 		{
 		}
 
-		public DbSet<Employee> Employees { get; } = default!;
+		public DbSet<Employee>? Employees { get; set; }
 
 		public async Task BulkInsertEntitiesAsync<T>(IList<T> entities, CancellationToken cancellationToken)
 			where T : class

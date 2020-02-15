@@ -5,6 +5,7 @@
         public const string Author = "Joey Mckenzie";
         public const string Version = "v1";
         public const int RequestElapsedMillisecondTimeWarningLimit = 500;
+        public const int MaxPageSizeResult = 25;
         public static readonly string ApiPath = $"/{Version}/api";
         public static readonly string[] Urls =
         {

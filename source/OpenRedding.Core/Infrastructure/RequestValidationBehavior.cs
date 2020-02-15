@@ -17,7 +17,7 @@ namespace OpenRedding.Core.Infrastructure
     /// <typeparam name="TRequest">Request handler command or query.</typeparam>
     /// <typeparam name="TResponse">Excepted view model response from the associated handler.</typeparam>
     public class RequestValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-        where TRequest : IOpenReddingRequest<TResponse>
+        where TRequest : OpenReddingRequest<TResponse>
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
         private readonly ILogger<TRequest> _logger;

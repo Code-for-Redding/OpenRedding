@@ -16,7 +16,7 @@ namespace OpenRedding.Core.Salaries.Commands.SeedSalaryTable
 	using Microsoft.Extensions.Logging;
 	using Shared;
 
-	public class SalaryTableSeeder : IDatabaseSeeder
+	public class SalaryTableSeeder
     {
         private readonly IOpenReddingDbContext _context;
         private readonly ILogger<SalaryTableSeeder> _logger;

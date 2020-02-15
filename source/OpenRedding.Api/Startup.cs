@@ -1,11 +1,13 @@
 namespace OpenRedding.Api
 {
     using System;
+    using System.Text.Json;
     using Core.Extensions;
     using Core.Salaries.Commands.SeedSalaryTable;
     using Data.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -22,19 +24,29 @@ namespace OpenRedding.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Retrieve the connection string from environment source and cancel bootstrap if none is found
             var connectionString = Configuration["ConnectionString"];
-
             if (string.IsNullOrWhiteSpace(connectionString))
             {
                 throw new ArgumentException("Connection string was null or empty");
             }
 
-            services.AddControllers();
-            services.AddHttpClient<SalaryTableSeeder>(options => options.Timeout = TimeSpan.FromSeconds(30));
-            services.AddOpenReddingPersistence(connectionString);
-            services.AddOpenReddingCore();
+            // Adding API layer dependencies
+            services
+                .AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.IgnoreNullValues = true;
+                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                });
 
-            // var transparentCaliforniaSettings = Configuration.GetSection("TransparentCalifornia").Get<TransparentCaliforniaSettings>();
+            // Application and persistence layer dependencies
+            services.AddHttpClient<SalaryTableSeeder>(options => options.Timeout = TimeSpan.FromSeconds(30));
+            services.AddOpenReddingCore();
+            services.AddOpenReddingPersistence(connectionString);
+
+            // Override built in model state validation
+            services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,7 +63,7 @@ namespace OpenRedding.Api
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }

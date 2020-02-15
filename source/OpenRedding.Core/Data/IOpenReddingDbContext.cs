@@ -11,7 +11,7 @@ namespace OpenRedding.Core.Data
 	/// </summary>
 	public interface IOpenReddingDbContext
 	{
-		DbSet<Employee> Employees { get; }
+		DbSet<Employee>? Employees { get; }
 
 		Task BulkInsertEntitiesAsync<T>(IList<T> collectionToInsert, CancellationToken cancellationToken)
 			where T : class;

@@ -9,10 +9,6 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <Folder Include="Controllers" />
-  </ItemGroup>
-  
-  <ItemGroup>
     <ProjectReference Include="..\OpenRedding.Data\OpenRedding.Data.csproj" />
   </ItemGroup>
   

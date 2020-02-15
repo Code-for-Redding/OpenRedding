@@ -1,15 +1,17 @@
 namespace OpenRedding.Domain.Salaries.ViewModels
 {
 	using System.Collections.Generic;
-	using System.Linq;
+	using Common.ViewModels;
 	using Dtos;
 
-	public class EmployeeSearchResultList
+	public class EmployeeSearchResultList : OpenReddingViewModelList
 	{
-		public EmployeeSearchResultList(IEnumerable<EmployeeSalarySearchDto> employees) => Employees = employees;
+		public EmployeeSearchResultList(IReadOnlyList<EmployeeSalarySearchDto> employees)
+			: base(employees)
+		{
+			Employees = employees;
+		}
 
 		public IEnumerable<EmployeeSalarySearchDto> Employees { get; }
-
-		public int Count => Employees.Count();
 	}
 }

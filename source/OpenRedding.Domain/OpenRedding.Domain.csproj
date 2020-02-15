@@ -3,11 +3,16 @@
   <Import Project="../../OpenRedding.targets" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OpenRedding.Shared\OpenRedding.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Salaries" />
+    <Folder Include="Users" />
   </ItemGroup>
 
 </Project>
