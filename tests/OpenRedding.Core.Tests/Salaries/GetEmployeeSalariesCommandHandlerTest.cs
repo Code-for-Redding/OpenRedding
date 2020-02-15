@@ -1,17 +1,10 @@
 namespace OpenRedding.Core.Tests.Salaries
 {
-    using System;
-    using System.Linq;
-    using System.Linq.Expressions;
     using System.Threading;
     using System.Threading.Tasks;
     using Core.Salaries.Queries.GetEmployeeSalaries;
-    using Data;
-    using Domain.Salaries.Entities;
     using Domain.Salaries.ViewModels;
     using Infrastructure;
-    using Microsoft.EntityFrameworkCore;
-    using Moq;
     using Shouldly;
     using Xunit;
 
@@ -22,8 +15,7 @@ namespace OpenRedding.Core.Tests.Salaries
         {
             // Arrange
             var query = new GetEmployeeSalariesQuery("John", default, default, default);
-            var contextMock = new Mock<IOpenReddingDbContext>();
-            var handler = new GetEmployeeSalariesQueryHandler(contextMock.Object);
+            var handler = new GetEmployeeSalariesQueryHandler(Context);
 
             // Act
             var result = await handler.Handle(query, CancellationToken.None);
@@ -31,17 +23,16 @@ namespace OpenRedding.Core.Tests.Salaries
             // Assert
             result.ShouldNotBeNull();
             result.ShouldBeOfType<EmployeeSearchResultList>();
-            contextMock.Verify(c => c.Employees.AsNoTracking(), Times.Once);
-            contextMock.Verify(c => c.Employees.Where(It.IsAny<Expression<Func<Employee, bool>>>()), Times.Once);
+            result.Count.ShouldBe(1);
+            result.Employees.ShouldContain(e => e.Name == "John Smith");
         }
 
         [Fact]
-        public async Task GivenValidRequest_WhenNameAndJobTitleAreInQuery_FiltersByEmployeeName()
+        public async Task GivenValidRequest_WhenJobTitleAreInQuery_FiltersByJobTitle()
         {
             // Arrange
-            var query = new GetEmployeeSalariesQuery("John", "Software", default, default);
-            var contextMock = new Mock<IOpenReddingDbContext>();
-            var handler = new GetEmployeeSalariesQueryHandler(contextMock.Object);
+            var query = new GetEmployeeSalariesQuery(default, "Software", default, default);
+            var handler = new GetEmployeeSalariesQueryHandler(Context);
 
             // Act
             var result = await handler.Handle(query, CancellationToken.None);
@@ -49,8 +40,60 @@ namespace OpenRedding.Core.Tests.Salaries
             // Assert
             result.ShouldNotBeNull();
             result.ShouldBeOfType<EmployeeSearchResultList>();
-            contextMock.Verify(c => c.Employees.AsNoTracking(), Times.Once);
-            contextMock.Verify(c => c.Employees.Where(It.IsAny<Expression<Func<Employee, bool>>>()), Times.Exactly(2));
+            result.Count.ShouldBe(2);
+            result.Employees.ShouldContain(e => e.Name == "John Smith");
+            result.Employees.ShouldContain(e => e.Name == "Mary Smith");
+        }
+
+        [Fact]
+        public async Task GivenValidRequest_WhenAgencyIsInQuery_FiltersByAgency()
+        {
+            // Arrange
+            var query = new GetEmployeeSalariesQuery(default, default, "Redding", default);
+            var handler = new GetEmployeeSalariesQueryHandler(Context);
+
+            // Act
+            var result = await handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.ShouldBeOfType<EmployeeSearchResultList>();
+            result.Count.ShouldBe(2);
+            result.Employees.ShouldContain(e => e.Name == "John Smith");
+            result.Employees.ShouldContain(e => e.Name == "Mary Smith");
+        }
+
+        [Fact]
+        public async Task GivenValidRequest_WhenStatusIsInQuery_FiltersByStatus()
+        {
+            // Arrange
+            var query = new GetEmployeeSalariesQuery(default, default, default, "PartTime");
+            var handler = new GetEmployeeSalariesQueryHandler(Context);
+
+            // Act
+            var result = await handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.ShouldBeOfType<EmployeeSearchResultList>();
+            result.Count.ShouldBe(1);
+            result.Employees.ShouldContain(e => e.Name == "Joe Shmoe");
+        }
+
+        [Fact]
+        public async Task GivenValidRequest_WhenSearchQueryDoesNotFindMatch_ReturnsEmppyResultList()
+        {
+            // Arrange
+            var query = new GetEmployeeSalariesQuery("This", "Employee", "Doesn't", "Exist!");
+            var handler = new GetEmployeeSalariesQueryHandler(Context);
+
+            // Act
+            var result = await handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            result.ShouldNotBeNull();
+            result.ShouldBeOfType<EmployeeSearchResultList>();
+            result.Employees.ShouldBeEmpty();
         }
     }
 }

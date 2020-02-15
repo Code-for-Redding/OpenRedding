@@ -27,14 +27,13 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
             ArgumentValidation.ValidateNotNull(request);
 
             // Request context to not track entity since we're not making any updates
-            var queriedSalaries = _context.Employees!.AsNoTracking();
+            var queriedSalaries = _context.Employees.AsNoTracking();
 
             // Filter by job title, if available
             if (!string.IsNullOrWhiteSpace(request.JobTitle))
             {
                 Expression<Func<Employee, bool>> canFilterByEmployeeJobTitle = e =>
-                    !string.IsNullOrWhiteSpace(e.JobTitle) &&
-                    e.JobTitle.Contains(request.JobTitle, StringComparison.CurrentCultureIgnoreCase);
+                    !string.IsNullOrWhiteSpace(e.JobTitle) && e.JobTitle.Contains(request.JobTitle, StringComparison.CurrentCultureIgnoreCase);
 
                 queriedSalaries = queriedSalaries.Where(canFilterByEmployeeJobTitle);
             }
@@ -43,8 +42,7 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
             if (!string.IsNullOrWhiteSpace(request.Name))
             {
                 Expression<Func<Employee, bool>> canFilterByEmployeeName = e =>
-                    !string.IsNullOrWhiteSpace(e.EmployeeName) &&
-                    e.EmployeeName.Contains(request.Name, StringComparison.CurrentCultureIgnoreCase);
+                    !string.IsNullOrWhiteSpace(e.EmployeeName) && e.EmployeeName.Contains(request.Name, StringComparison.CurrentCultureIgnoreCase);
 
                 queriedSalaries = queriedSalaries.Where(canFilterByEmployeeName);
             }
