@@ -8,25 +8,24 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
     using Exception;
     using Extensions;
     using MediatR;
-    using Microsoft.Extensions.Logging;
+    using Microsoft.EntityFrameworkCore;
     using Shared;
 
     public class RetrieveEmployeeSalaryQueryHandler : IRequestHandler<RetrieveEmployeeSalaryQuery, EmployeeSalaryDetailViewModel>
     {
         private readonly IOpenReddingDbContext _context;
-        private readonly ILogger<RetrieveEmployeeSalaryQueryHandler> _logger;
 
-        public RetrieveEmployeeSalaryQueryHandler(IOpenReddingDbContext context, ILogger<RetrieveEmployeeSalaryQueryHandler> logger)
+        public RetrieveEmployeeSalaryQueryHandler(IOpenReddingDbContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
         public async Task<EmployeeSalaryDetailViewModel> Handle(RetrieveEmployeeSalaryQuery request, CancellationToken cancellationToken)
         {
             ArgumentValidation.ValidateNotNull(request);
 
-            var employeeSalary = await _context.Employees.FindAsync(request?.Id, cancellationToken);
+            var employeeSalary = await _context.Employees.FirstOrDefaultAsync(e => e.EmployeeId == request.Id, cancellationToken);
+
             if (employeeSalary is null)
             {
                 throw new OpenReddingApiException($"Employee with ID {request?.Id} was not found", HttpStatusCode.NotFound);
