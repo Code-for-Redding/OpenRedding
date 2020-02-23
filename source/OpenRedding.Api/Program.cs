@@ -47,6 +47,10 @@ namespace OpenRedding.Api
                     logger.LogInformation($"Database seeding was successful, time taken: {timer.Elapsed.TotalSeconds} seconds");
 
                     // }
+                    // else
+                    // {
+                    //     throw new SystemException("Could not connect to database, please check that the service is up and running");
+                    // }
                 }
                 catch (Exception e)
                 {
@@ -67,9 +71,6 @@ namespace OpenRedding.Api
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+                .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
     }
 }

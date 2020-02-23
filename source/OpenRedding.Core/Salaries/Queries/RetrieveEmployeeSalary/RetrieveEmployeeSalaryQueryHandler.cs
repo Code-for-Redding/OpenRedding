@@ -26,7 +26,7 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
         {
             ArgumentValidation.ValidateNotNull(request);
 
-            var employeeSalary = await _context.Employees!.FindAsync(request?.Id, cancellationToken);
+            var employeeSalary = await _context.Employees.FindAsync(request?.Id, cancellationToken);
             if (employeeSalary is null)
             {
                 throw new OpenReddingApiException($"Employee with ID {request?.Id} was not found", HttpStatusCode.NotFound);

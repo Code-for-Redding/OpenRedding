@@ -9,7 +9,6 @@ namespace OpenRedding.Core.Salaries.Commands.SeedSalaryTable
 	using System.Threading.Tasks;
 	using CsvHelper;
 	using Data;
-	using Domain.Common.Services;
 	using Domain.Salaries.Dtos;
 	using Domain.Salaries.Entities;
 	using Extensions;
@@ -69,7 +68,7 @@ namespace OpenRedding.Core.Salaries.Commands.SeedSalaryTable
 				}
 			}
 
-            if (!salariedEmployees.Any())
+            if (salariedEmployees.Count is 0)
 			{
 				throw new InvalidDataException("Employee salary records was not populated, please check the data source");
 			}

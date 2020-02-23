@@ -7,10 +7,10 @@ namespace OpenRedding.Core.Infrastructure
 
     public class RequestLoggingPreProcessor<TRequest> : IRequestPreProcessor<TRequest>
     {
-        private readonly ILogger _logger;
+        private readonly ILogger<TRequest> _logger;
 
         // private readonly ICurrentUserService _currentUserService;
-        public RequestLoggingPreProcessor(ILogger logger)
+        public RequestLoggingPreProcessor(ILogger<TRequest> logger)
         {
             _logger = logger;
         }

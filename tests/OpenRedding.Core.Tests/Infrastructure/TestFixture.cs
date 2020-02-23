@@ -9,10 +9,14 @@ namespace OpenRedding.Core.Tests.Infrastructure
     {
         public TestFixture()
         {
+            // var connectionString = "Server=(localdb)\\mssqllocaldb;Database=OpenRedding;Trusted_Connection=True;MultipleActiveResultSets=true;Application Name=OpenRedding;";
             // Configure services
             var services = new ServiceCollection();
+
             services.AddEntityFrameworkInMemoryDatabase()
-                .AddDbContext<OpenReddingDbContext>(options => options.UseInMemoryDatabase($"{Guid.NewGuid().ToString()}.db"));
+               .AddDbContext<OpenReddingDbContext>(options => options.UseInMemoryDatabase($"{Guid.NewGuid().ToString()}.db"));
+
+            // services.AddDbContext<OpenReddingDbContext>(options => options.UseSqlServer(connectionString));
 
             // Configure current user accessor as a provider
             var serviceProvider = services.BuildServiceProvider();

@@ -28,7 +28,7 @@ namespace OpenRedding.Core.Infrastructure
             _logger = logger;
         }
 
-        public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             ArgumentValidation.ValidateNotNull(request, next);
 
@@ -40,7 +40,7 @@ namespace OpenRedding.Core.Infrastructure
                 .Where(f => f != null)
                 .ToList();
 
-            if (failures.Any())
+            if (failures.Count > 0)
             {
                 _logger.LogInformation($"Validation failure for request [{request}]");
                 var validationErrors = new OpenReddingValidationErrors();
@@ -54,7 +54,7 @@ namespace OpenRedding.Core.Infrastructure
                 request.ValidationErrors = validationErrors;
             }
 
-            return next.Invoke();
+            return await next.Invoke();
         }
     }
 }

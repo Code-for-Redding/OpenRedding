@@ -43,15 +43,15 @@ namespace OpenRedding.Data
             var testEmployee2 = new Employee
             {
                 EmployeeName = "Mary Smith",
-                JobTitle = "Software Engineer Manager",
+                JobTitle = "Software Engineering Manager",
                 Year = 2019,
-                BasePay = 100m,
+                BasePay = 120m,
                 Benefits = 100m,
                 PensionDebt = 100m,
                 OtherPay = 100m,
                 OvertimePay = 100m,
                 TotalPay = 100m,
-                TotalPayWithBenefits = 100m,
+                TotalPayWithBenefits = 170m,
                 Notes = "Great worker, even better than John",
                 EmployeeAgency = EmployeeAgency.Redding,
                 EmployeeStatus = EmployeeStatus.FullTime
@@ -74,7 +74,24 @@ namespace OpenRedding.Data
                 EmployeeStatus = EmployeeStatus.PartTime
             };
 
-            await context.Employees.AddRangeAsync(testEmployee1, testEmployee2, testEmployee3);
+            var testEmployee4 = new Employee
+            {
+                EmployeeName = "Joey Mckenzie",
+                JobTitle = "Senior Software Engineer",
+                Year = 2020,
+                BasePay = 95m,
+                Benefits = 100m,
+                PensionDebt = 100m,
+                OtherPay = 100m,
+                OvertimePay = 100m,
+                TotalPay = 100m,
+                TotalPayWithBenefits = 150m,
+                Notes = "Amazing, loves .NET Core",
+                EmployeeAgency = EmployeeAgency.ShastaCounty,
+                EmployeeStatus = EmployeeStatus.PartTime
+            };
+
+            await context.Employees.AddRangeAsync(testEmployee1, testEmployee2, testEmployee3, testEmployee4);
             await context.SaveChangesAsync();
         }
     }

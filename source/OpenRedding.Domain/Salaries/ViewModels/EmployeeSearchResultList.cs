@@ -6,8 +6,8 @@ namespace OpenRedding.Domain.Salaries.ViewModels
 
 	public class EmployeeSearchResultList : OpenReddingViewModelList
 	{
-		public EmployeeSearchResultList(IReadOnlyList<EmployeeSalarySearchDto> employees)
-			: base(employees)
+		public EmployeeSearchResultList(IEnumerable<EmployeeSalarySearchDto> employees, int totalResults)
+			: base(totalResults)
 		{
 			Employees = employees;
 		}

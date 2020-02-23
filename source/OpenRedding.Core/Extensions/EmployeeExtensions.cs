@@ -22,6 +22,7 @@ namespace OpenRedding.Core.Extensions
             return new EmployeeSalarySearchDto(
                 employee.EmployeeId,
                 employee.EmployeeName,
+                employee.JobTitle,
                 employee.EmployeeAgency.ToString(),
                 employee.EmployeeStatus.ToString(),
                 employee.BasePay,

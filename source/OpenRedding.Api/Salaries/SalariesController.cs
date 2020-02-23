@@ -6,6 +6,7 @@ namespace OpenRedding.Api.Salaries
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
+    using OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary;
 
     public class SalariesController : OpenReddingBaseController
     {
@@ -22,10 +23,20 @@ namespace OpenRedding.Api.Salaries
             [FromQuery] string? name,
             [FromQuery] string? jobTitle,
             [FromQuery] string? agency,
-            [FromQuery] string? status)
+            [FromQuery] string? status,
+            [FromQuery] string? sortBy)
         {
-            _logger.LogInformation($"Querying salaries: name [{name}], jobTitle [{jobTitle}], agency [{agency}], status [{status}]");
-            return await Mediator.Send(new GetEmployeeSalariesQuery(name, jobTitle, agency, status));
+            var requestPath = Request.Path.ToString();
+            _logger.LogInformation($"Querying salaries: name [{name}], jobTitle [{jobTitle}], agency [{agency}], status [{status}], sortBy [{sortBy}]");
+            return await Mediator.Send(new GetEmployeeSalariesQuery(name, jobTitle, agency, status, sortBy));
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(EmployeeSalaryDetailViewModel), StatusCodes.Status200OK)]
+        public async Task<EmployeeSalaryDetailViewModel> GetEmployeeSalary([FromRoute] int id)
+        {
+            _logger.LogInformation($"Retrieving employee salary detail for employeeId [{id}]");
+            return await Mediator.Send(new RetrieveEmployeeSalaryQuery(id));
         }
     }
 }

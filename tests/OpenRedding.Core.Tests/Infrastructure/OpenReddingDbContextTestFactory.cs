@@ -1,7 +1,6 @@
 namespace OpenRedding.Core.Tests.Infrastructure
 {
     using System;
-    using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using OpenRedding.Data;
