@@ -23,7 +23,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\source\OpenRedding.Core\OpenRedding.Core.csproj" />
-      <ProjectReference Include="..\..\source\OpenRedding.Data\OpenRedding.Data.csproj" />
+      <ProjectReference Include="..\..\source\OpenRedding.Infrastructure\OpenRedding.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

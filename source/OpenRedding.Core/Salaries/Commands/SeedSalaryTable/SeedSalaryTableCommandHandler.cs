@@ -4,13 +4,15 @@ namespace OpenRedding.Core.Salaries.Commands.SeedSalaryTable
 	using System.Threading.Tasks;
 	using MediatR;
 	using Microsoft.Extensions.Logging;
+	using OpenRedding.Core.Infrastructure.Services;
+	using OpenRedding.Domain.Salaries.Commands;
 
 	public class SeedSalaryTableCommandHandler : IRequestHandler<SeedSalaryTableCommand, Unit>
 	{
 		private readonly ILogger<SeedSalaryTableCommandHandler> _logger;
-		private readonly SalaryTableSeeder _seeder;
+		private readonly ISalaryTableSeeder _seeder;
 
-		public SeedSalaryTableCommandHandler(ILogger<SeedSalaryTableCommandHandler> logger, SalaryTableSeeder seeder)
+		public SeedSalaryTableCommandHandler(ILogger<SeedSalaryTableCommandHandler> logger, ISalaryTableSeeder seeder)
 		{
 			_logger = logger;
 			_seeder = seeder;
@@ -19,7 +21,7 @@ namespace OpenRedding.Core.Salaries.Commands.SeedSalaryTable
 		public async Task<Unit> Handle(SeedSalaryTableCommand request, CancellationToken cancellationToken)
 		{
 			_logger.LogInformation("Attempting to seed salary table...");
-			await _seeder.SeedAsync(cancellationToken);
+			await _seeder.SeedAsync(cancellationToken).ConfigureAwait(false);
 			_logger.LogInformation("Seed was successful!");
 
 			return Unit.Value;

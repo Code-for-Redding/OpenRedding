@@ -13,7 +13,7 @@ namespace OpenRedding.Domain.Common.Validation
 
         public ICollection<OpenReddingValidationError> Errors { get; }
 
-        public bool HasErrors => Errors.Any();
+        public bool HasErrors => Errors.Count > 0;
 
         public int ErrorCount => Errors.Count;
     }

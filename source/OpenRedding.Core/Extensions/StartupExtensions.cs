@@ -1,12 +1,13 @@
 namespace OpenRedding.Core.Extensions
 {
+    using System.Reflection;
     using Data;
     using FluentValidation;
     using Infrastructure;
     using MediatR;
-    using MediatR.Pipeline;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
+    using OpenRedding.Core.Infrastructure.Behaviors;
 
     public static class StartupExtensions
     {
@@ -14,7 +15,7 @@ namespace OpenRedding.Core.Extensions
         {
             // Register MediatR handlers and request validators
             services.AddMediatR(typeof(IOpenReddingDbContext).Assembly);
-            services.AddValidatorsFromAssembly(typeof(IOpenReddingDbContext).Assembly);
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             // Add the MediatR validation pipeline
             services.TryAddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));

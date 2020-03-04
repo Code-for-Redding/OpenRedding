@@ -3,14 +3,15 @@ namespace OpenRedding.Api
     using System;
     using System.Text.Json;
     using Core.Extensions;
-    using Core.Salaries.Commands.SeedSalaryTable;
-    using Data.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using OpenRedding.Core.Infrastructure.Services;
+    using OpenRedding.Infrastructure.Extensions;
+    using OpenRedding.Infrastructure.Services;
 
     public class Startup
     {
@@ -26,6 +27,7 @@ namespace OpenRedding.Api
         {
             // Retrieve the connection string from environment source and cancel bootstrap if none is found
             var connectionString = Configuration["ConnectionString"];
+
             if (string.IsNullOrWhiteSpace(connectionString))
             {
                 throw new ArgumentException("Connection string was null or empty");
@@ -41,9 +43,9 @@ namespace OpenRedding.Api
                 });
 
             // Application and persistence layer dependencies
-            services.AddHttpClient<SalaryTableSeeder>(options => options.Timeout = TimeSpan.FromSeconds(30));
+            services.AddHttpClient<ISalaryTableSeeder, SalaryTableSeeder>(options => options.Timeout = TimeSpan.FromSeconds(30));
             services.AddOpenReddingCore();
-            services.AddOpenReddingPersistence(connectionString);
+            services.AddOpenReddingInfrastructure(connectionString);
 
             // Override built in model state validation
             services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);

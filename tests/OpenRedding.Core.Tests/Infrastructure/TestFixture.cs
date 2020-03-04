@@ -3,7 +3,8 @@ namespace OpenRedding.Core.Tests.Infrastructure
     using System;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
-    using OpenRedding.Data;
+    using OpenRedding.Infrastructure.Persistence;
+    using OpenRedding.Infrastructure.Persistence.Contexts;
 
     public class TestFixture : IDisposable
     {
@@ -24,7 +25,7 @@ namespace OpenRedding.Core.Tests.Infrastructure
             // Initialize the database with seed data and context accessors services
             var databaseContext = serviceProvider.GetRequiredService<OpenReddingDbContext>();
             databaseContext.Database.EnsureCreated();
-            OpenReddingDbInitializer.Initialize(databaseContext).Wait();
+            OpenReddingDatabaseInitializer.Initialize(databaseContext).Wait();
 
             Context = databaseContext;
         }

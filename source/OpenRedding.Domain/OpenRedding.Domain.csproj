@@ -11,12 +11,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Salaries" />
-    <Folder Include="Users" />
+    <Folder Include="Account\ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="..\..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="8.0.1" />
   </ItemGroup>
 
 </Project>

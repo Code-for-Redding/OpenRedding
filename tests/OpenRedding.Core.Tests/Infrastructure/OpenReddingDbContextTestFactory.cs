@@ -3,7 +3,8 @@ namespace OpenRedding.Core.Tests.Infrastructure
     using System;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
-    using OpenRedding.Data;
+    using OpenRedding.Infrastructure.Persistence;
+    using OpenRedding.Infrastructure.Persistence.Contexts;
 
     public static class OpenReddingDbContextTestFactory
     {
@@ -15,7 +16,7 @@ namespace OpenRedding.Core.Tests.Infrastructure
 
             var context = new OpenReddingDbContext(options);
             context.Database.EnsureCreated();
-            await OpenReddingDbInitializer.Initialize(context);
+            await OpenReddingDatabaseInitializer.Initialize(context);
 
             return context;
         }

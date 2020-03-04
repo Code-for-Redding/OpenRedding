@@ -9,7 +9,11 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\OpenRedding.Data\OpenRedding.Data.csproj" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\OpenRedding.Infrastructure\OpenRedding.Infrastructure.csproj" />
   </ItemGroup>
   
 </Project>

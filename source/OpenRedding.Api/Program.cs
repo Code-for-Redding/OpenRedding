@@ -4,14 +4,14 @@ namespace OpenRedding.Api
     using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
-    using Core.Salaries.Commands.SeedSalaryTable;
-    using Data;
     using MediatR;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
+    using OpenRedding.Domain.Salaries.Commands;
+    using OpenRedding.Infrastructure.Persistence.Contexts;
 
     public class Program
     {
@@ -31,26 +31,25 @@ namespace OpenRedding.Api
                     var mediator = scope.ServiceProvider.GetService<IMediator>();
 
                     // Drop the tables to recreate them with fresh data every server re-roll
-                    // if (context.Database.CanConnect())
-                    // {
-                    var timer = new Stopwatch();
-                    timer.Start();
-                    logger.LogInformation("Dropping database...");
-                    await context.Database.EnsureDeletedAsync();
-                    logger.LogInformation("Database dropped successfully, applying migrations...");
-                    await context.Database.MigrateAsync();
-                    logger.LogInformation("Migration complete, populating database with data from Transparent California...");
+                    if (context.Database.CanConnect())
+                    {
+                        var timer = new Stopwatch();
+                        timer.Start();
+                        logger.LogInformation("Dropping database...");
+                        await context.Database.EnsureDeletedAsync();
+                        logger.LogInformation("Database dropped successfully, applying migrations...");
+                        await context.Database.MigrateAsync();
+                        logger.LogInformation("Migration complete, populating database with data from Transparent California...");
 
-                    // await mediator.Send(new SeedSalaryTableCommand());
-                    await mediator.Send(new SeedSalaryTableCommand());
-                    timer.Stop();
-                    logger.LogInformation($"Database seeding was successful, time taken: {timer.Elapsed.TotalSeconds} seconds");
-
-                    // }
-                    // else
-                    // {
-                    //     throw new SystemException("Could not connect to database, please check that the service is up and running");
-                    // }
+                        // await mediator.Send(new SeedSalaryTableCommand());
+                        await mediator.Send(new SeedSalaryTableCommand());
+                        timer.Stop();
+                        logger.LogInformation($"Database seeding was successful, time taken: {timer.Elapsed.TotalSeconds} seconds");
+                    }
+                    else
+                    {
+                        throw new SystemException("Could not connect to database, please check that the service is up and running");
+                    }
                 }
                 catch (Exception e)
                 {

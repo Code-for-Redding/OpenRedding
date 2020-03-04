@@ -6,8 +6,9 @@ namespace OpenRedding.Core.Tests.Salaries
     using Core.Salaries.Queries.GetEmployeeSalaries;
     using Domain.Salaries.ViewModels;
     using Infrastructure;
-    using OpenRedding.Domain.Common;
+    using OpenRedding.Domain.Common.Dto;
     using OpenRedding.Domain.Salaries.Entities;
+    using OpenRedding.Domain.Salaries.Queries;
     using Shouldly;
     using Xunit;
 
