@@ -7,7 +7,7 @@ namespace OpenRedding.Core.Infrastructure.Behaviors
     using FluentValidation;
     using MediatR;
     using Microsoft.Extensions.Logging;
-    using OpenRedding.Domain.Common.Requests;
+    using OpenRedding.Core.Infrastructure.Requests;
     using OpenRedding.Domain.Common.Validation;
     using OpenRedding.Shared;
 

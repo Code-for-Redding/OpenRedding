@@ -10,8 +10,8 @@ namespace OpenRedding.Api
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
-    using OpenRedding.Domain.Salaries.Commands;
-    using OpenRedding.Infrastructure.Persistence.Contexts;
+    using OpenRedding.Core.Salaries.Commands.SeedSalaryTable;
+    using OpenRedding.Infrastructure.Persistence.Data;
 
     public class Program
     {

@@ -1,4 +1,4 @@
-namespace OpenRedding.Core.Data
+namespace OpenRedding.Infrastructure.Mappings
 {
     using CsvHelper.Configuration;
     using Domain.Salaries.Dtos;

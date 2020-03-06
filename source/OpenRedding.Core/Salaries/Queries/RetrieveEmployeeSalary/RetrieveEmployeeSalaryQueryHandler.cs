@@ -9,7 +9,6 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
     using Extensions;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
-    using OpenRedding.Domain.Salaries.Queries;
     using Shared;
 
     public class RetrieveEmployeeSalaryQueryHandler : IRequestHandler<RetrieveEmployeeSalaryQuery, EmployeeSalaryDetailViewModel>

@@ -4,7 +4,7 @@ namespace OpenRedding.Core.Tests.Infrastructure
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using OpenRedding.Infrastructure.Persistence;
-    using OpenRedding.Infrastructure.Persistence.Contexts;
+    using OpenRedding.Infrastructure.Persistence.Data;
 
     public class TestFixture : IDisposable
     {

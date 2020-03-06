@@ -1,13 +1,12 @@
 namespace OpenRedding.Core.Salaries.Commands.SeedSalaryTable
 {
-	using System.Threading;
-	using System.Threading.Tasks;
-	using MediatR;
-	using Microsoft.Extensions.Logging;
-	using OpenRedding.Core.Infrastructure.Services;
-	using OpenRedding.Domain.Salaries.Commands;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using MediatR;
+    using Microsoft.Extensions.Logging;
+    using OpenRedding.Core.Infrastructure.Services;
 
-	public class SeedSalaryTableCommandHandler : IRequestHandler<SeedSalaryTableCommand, Unit>
+    public class SeedSalaryTableCommandHandler : IRequestHandler<SeedSalaryTableCommand, Unit>
 	{
 		private readonly ILogger<SeedSalaryTableCommandHandler> _logger;
 		private readonly ISalaryTableSeeder _seeder;

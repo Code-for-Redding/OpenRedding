@@ -1,4 +1,4 @@
-﻿namespace OpenRedding.Domain.Salaries.Commands
+﻿namespace OpenRedding.Core.Salaries.Commands.SeedSalaryTable
 {
 	using MediatR;
 

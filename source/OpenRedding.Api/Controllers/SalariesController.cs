@@ -6,7 +6,8 @@ namespace OpenRedding.Api.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using OpenRedding.Api;
-    using OpenRedding.Domain.Salaries.Queries;
+    using OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries;
+    using OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary;
 
     public class SalariesController : OpenReddingBaseController
     {

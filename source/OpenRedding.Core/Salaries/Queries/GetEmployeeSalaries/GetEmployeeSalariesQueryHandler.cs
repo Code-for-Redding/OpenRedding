@@ -12,7 +12,6 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
     using MediatR;
     using Microsoft.EntityFrameworkCore;
     using OpenRedding.Domain.Common.Dto;
-    using OpenRedding.Domain.Salaries.Queries;
     using Shared;
 
     public class GetEmployeeSalariesQueryHandler : IRequestHandler<GetEmployeeSalariesQuery, EmployeeSearchResultList>

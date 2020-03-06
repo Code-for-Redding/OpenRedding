@@ -3,7 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using Domain.Salaries.Entities;
-    using OpenRedding.Infrastructure.Persistence.Contexts;
+    using OpenRedding.Infrastructure.Persistence.Data;
 
     public static class OpenReddingDatabaseInitializer
     {

@@ -1,6 +1,6 @@
-﻿namespace OpenRedding.Domain.Salaries.Queries
+﻿namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
 {
-    using OpenRedding.Domain.Common.Requests;
+    using OpenRedding.Core.Infrastructure.Requests;
     using OpenRedding.Domain.Salaries.ViewModels;
 
     public class GetEmployeeSalariesQuery : OpenReddingRequest<EmployeeSearchResultList>

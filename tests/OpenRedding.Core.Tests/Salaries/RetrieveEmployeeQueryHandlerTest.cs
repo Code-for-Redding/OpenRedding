@@ -7,7 +7,6 @@
     using OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary;
     using OpenRedding.Core.Tests.Infrastructure;
     using OpenRedding.Domain.Salaries.Dtos;
-    using OpenRedding.Domain.Salaries.Queries;
     using OpenRedding.Domain.Salaries.ViewModels;
     using Shouldly;
     using Xunit;

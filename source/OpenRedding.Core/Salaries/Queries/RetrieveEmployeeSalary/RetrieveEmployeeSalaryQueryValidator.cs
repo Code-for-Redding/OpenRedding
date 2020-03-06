@@ -1,7 +1,6 @@
 ﻿namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
 {
     using FluentValidation;
-    using OpenRedding.Domain.Salaries.Queries;
 
     public class RetrieveEmployeeSalaryQueryValidator : AbstractValidator<RetrieveEmployeeSalaryQuery>
     {

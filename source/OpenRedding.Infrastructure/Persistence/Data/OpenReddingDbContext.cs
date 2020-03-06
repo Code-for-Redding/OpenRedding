@@ -1,4 +1,4 @@
-﻿namespace OpenRedding.Infrastructure.Persistence.Contexts
+﻿namespace OpenRedding.Infrastructure.Persistence.Data
 {
 	using System;
 	using System.Collections.Generic;
@@ -7,10 +7,12 @@
 	using Core.Data;
 	using Domain.Salaries.Entities;
 	using EFCore.BulkExtensions;
+	using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 	using Microsoft.EntityFrameworkCore;
 	using Microsoft.Extensions.Logging;
+	using OpenRedding.Infrastructure.Identity;
 
-	public class OpenReddingDbContext : DbContext, IOpenReddingDbContext
+	public class OpenReddingDbContext : IdentityDbContext<OpenReddingUser>, IOpenReddingDbContext
 	{
 		private static readonly ILoggerFactory ConsoleLogger = LoggerFactory.Create(builder => builder.AddConsole());
 
@@ -25,7 +27,7 @@
 			where T : class
 		{
 			// ArgumentValidation.CheckNotNull(this, nameof(this), "DbContext cannot be null");
-			await this.BulkInsertAsync(entities, cancellationToken: cancellationToken);
+			await this.BulkInsertAsync(entities, cancellationToken: cancellationToken).ConfigureAwait(false);
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

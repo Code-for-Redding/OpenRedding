@@ -1,13 +1,13 @@
 ﻿namespace OpenRedding.Infrastructure.Persistence.Factories
 {
-    using System;
-    using System.Reflection;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Design;
-    using Microsoft.Extensions.Configuration;
-    using OpenRedding.Infrastructure.Persistence.Contexts;
+	using System;
+	using System.Reflection;
+	using Microsoft.EntityFrameworkCore;
+	using Microsoft.EntityFrameworkCore.Design;
+	using Microsoft.Extensions.Configuration;
+	using OpenRedding.Infrastructure.Persistence.Data;
 
-    public class OpenReddingDbContextFactory : IDesignTimeDbContextFactory<OpenReddingDbContext>
+	public class OpenReddingDbContextFactory : IDesignTimeDbContextFactory<OpenReddingDbContext>
     {
 		private const string ConnectionStringName = "ConnectionString";
 
@@ -26,7 +26,12 @@
 			}
 
 			var optionsBuilder = new DbContextOptionsBuilder<OpenReddingDbContext>();
-			optionsBuilder.UseSqlServer(connectionString, options => options.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name));
+			optionsBuilder.UseSqlServer(connectionString, options =>
+			{
+				options.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name);
+				options.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+				options.CommandTimeout(30);
+			});
 
 			return new OpenReddingDbContext(optionsBuilder.Options);
 		}

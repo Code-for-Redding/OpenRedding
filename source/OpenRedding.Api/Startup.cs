@@ -42,8 +42,10 @@ namespace OpenRedding.Api
                     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                 });
 
-            // Application and persistence layer dependencies
+            // Service dependencies
             services.AddHttpClient<ISalaryTableSeeder, SalaryTableSeeder>(options => options.Timeout = TimeSpan.FromSeconds(30));
+
+            // Project dependencies
             services.AddOpenReddingCore();
             services.AddOpenReddingInfrastructure(connectionString);
 

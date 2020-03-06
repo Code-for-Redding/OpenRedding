@@ -14,6 +14,7 @@
 	using OpenRedding.Core.Data;
 	using OpenRedding.Core.Extensions;
 	using OpenRedding.Core.Infrastructure.Services;
+	using OpenRedding.Infrastructure.Mappings;
 	using Shared;
 
 	public class SalaryTableSeeder : ISalaryTableSeeder

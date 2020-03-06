@@ -10,16 +10,4 @@
     <ProjectReference Include="..\OpenRedding.Shared\OpenRedding.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Account\ViewModels\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MediatR" Version="8.0.1" />
-  </ItemGroup>
-
 </Project>

@@ -4,7 +4,7 @@ namespace OpenRedding.Core.Tests.Infrastructure
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
     using OpenRedding.Infrastructure.Persistence;
-    using OpenRedding.Infrastructure.Persistence.Contexts;
+    using OpenRedding.Infrastructure.Persistence.Data;
 
     public static class OpenReddingDbContextTestFactory
     {
