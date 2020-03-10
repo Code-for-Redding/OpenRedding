@@ -1,6 +1,7 @@
 ﻿namespace OpenRedding.Identity.Accounts.Commands.LoginUser
 {
     using MediatR;
+    using OpenRedding.Domain.Accounts;
     using OpenRedding.Domain.Accounts.Dtos;
     using OpenRedding.Identity.Models;
 
@@ -10,5 +11,7 @@
             LoginRequestDto = loginRequestDto;
 
         public LoginDto LoginRequestDto { get; set; }
+
+        public LoginContext Context { get; set; }
     }
 }

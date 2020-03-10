@@ -14,7 +14,16 @@
                 .NotNull()
                 .NotEmpty()
                 .EmailAddress()
-                .WithMessage("Must supply email address");
+                .WithMessage("Email address must be provided");
+
+            RuleFor(r => r.LoginRequestDto.Password)
+                .NotNull()
+                .NotEmpty()
+                .WithMessage("Password must be provided");
+
+            RuleFor(r => r.Context)
+                .NotNull()
+                .WithMessage("Login context must be provided");
         }
     }
 }
