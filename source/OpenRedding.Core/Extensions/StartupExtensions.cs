@@ -3,7 +3,6 @@ namespace OpenRedding.Core.Extensions
     using System.Reflection;
     using Data;
     using FluentValidation;
-    using Infrastructure;
     using MediatR;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;

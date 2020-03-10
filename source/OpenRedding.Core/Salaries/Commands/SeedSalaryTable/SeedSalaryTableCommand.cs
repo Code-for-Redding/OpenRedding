@@ -1,8 +1,8 @@
 ﻿namespace OpenRedding.Core.Salaries.Commands.SeedSalaryTable
 {
-	using MediatR;
+    using MediatR;
 
-	public class SeedSalaryTableCommand : IRequest<Unit>
-	{
-	}
+    public class SeedSalaryTableCommand : IRequest<Unit>
+    {
+    }
 }

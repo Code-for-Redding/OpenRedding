@@ -1,8 +1,8 @@
 ﻿namespace OpenRedding.Core.Accounts.Commands.ConfirmEmailChange
 {
-	using FluentValidation;
+    using FluentValidation;
 
-	public class ConfirmEmailChangeCommandValidator : AbstractValidator<ConfirmEmailChangeCommand>
+    public class ConfirmEmailChangeCommandValidator : AbstractValidator<ConfirmEmailChangeCommand>
     {
         public ConfirmEmailChangeCommandValidator()
         {

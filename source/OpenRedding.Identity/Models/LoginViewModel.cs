@@ -1,7 +1,6 @@
 ﻿namespace OpenRedding.Identity.Models
 {
     using System.ComponentModel.DataAnnotations;
-    using OpenRedding.Domain.Common.ViewModels;
 
     public class LoginViewModel
     {

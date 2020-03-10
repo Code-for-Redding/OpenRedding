@@ -1,19 +1,20 @@
 ﻿namespace OpenRedding.Identity
 {
-	using System;
-	using System.Linq;
-	using System.Threading.Tasks;
-	using IdentityServer4.EntityFramework.DbContexts;
-	using Microsoft.AspNetCore.Hosting;
-	using Microsoft.EntityFrameworkCore;
-	using Microsoft.Extensions.DependencyInjection;
-	using Microsoft.Extensions.Hosting;
-	using Serilog;
-	using Serilog.Events;
-	using Serilog.Sinks.SystemConsole.Themes;
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using IdentityServer4.EntityFramework.DbContexts;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Serilog;
+    using Serilog.Events;
+    using Serilog.Sinks.SystemConsole.Themes;
 
 #pragma warning disable RCS1102 // Make class static.
-	public class Program
+
+    public class Program
 #pragma warning restore RCS1102 // Make class static.
     {
         public static async Task Main(string[] args)

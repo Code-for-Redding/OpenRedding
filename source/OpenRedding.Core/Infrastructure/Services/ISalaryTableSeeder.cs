@@ -1,9 +1,9 @@
 ﻿namespace OpenRedding.Core.Infrastructure.Services
 {
-	using System.Threading;
-	using System.Threading.Tasks;
+    using System.Threading;
+    using System.Threading.Tasks;
 
-	public interface ISalaryTableSeeder
+    public interface ISalaryTableSeeder
     {
         Task SeedAsync(CancellationToken cancellationToken);
     }

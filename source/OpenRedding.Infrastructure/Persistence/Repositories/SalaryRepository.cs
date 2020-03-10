@@ -25,8 +25,8 @@
             const string insertSql = @"
 INSERT INTO OpenRedding.dbo.Employees
 (
-    EmployeeName, 
-    JobTitle, 
+    EmployeeName,
+    JobTitle,
     BasePay,
     Benefits,
     OtherPay,
@@ -37,11 +37,11 @@ INSERT INTO OpenRedding.dbo.Employees
     Year,
     EmployeeAgency,
     EmployeeStatus
-) 
-VALUES 
+)
+VALUES
 (
-    @EmployeeName, 
-    @JobTitle, 
+    @EmployeeName,
+    @JobTitle,
     @BasePay,
     @Benefits,
     @OtherPay,
