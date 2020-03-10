@@ -23,8 +23,8 @@ namespace OpenRedding.Core.Extensions
                 employee.EmployeeId,
                 employee.EmployeeName,
                 employee.JobTitle,
-                employee.EmployeeAgency.ToString(),
-                employee.EmployeeStatus.ToString(),
+                nameof(employee.EmployeeAgency),
+                nameof(employee.EmployeeStatus),
                 employee.BasePay,
                 employee.TotalPayWithBenefits);
         }
@@ -54,9 +54,9 @@ namespace OpenRedding.Core.Extensions
                 TotalPay = employee.TotalPay,
                 TotalPayWithBenefits = employee.TotalPayWithBenefits,
                 Year = employee.Year,
-                Agency = employee.EmployeeAgency.ToString(),
+                Agency = nameof(employee.EmployeeAgency),
                 Notes = employee.Notes,
-                Status = employee.EmployeeStatus.ToString()
+                Status = nameof(employee.EmployeeStatus)
             };
         }
 
