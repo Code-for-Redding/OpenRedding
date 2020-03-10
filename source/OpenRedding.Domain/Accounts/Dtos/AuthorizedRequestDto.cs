@@ -1,4 +1,4 @@
-﻿namespace OpenRedding.Domain.Account.Dtos
+﻿namespace OpenRedding.Domain.Accounts.Dtos
 {
     public class AuthorizedRequestDto
     {

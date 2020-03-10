@@ -1,8 +1,8 @@
-﻿namespace OpenRedding.Domain.Account.Dtos
+﻿namespace OpenRedding.Domain.Accounts.Dtos
 {
-    public class LoginInputDto
+    public class LoginDto
     {
-        public string? Username { get; set; }
+        public string? Email { get; set; }
 
         public string? Password { get; set; }
 

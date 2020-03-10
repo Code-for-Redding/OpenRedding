@@ -9,9 +9,13 @@
 
   
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="8.6.2" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="8.6.2" />
     <PackageReference Include="IdentityServer4" Version="3.1.2" />
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="3.1.2" />
     <PackageReference Include="IdentityServer4.EntityFramework" Version="3.1.2" />
+    <PackageReference Include="MediatR" Version="8.0.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
 
@@ -23,5 +27,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OpenRedding.Infrastructure\OpenRedding.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Accounts\Queries\" />
   </ItemGroup>
 </Project>
