@@ -19,3 +19,5 @@ logs/
 .tmp/
 .nuke
 /.editorconfig
+*.csproj.user
+*.DotSettings.user

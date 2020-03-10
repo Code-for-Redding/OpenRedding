@@ -14,7 +14,25 @@
 
     public static class StartupExtensions
     {
-        public static void AddOpenReddingInfrastructure(this IServiceCollection services, string connectionString)
+        public static void AddOpenReddingPersistenceInfrastructure(this IServiceCollection services, string connectionString)
+        {
+            // Add EF Core dependencies
+            services.AddDbContext<OpenReddingDbContext>(options =>
+                options.UseSqlServer(connectionString, builder =>
+                {
+                    builder.EnableRetryOnFailure(2);
+                    builder.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name);
+                }));
+            services.TryAddScoped<IOpenReddingDbContext>(provider => provider.GetService<OpenReddingDbContext>());
+
+            // Add Dapper dependencies
+            services.TryAddScoped<IUnitOfWork>(_ => new UnitOfWork(connectionString));
+
+            // Add custom services
+            // services.AddHttpClient<ISalaryTableSeeder, SalaryTableSeeder>(options => options.Timeout = TimeSpan.FromSeconds(30));
+        }
+
+        public static void AddOpenReddingIdentityInfrastructure(this IServiceCollection services, string connectionString)
         {
             var migrationsAssembly = Assembly.GetExecutingAssembly().GetName().Name;
 
@@ -24,15 +42,6 @@
                 builder.MigrationsAssembly(migrationsAssembly);
                 builder.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
             }
-
-            // Add EF Core dependencies
-            services.AddDbContext<OpenReddingDbContext>(options =>
-                options.UseSqlServer(connectionString, builder =>
-                {
-                    builder.EnableRetryOnFailure(2);
-                    builder.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name);
-                }));
-            services.TryAddScoped<IOpenReddingDbContext>(provider => provider.GetService<OpenReddingDbContext>());
 
             // Add Identity and IS4
             services.AddIdentity<OpenReddingUser, IdentityRole>()
@@ -48,12 +57,6 @@
                 .AddInMemoryClients(IdentityConfiguration.ApiClients);
 
             builder.AddDeveloperSigningCredential();
-
-            // Add Dapper dependencies
-            services.TryAddScoped<IUnitOfWork>(_ => new UnitOfWork(connectionString));
-
-            // Add custom services
-            // services.AddHttpClient<ISalaryTableSeeder, SalaryTableSeeder>(options => options.Timeout = TimeSpan.FromSeconds(30));
         }
     }
 }

@@ -22,7 +22,7 @@
         public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = Configuration["ConnectionString"];
-            services.AddOpenReddingInfrastructure(connectionString);
+            services.AddOpenReddingIdentityInfrastructure(connectionString);
         }
 
         public void Configure(IApplicationBuilder app)
@@ -31,6 +31,10 @@
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
 
             // uncomment if you want to add MVC
             // app.UseStaticFiles();
@@ -38,11 +42,11 @@
             app.UseIdentityServer();
 
             // uncomment, if you want to add MVC
-            // app.UseAuthorization();
-            // app.UseEndpoints(endpoints =>
-            // {
-            //     endpoints.MapDefaultControllerRoute();
-            // });
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapDefaultControllerRoute();
+            });
         }
     }
 }
