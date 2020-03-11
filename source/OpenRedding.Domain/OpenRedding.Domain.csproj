@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="../../OpenRedding.targets" />
 
@@ -8,6 +8,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OpenRedding.Shared\OpenRedding.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Accounts\Events\" />
   </ItemGroup>
 
 </Project>

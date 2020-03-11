@@ -1,6 +1,6 @@
-﻿namespace OpenRedding.Identity.Models
+﻿namespace OpenRedding.Domain.Accounts.ViewModels
 {
-    public class LoginViewModel
+    public class LoginViewModel : IdentityViewModel
     {
         public string? Email { get; set; }
 

@@ -12,7 +12,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.Logging;
     using OpenRedding.Domain.Accounts;
-    using OpenRedding.Identity.Models;
+    using OpenRedding.Domain.Accounts.ViewModels;
     using OpenRedding.Infrastructure.Identity;
 
     public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, LoginViewModel>
