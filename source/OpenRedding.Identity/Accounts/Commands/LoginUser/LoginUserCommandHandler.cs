@@ -1,7 +1,5 @@
 ﻿namespace OpenRedding.Identity.Accounts.Commands.LoginUser
 {
-    using System;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using IdentityServer4.Models;
@@ -39,21 +37,18 @@
         public async Task<LoginViewModel> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var context = await _interaction.GetAuthorizationContextAsync(request.LoginRequestDto.ReturnUrl);
-            LoginViewModel loginViewModel;
+            var loginViewModel = new LoginViewModel();
 
             switch (request.Context)
             {
                 case LoginContext.Initiate:
-                    loginViewModel = new LoginViewModel
-                    {
-                        ReturnUrl = request.LoginRequestDto.ReturnUrl,
-                        Email = context?.LoginHint
-                    };
+                    loginViewModel.ReturnUrl = request.LoginRequestDto.ReturnUrl;
+                    loginViewModel.Email = context?.LoginHint;
+                    break;
 
-                    break;
                 case LoginContext.Authorize:
-                    loginViewModel = new LoginViewModel();
                     break;
+
                 default:
                     if (context != null)
                     {

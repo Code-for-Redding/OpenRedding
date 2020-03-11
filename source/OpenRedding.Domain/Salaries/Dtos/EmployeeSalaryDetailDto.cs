@@ -1,19 +1,19 @@
 namespace OpenRedding.Domain.Salaries.Dtos
 {
-	/// <summary>
-	/// Represents an employee returned from the application layer.
-	/// </summary>
-	public class EmployeeSalaryDetailDto
-	{
-		/// <summary>
-		/// Gets or sets the employee ID from the database.
-		/// </summary>
-		public int Id { get; set; }
+    /// <summary>
+    /// Represents an employee returned from the application layer.
+    /// </summary>
+    public class EmployeeSalaryDetailDto
+    {
+        /// <summary>
+        /// Gets or sets the employee ID from the database.
+        /// </summary>
+        public int Id { get; set; }
 
-		/// <summary>
-		/// Gets or sets the employee name, both first and last.
-		/// </summary>
-		public string? Name { get; set; }
+        /// <summary>
+        /// Gets or sets the employee name, both first and last.
+        /// </summary>
+        public string? Name { get; set; }
 
         /// <summary>
         /// Gets or sets the employee job title.

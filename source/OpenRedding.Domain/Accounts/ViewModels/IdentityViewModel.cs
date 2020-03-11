@@ -1,9 +1,9 @@
 ﻿namespace OpenRedding.Domain.Accounts.ViewModels
 {
-	using System.Collections.Generic;
-	using OpenRedding.Domain.Common.Dto;
+    using System.Collections.Generic;
+    using OpenRedding.Domain.Common.Dto;
 
-	public class IdentityViewModel
+    public class IdentityViewModel
     {
         public IdentityViewModel()
         {
