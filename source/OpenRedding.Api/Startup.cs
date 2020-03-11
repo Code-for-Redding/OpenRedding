@@ -47,7 +47,7 @@ namespace OpenRedding.Api
 
             // Project dependencies
             services.AddOpenReddingCore();
-            services.AddOpenReddingPersistenceInfrastructure(connectionString);
+            services.AddOpenReddingInfrastructure(connectionString);
 
             // Override built in model state validation
             services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);

@@ -29,13 +29,14 @@
             var executingAssembly = Assembly.GetExecutingAssembly();
 
             // Add FluentValidation and MediatR for pipeline requests and validation
-            services.AddOpenReddingIdentityInfrastructure(connectionString);
+            services.AddOpenReddingInfrastructure(connectionString, true);
             services.AddMediatR(executingAssembly);
             services.AddValidatorsFromAssembly(executingAssembly);
 
-            // Add MVC and framework specific depdendencies
+            // ASP.NET Core dependencies
+            services.AddRazorPages();
             services
-                .AddMvc()
+                .AddControllersWithViews()
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
 
             // Override built in model state validation
@@ -53,17 +54,16 @@
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            // uncomment if you want to add MVC
-            // app.UseStaticFiles();
-            // app.UseRouting();
-            app.UseIdentityServer();
+            // Enable ASP.NET Core specific middleware
+            app.UseStaticFiles();
+            app.UseRouting();
 
-            // uncomment, if you want to add MVC
+            // Auth middleware
+            app.UseAuthentication();
+            app.UseIdentityServer();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapDefaultControllerRoute();
-            });
+
+            app.UseEndpoints(endpoints => endpoints.MapRazorPages());
         }
     }
 }
