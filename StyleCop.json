@@ -12,7 +12,7 @@
       "allowCommonHungarianPrefixes": false
     },
     "layoutRules": {
-      "newlineAtEndOfFile": "allow"
+      "newlineAtEndOfFile": "require"
     }
   }
 }

@@ -7,6 +7,7 @@
         public const int RequestElapsedMillisecondTimeWarningLimit = 500;
         public const int MaxPageSizeResult = 25;
         public static readonly string ApiPath = $"/{Version}/api";
+
         public static readonly string[] Urls =
         {
             "https://transcal.s3.amazonaws.com/public/export/redding-2018.csv",

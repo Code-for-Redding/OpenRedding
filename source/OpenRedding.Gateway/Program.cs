@@ -1,10 +1,10 @@
 namespace OpenRedding.Gateway
 {
-	using Microsoft.AspNetCore.Hosting;
-	using Microsoft.Extensions.Configuration;
-	using Microsoft.Extensions.Hosting;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Hosting;
 
-	public class Program
+    public class Program
     {
         public static void Main(string[] args)
         {

@@ -23,9 +23,9 @@
             var connectionString = configuration[ConnectionStringName];
 
             if (string.IsNullOrWhiteSpace(connectionString))
-			{
-				throw new ArgumentException($"Connection string {ConnectionStringName} is null or empty", connectionString?.GetType().Name);
-			}
+            {
+                throw new ArgumentException($"Connection string {ConnectionStringName} is null or empty", connectionString?.GetType().Name);
+            }
 
             var optionsBuilder = new DbContextOptionsBuilder<ConfigurationDbContext>();
             var storeOptions = new ConfigurationStoreOptions();
