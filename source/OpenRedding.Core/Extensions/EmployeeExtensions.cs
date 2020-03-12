@@ -23,8 +23,8 @@ namespace OpenRedding.Core.Extensions
                 employee.EmployeeId,
                 employee.EmployeeName,
                 employee.JobTitle,
-                nameof(employee.EmployeeAgency),
-                nameof(employee.EmployeeStatus),
+                employee.EmployeeAgency.ToString(),
+                employee.EmployeeStatus.ToString(),
                 employee.BasePay,
                 employee.TotalPayWithBenefits);
         }
