@@ -1,22 +1,32 @@
-﻿/* fallback */
-@font-face {
-    font-family: 'Material Icons';
-    font-style: normal;
-    font-weight: 400;
-    src: url(https://fonts.gstatic.com/s/materialicons/v50/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+﻿html, body {
+    height: 100%;
 }
 
-.material-icons {
-    font-family: 'Material Icons';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 24px;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
-    display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
-    -webkit-font-smoothing: antialiased;
+#main-background {
+    background-image: url('/img/sundial_bridge.jpg');
+}
+
+/*-----------------------*/
+/*   FA Personal links   */
+/*-----------------------*/
+.fab:hover, .far:hover, .fas:hover, img:hover {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+.fab, .far, .fas, img {
+    -webkit-transition-duration: 200ms;
+    -moz-transition-duration: 200ms;
+    -ms-transition-duration: 200ms;
+    -o-transition-duration: 200ms;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
+    cursor: pointer;
+}
+
+.courier {
+    font-family: "Courier New", sans-serif;
 }
