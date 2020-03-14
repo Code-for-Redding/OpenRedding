@@ -29,4 +29,8 @@
   <ItemGroup>
     <ProjectReference Include="..\OpenRedding.Infrastructure\OpenRedding.Infrastructure.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\bootstrap\js\" />
+  </ItemGroup>
 </Project>

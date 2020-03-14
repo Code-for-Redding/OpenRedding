@@ -8,24 +8,31 @@
     <div class="col-6 mx-auto">
         <div class="card">
             <div class="card-body">
-                <h3>Login to Open Redding</h3>
+                <h4 class="text-center">Welcome to Open Redding!</h4>
+                <p class="text-center">Before continuing, please sign in below</p>
                 <form>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                        <label for="exampleInputEmail1">Email Address</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Password</label>
                         <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                     </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <div class="d-flex justify-content-center py-2">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                    <div class="d-flex py-2 justify-content-center">
+                        <a class="px-4" href="#">Register</a>
+                        <a href="#">Forgot Password?</a>
+                    </div>
                 </form>
             </div>
             <div class="card-footer">
-                <div class="mr-auto">
-                    <i onclick="window.open('https://github.com/joey32793/OpenRedding')" style="padding-right: 10px;" class="fab fa-github fa-2x"></i>
-                    <i onclick="window.open('https://registry.jsonresume.org/joey32793')" style="padding-right: 10px;" class="fas fa-code fa-2x"></i>
+                <div class="d-flex">
+                    <a href="#" class="mr-auto px-2">Why do I need to sign in?</a>
+                    <i onclick="window.open('https://github.com/joey32793/OpenRedding')" class="fab fa-github fa-2x px-2"></i>
+                    <i onclick="window.open('https://registry.jsonresume.org/joey32793')" class="fas fa-code fa-2x px-2"></i>
                 </div>
             </div>
         </div>
