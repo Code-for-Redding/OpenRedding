@@ -1,0 +1,59 @@
+﻿@page
+@model OpenRedding.Identity.Pages.AboutModel
+@{
+    ViewData["Title"] = "About";
+}
+
+<div class="row align-self-center w-100">
+    <div class="col-6 mx-auto">
+        <div class="card">
+            <div class="card-header text-center">
+                <h4 class="text-center">About Open Redding</h4>
+            </div>
+            <div class="card-body">
+                <div class="row justify-content-center">
+                    <h4>What is Open Redding?</h4>
+                    <p class="text-center">
+                        Open Redding is a data-driven web portal aimed at creating transparency between the city of Redding and its denizens.
+                        With the plethora of data spread across reports, portals, and other mediums, Open Redding started as
+                        an initiative to consolidate the many sources of interesting and important data pertaining to the city into
+                        a single hub.
+                    </p>
+                </div>
+                <hr class="py-0" />
+                <div class="row justify-content-center">
+                    <h4>If this data is public, why do I need to sign in?</h4>
+                    <p class="text-center">
+                        While data may be available for public consumption, it's important to use such data with responsibility and
+                        prevent crafting false narratives. Here at Open Redding, we take security and privacy <strong>seriously.</strong>
+                        Your personal information will not be shared with any third party, with federated sign provided by
+                        <a href="https://identityserver.io" target="_blank">Identity Server</a> and strict adhesion to Oauth 2.0 standards.
+                    </p>
+                </div>
+                <hr class="py-0" />
+                <div class="row justify-content-center">
+                    <h4>Who am I?</h4>
+                    <p class="text-center">
+                        My name is Joey Mckenzie. I'm a software engineer by profession, and technology enthusiast in my spare time. I was
+                        born and raised in Redding, having attended Foothill High School and Shasta College, where I then graduated from San Diego State
+                        University in 2016 with a degree in Astrophysics. I've worked in a variety of software development roles since
+                        graduating, from the Java-based insurance enterprise, IBM iSeries development, and my personal passion in the Microsoft-based .NET technology stack.
+                        I've recently relocated back my hometown with a personal interest in providing free open source
+                        software (FOSS) for the community and the city. I'm always excited to meet other like-minded developers in the area,
+                        so feel free to shoot me an <a href="#" onclick="window.open('mailto:joey.mckenzie27@gmail.com?subject=Hey Joey!&body=Let\'s grab a beer and talk all things software!')">email</a>.
+                    </p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex">
+                    <div class="mr-auto px-2">
+                        <a asp-page="/Account/Login" class="px-2">Login</a>
+                        <a asp-page="/Account/Regster">Register</a>
+                    </div>
+                    <i onclick="window.open('https://github.com/joey32793/OpenRedding')" class="fab fa-github fa-2x px-2"></i>
+                    <i onclick="window.open('https://registry.jsonresume.org/joey32793')" class="fas fa-code fa-2x px-2"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

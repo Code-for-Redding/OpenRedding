@@ -12,7 +12,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Open Redding</title>
+    <title>@ViewData["Title"]</title>
     <link rel="icon" type="image/x-icon" href="~/img/idserver_icon.png" />
     <link rel="shortcut icon" type="image/x-icon" href="~/img/idserver_icon.png" />
 
@@ -27,10 +27,13 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </head>
 <body id="main-background" class="container">
-    <div class="d-flex justify-content-center">
-        <img onclick="window.open('https://identityserver.io/')" style="transform: scale(0.4)" class="img-responsive" src="~/img/idserver_trademark.png" alt="Identity Server 4" />
+    <!--
+    <div class="row d-flex justify-content-center">
+        <p>Powered by</p>
     </div>
-    <div class="row d-flex w-100">
+    -->
+    <div class="row d-flex justify-content-center py-2">
+        <img onclick="window.open('https://identityserver.io/')" class="img-fluid" style="transform: scale(0.5); margin-bottom: -50px;" src="~/img/idserver_trademark.png" alt="Identity Server 4" />
         @RenderBody()
     </div>
 

@@ -6,7 +6,7 @@
 
 #pragma warning disable SA1649 // File name should match first type name
 
-    public class FaqModel : PageModel
+    public class AboutModel : PageModel
 #pragma warning restore SA1649 // File name should match first type name
     {
         public async Task OnGetAsync()

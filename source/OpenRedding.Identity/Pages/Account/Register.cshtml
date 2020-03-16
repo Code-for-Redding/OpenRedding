@@ -1,0 +1,70 @@
+﻿@page
+@model OpenRedding.Identity.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+    var passwordTooltip = "Passwords must be at least 10 characters in length and contain at least one number and special character";
+}
+
+<div class="row align-self-center w-100 mb-2">
+    <div class="col-6 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="text-center">Register an account for Open Redding</h4>
+                <p class="text-center">Please fill out each of the <strong>required</strong> fields below</p>
+                <form>
+                    <div class="form-group">
+                        <label for="register-email">Email Address</label>
+                        <input type="email" class="form-control" id="register-email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email-confirmed">Confirm Email Address</label>
+                        <input type="email" class="form-control" id="register-email-confirmed" placeholder="Confirmed Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" class="form-control" id="register-password" placeholder="Password" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@passwordTooltip">
+                        <br class="py-0" />
+                        Passwords must contain <strong>all</strong> of the following:
+                        <ul>
+                            <li>
+                                10 characters in length
+                            </li>
+                            <li>
+                                At least <strong>one</strong> alphabetic character
+                            </li>
+                            <li>
+                                At least <strong>one</strong> special character
+                            </li>
+                            <li>
+                                At least <strong>one</strong> numeric character
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password-confirmed">Confirmed Password</label>
+                        <input type="password" class="form-control" id="register-password-confirmed" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-reason-for-use">What brings you to Open Redding?</label>
+                        <input class="form-control" id="register-reason-for-use" placeholder="Reason">
+                    </div>
+                    <div class="d-flex justify-content-center py-2">
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </div>
+                    <div class="d-flex py-2 justify-content-center">
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex">
+                    <div class="mr-auto">
+                        <a asp-page="/About" class="px-2">About</a>
+                        <a asp-page="/Account/Login">Login</a>
+                    </div>
+                    <i onclick="window.open('https://github.com/joey32793/OpenRedding')" class="fab fa-github fa-2x px-2"></i>
+                    <i onclick="window.open('https://registry.jsonresume.org/joey32793')" class="fas fa-code fa-2x px-2"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

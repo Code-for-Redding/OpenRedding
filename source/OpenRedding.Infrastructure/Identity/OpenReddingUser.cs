@@ -4,5 +4,6 @@
 
     public class OpenReddingUser : IdentityUser
     {
+        public string? ReasonForUse { get; set; }
     }
 }
