@@ -8,7 +8,9 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Hosting;
+    using OpenRedding.Identity.Middleware;
     using OpenRedding.Infrastructure.Extensions;
 
     public class Startup
@@ -32,6 +34,9 @@
             services.AddOpenReddingInfrastructure(connectionString, true);
             services.AddMediatR(executingAssembly);
             services.AddValidatorsFromAssembly(executingAssembly);
+
+            // Add MediatR middleware
+            services.TryAddTransient(typeof(IPipelineBehavior<,>), typeof(IdentityRequestValidationBehavior<,>));
 
             // ASP.NET Core dependencies
             services.AddRazorPages();
