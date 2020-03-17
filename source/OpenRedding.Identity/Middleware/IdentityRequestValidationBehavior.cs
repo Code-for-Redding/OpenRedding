@@ -46,7 +46,6 @@
                     validationErrors.Errors.Add(validationFailure);
                 }
 
-                // throw new ValidationException(failures);
                 request.ValidationErrors = validationErrors;
             }
 

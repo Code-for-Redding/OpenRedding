@@ -13,8 +13,9 @@ namespace OpenRedding.Core.Extensions
         public static void AddOpenReddingCore(this IServiceCollection services)
         {
             // Register MediatR handlers and request validators
+            var executingAssembly = Assembly.GetExecutingAssembly();
             services.AddMediatR(typeof(IOpenReddingDbContext).Assembly);
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddValidatorsFromAssembly(executingAssembly);
 
             // Add the MediatR validation pipeline
             services.TryAddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
