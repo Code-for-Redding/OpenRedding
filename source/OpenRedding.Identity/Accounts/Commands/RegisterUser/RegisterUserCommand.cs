@@ -1,8 +1,8 @@
 ﻿namespace OpenRedding.Identity.Accounts.Commands.RegisterUser
 {
     using MediatR;
-    using OpenRedding.Domain.Accounts.Dtos;
     using OpenRedding.Domain.Accounts.ViewModels;
+    using OpenRedding.Identity.Models;
 
     public class RegisterUserCommand : IRequest<RegisteredUserViewModel>
     {

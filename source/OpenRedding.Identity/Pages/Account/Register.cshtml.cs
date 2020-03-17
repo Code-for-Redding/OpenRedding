@@ -5,8 +5,8 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
-    using OpenRedding.Domain.Accounts.Dtos;
     using OpenRedding.Identity.Accounts.Commands.RegisterUser;
+    using OpenRedding.Identity.Models;
 
 #pragma warning disable SA1649 // File name should match first type name
 
@@ -41,15 +41,16 @@
         /// </summary>
         /// <param name="returnUrl">Nullable return URL sent from the client.</param>
         /// <returns>User registertration task result.</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
-#pragma warning disable RCS1163 // Unused parameter.
 #pragma warning disable CA1054 // Uri parameters should not be strings
-
-        public async Task OnPostAsync(string? returnUrl)
+        public async Task<IActionResult> OnPostAsync(string? returnUrl)
 #pragma warning restore CA1054 // Uri parameters should not be strings
-#pragma warning restore RCS1163 // Unused parameter.
-#pragma warning restore IDE0060 // Remove unused parameter
         {
+            if (!ModelState.IsValid)
+            {
+                // Re-render the page with the appropiate error messages
+                return Page();
+            }
+
             _logger.LogInformation("Validating user registration request");
             var command = new RegisterUserCommand(RegistrationModel);
 
@@ -58,6 +59,8 @@
             var result = await context.ValidateAsync(command);
 
             var response = await _mediator.Send(command);
+
+            return LocalRedirect(returnUrl);
         }
     }
 }

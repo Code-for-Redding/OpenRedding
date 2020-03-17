@@ -2,7 +2,6 @@
 @model OpenRedding.Identity.Pages.Account.RegisterModel
 @{
     ViewData["Title"] = "Register";
-    var passwordTooltip = "Passwords must be at least 10 characters in length and contain at least one number and special character";
 }
 
 <div class="row align-self-center w-100 mb-2">
@@ -13,18 +12,19 @@
                 <p class="text-center">Please fill out each of the <strong>required</strong> fields below</p>
                 <form>
                     <div class="form-group">
-                        <label for="register-email" asp-for="RegistrationModel.EmailAddress">Email Address</label>
-                        <input type="email" asp-for="RegistrationModel.EmailAddress" class="form-control" id="register-email" placeholder="Email">
-                        <span asp-validation-for="RegistrationModel.EmailAddress"></span>
+                        <label for="register-email" asp-for="RegistrationModel.Email"></label>
+                        <input type="email" asp-for="RegistrationModel.Email" class="form-control" id="register-email" placeholder="Email">
+                        <span asp-validation-for="RegistrationModel.Email"></span>
                     </div>
                     <div class="form-group">
-                        <label for="register-email-confirmed" asp-for="RegistrationModel.ConfirmedEmailAddress">Confirm Email Address</label>
-                        <input type="email" asp-for="RegistrationModel.ConfirmedEmailAddress" class="form-control" id="register-email-confirmed" placeholder="Confirmed Email">
-                        <span asp-validation-for="RegistrationModel.ConfirmedEmailAddress"></span>
+                        <label for="register-email-confirmed" asp-for="RegistrationModel.ConfirmEmail"></label>
+                        <input type="email" asp-for="RegistrationModel.ConfirmEmail" class="form-control" id="register-email-confirmed" placeholder="Confirmed Email">
+                        <span asp-validation-for="RegistrationModel.ConfirmEmail"></span>
                     </div>
                     <div class="form-group">
-                        <label for="register-password">Password</label>
-                        <input type="password" class="form-control" id="register-password" placeholder="Password" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@passwordTooltip">
+                        <label for="register-password" asp-for="RegistrationModel.Password"></label>
+                        <input type="password" asp-for="RegistrationModel.Password" class="form-control" id="register-password" placeholder="Password">
+                        <span asp-validation-for="RegistrationModel.Password"/>
                         <br class="py-0" />
                         Passwords must contain <strong>all</strong> of the following:
                         <ul>
@@ -46,12 +46,14 @@
                         </ul>
                     </div>
                     <div class="form-group">
-                        <label for="register-password-confirmed">Confirmed Password</label>
-                        <input type="password" class="form-control" id="register-password-confirmed" placeholder="Password">
+                        <label for="register-password-confirmed" asp-for="RegistrationModel.ConfirmPassword"></label>
+                        <input type="password" asp-for="RegistrationModel.ConfirmPassword" class="form-control" id="register-password-confirmed" placeholder="Password">
+                        <span asp-validation-for="RegistrationModel.ConfirmPassword"></span>
                     </div>
                     <div class="form-group">
-                        <label for="register-reason-for-use">What brings you to Open Redding?</label>
-                        <input class="form-control" id="register-reason-for-use" placeholder="Reason">
+                        <label for="register-reason-for-use" asp-for="RegistrationModel.ReasonForUse"></label>
+                        <input class="form-control" asp-for="RegistrationModel.ReasonForUse" id="register-reason-for-use" placeholder="Reason">
+                        <span asp-validation-for="RegistrationModel.ReasonForUse"></span>
                     </div>
                     <div class="d-flex justify-content-center py-2">
                         <button type="submit" class="btn btn-primary">Register</button>
