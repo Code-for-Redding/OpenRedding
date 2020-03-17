@@ -29,6 +29,7 @@
         public string? ReturnUrl { get; set; }
 
 #pragma warning disable CA1054 // Uri parameters should not be strings
+
         public void OnGet(string? returnUrl)
 #pragma warning restore CA1054 // Uri parameters should not be strings
         {
@@ -43,6 +44,7 @@
 #pragma warning disable IDE0060 // Remove unused parameter
 #pragma warning disable RCS1163 // Unused parameter.
 #pragma warning disable CA1054 // Uri parameters should not be strings
+
         public async Task OnPostAsync(string? returnUrl)
 #pragma warning restore CA1054 // Uri parameters should not be strings
 #pragma warning restore RCS1163 // Unused parameter.
