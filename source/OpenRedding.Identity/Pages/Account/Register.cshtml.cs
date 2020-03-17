@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
     using MediatR;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
@@ -10,6 +11,7 @@
 
 #pragma warning disable SA1649 // File name should match first type name
 
+    [AllowAnonymous]
     public class RegisterModel : PageModel
 #pragma warning restore SA1649 // File name should match first type name
     {
@@ -47,17 +49,14 @@
         {
             if (!ModelState.IsValid)
             {
+                _logger.LogWarning("Invalid user registration attempted");
+
                 // Re-render the page with the appropiate error messages
                 return Page();
             }
 
             _logger.LogInformation("Validating user registration request");
             var command = new RegisterUserCommand(RegistrationModel);
-
-            var context = new RegisterUserCommandValidator();
-
-            var result = await context.ValidateAsync(command);
-
             var response = await _mediator.Send(command);
 
             return LocalRedirect(returnUrl);

@@ -1,6 +1,6 @@
 ﻿namespace OpenRedding.Shared
 {
-    public class OpenReddingConstants
+    public static class OpenReddingConstants
     {
         public const string Author = "Joey Mckenzie";
         public const string Version = "v1";
