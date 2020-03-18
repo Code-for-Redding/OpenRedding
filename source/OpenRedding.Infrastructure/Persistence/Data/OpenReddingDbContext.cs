@@ -16,7 +16,7 @@
     {
         private static readonly ILoggerFactory ConsoleLogger = LoggerFactory.Create(builder => builder.AddConsole());
 
-        public OpenReddingDbContext(DbContextOptions options)
+        public OpenReddingDbContext(DbContextOptions<OpenReddingDbContext> options)
             : base(options)
         {
         }

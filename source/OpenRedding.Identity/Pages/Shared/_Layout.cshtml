@@ -1,42 +1,39 @@
-﻿@using IdentityServer4.Extensions
-@{
-    string? name = null;
-    if (!true.Equals(ViewData["signed-out"]))
-    {
-        name = Context.User?.GetDisplayName();
-    }
-}
+﻿@using Microsoft.AspNetCore.Hosting
+@using Microsoft.AspNetCore.Mvc.ViewEngines
+@inject IWebHostEnvironment Environment
+@inject ICompositeViewEngine Engine
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
     <link rel="icon" type="image/x-icon" href="~/img/idserver_icon.png" />
     <link rel="shortcut icon" type="image/x-icon" href="~/img/idserver_icon.png" />
 
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/347e8bc9c7.js" crossorigin="anonymous"></script>
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap-materia.min.css">
-    <link rel="stylesheet" href="~/css/site.css">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-materia.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body id="main-background" class="container">
+<body id="main-background">
+    <div class="container">
+        <main role="main" class="row d-flex justify-content-center py-2">
+            <img onclick="window.open('https://identityserver.io/')" class="img-fluid" style="transform: scale(0.5); margin-bottom: -50px; margin-top: -20px;" src="~/img/idserver_trademark.png" alt="Identity Server 4" />
+            @RenderBody()
+        </main>
+    </div>
     <!--
-    <div class="row d-flex justify-content-center">
-        <p>Powered by</p>
-    </div>
+    <footer class="footer border-top text-muted">
+        <div class="container">
+            &copy; 2020 - OpenRedding.Identity - <a asp-area="" asp-page="Privacy">Privacy</a>
+        </div>
+    </footer>
     -->
-    <div class="row d-flex justify-content-center py-2">
-        <img onclick="window.open('https://identityserver.io/')" class="img-fluid" style="transform: scale(0.5); margin-bottom: -50px; margin-top: -20px;" src="~/img/idserver_trademark.png" alt="Identity Server 4" />
-        @RenderBody()
-    </div>
-
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

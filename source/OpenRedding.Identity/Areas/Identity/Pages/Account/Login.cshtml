@@ -1,0 +1,40 @@
+﻿@page
+@model Login
+@{
+    ViewData["Title"] = "Open Redding";
+}
+
+<div class="row align-self-center w-100">
+    <div class="col-6 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="text-center">Welcome to Open Redding!</h4>
+                <p class="text-center">Before continuing, please sign in below</p>
+                <form>
+                    <div class="form-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" class="form-control" id="login-email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" class="form-control" id="login-password" placeholder="Password">
+                    </div>
+                    <div class="d-flex justify-content-center py-2">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                    <div class="d-flex py-2 justify-content-center">
+                        <a class="px-4" asp-page="/Account/Register">Register an account</a>
+                        <a asp-page="/Account/ForgotPassword">Forgot Password?</a>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex">
+                    <a asp-page="/About" class="mr-auto px-2">About</a>
+                    <i onclick="window.open('https://github.com/joey32793/OpenRedding')" class="fab fa-github fa-2x px-2"></i>
+                    <i onclick="window.open('https://registry.jsonresume.org/joey32793')" class="fas fa-code fa-2x px-2"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

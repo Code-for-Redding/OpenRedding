@@ -40,8 +40,7 @@
 
             // ASP.NET Core dependencies
             services.AddRazorPages();
-            services
-                .AddControllersWithViews()
+            services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Latest);
 
             // Override built in model state validation
@@ -68,7 +67,11 @@
             app.UseIdentityServer();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => endpoints.MapRazorPages());
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapRazorPages();
+            });
         }
     }
 }
