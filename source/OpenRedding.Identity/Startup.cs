@@ -31,7 +31,7 @@
             var executingAssembly = Assembly.GetExecutingAssembly();
 
             // Add FluentValidation and MediatR for pipeline requests and validation
-            services.AddOpenReddingInfrastructure(connectionString, true);
+            services.AddOpenReddingInfrastructure(Configuration, true);
             services.AddMediatR(executingAssembly);
             services.AddValidatorsFromAssembly(executingAssembly);
 

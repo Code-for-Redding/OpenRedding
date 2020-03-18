@@ -4,18 +4,25 @@
     using System.Reflection;
     using Core.Data;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Infrastructure;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using OpenRedding.Infrastructure.Identity;
     using OpenRedding.Infrastructure.Persistence.Data;
     using OpenRedding.Infrastructure.Persistence.Repositories;
+    using OpenRedding.Infrastructure.Services;
+    using OpenRedding.Shared.Validation;
 
     public static class StartupExtensions
     {
-        public static void AddOpenReddingInfrastructure(this IServiceCollection services, string connectionString, bool addIdentityServer = false)
+        public static void AddOpenReddingInfrastructure(this IServiceCollection services, IConfiguration configuration, bool addIdentityServer = false)
         {
+            Validate.NotNull(configuration, nameof(configuration));
+
+            var connectionString = configuration["ConnectionString"];
             var migrationsAssembly = Assembly.GetExecutingAssembly().GetName().Name;
             void DbContextOptions(SqlServerDbContextOptionsBuilder builder)
             {
@@ -39,6 +46,10 @@
                 services.AddIdentity<OpenReddingUser, IdentityRole>()
                     .AddEntityFrameworkStores<OpenReddingDbContext>()
                     .AddDefaultTokenProviders();
+
+                // Add SendGrid
+                var key = configuration["SendGridKey"];
+                services.TryAddTransient<IEmailSender>(_ => new SendGridEmailSender(key));
 
                 var builder = services.AddIdentityServer(options => options.Authentication.CookieLifetime = TimeSpan.FromHours(2))
                     .AddConfigurationStore(options => options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, DbContextOptions))
