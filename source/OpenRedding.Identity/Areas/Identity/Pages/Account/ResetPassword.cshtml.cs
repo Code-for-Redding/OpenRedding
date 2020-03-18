@@ -18,12 +18,14 @@
         public ResetPassword(UserManager<OpenReddingUser> userManager)
         {
             _userManager = userManager;
+            Input = new InputModel();
         }
 
         [BindProperty]
-        public InputModel? Input { get; set; }
+        public InputModel Input { get; set; }
 
 #pragma warning disable CA1034 // Nested types should not be visible
+
         public class InputModel
 #pragma warning restore CA1034 // Nested types should not be visible
         {
@@ -45,6 +47,7 @@
         }
 
 #pragma warning disable SA1201 // Elements should appear in the correct order
+
         public IActionResult OnGet(string? code = null)
 #pragma warning restore SA1201 // Elements should appear in the correct order
         {
@@ -69,14 +72,14 @@
                 return Page();
             }
 
-            var user = await _userManager.FindByEmailAsync(Input.Email);
+            var user = await _userManager.FindByEmailAsync(Input?.Email);
             if (user == null)
             {
                 // Don't reveal that the user does not exist
                 return RedirectToPage("./ResetPasswordConfirmation");
             }
 
-            var result = await _userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
+            var result = await _userManager.ResetPasswordAsync(user, Input?.Code, Input?.Password);
             if (result.Succeeded)
             {
                 return RedirectToPage("./ResetPasswordConfirmation");

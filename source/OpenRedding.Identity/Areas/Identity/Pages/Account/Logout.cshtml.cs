@@ -25,6 +25,7 @@
         }
 
 #pragma warning disable CA1054 // Uri parameters should not be strings
+
         public async Task<IActionResult> OnPost(string? returnUrl = null)
 #pragma warning restore CA1054 // Uri parameters should not be strings
         {

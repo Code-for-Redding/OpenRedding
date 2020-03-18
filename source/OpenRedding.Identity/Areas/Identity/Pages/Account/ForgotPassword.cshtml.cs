@@ -22,16 +22,17 @@
         {
             _userManager = userManager;
             _emailSender = emailSender;
+            Input = new InputModel();
         }
 
         [BindProperty]
-        public InputModel? Input { get; set; }
+        public InputModel Input { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(Input?.Email);
+                var user = await _userManager.FindByEmailAsync(Input.Email);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
@@ -60,6 +61,7 @@
         }
 
 #pragma warning disable CA1034 // Nested types should not be visible
+
         public class InputModel
 #pragma warning restore CA1034 // Nested types should not be visible
         {

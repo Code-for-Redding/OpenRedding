@@ -23,7 +23,7 @@
         }
 
         [BindProperty]
-        public RegisterUserAccountDto? RegistrationModel { get; set; }
+        public RegisterUserAccountDto RegistrationModel { get; set; }
 
         public string? ReturnUrl { get; set; }
 
@@ -41,6 +41,7 @@
         /// <param name="returnUrl">Nullable return URL sent from the client.</param>
         /// <returns>User registertration task result.</returns>
 #pragma warning disable CA1054 // Uri parameters should not be strings
+
         public async Task<IActionResult> OnPostAsync(string returnUrl)
 #pragma warning restore CA1054 // Uri parameters should not be strings
         {

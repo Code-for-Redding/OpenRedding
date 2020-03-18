@@ -36,6 +36,7 @@
         public string? ErrorMessage { get; set; }
 
 #pragma warning disable CA1054 // Uri parameters should not be strings
+
         public async Task OnGetAsync(string? returnUrl = null)
 #pragma warning restore CA1054 // Uri parameters should not be strings
         {
@@ -56,6 +57,7 @@
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 #pragma warning disable CA1054 // Uri parameters should not be strings
+
         public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
 #pragma warning restore CA1054 // Uri parameters should not be strings
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
