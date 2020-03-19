@@ -11,13 +11,16 @@
                 <h4 class="text-center">Welcome to Open Redding!</h4>
                 <p class="text-center">Before continuing, please sign in below</p>
                 <form>
+                    <div asp-validation-summary="All"></div>
                     <div class="form-group">
-                        <label for="login-email">Email Address</label>
-                        <input type="email" class="form-control" id="login-email" placeholder="Email">
+                        <label asp-for="LoginModel.Email"></label>
+                        <input asp-for="LoginModel.Email" type="email" class="form-control" id="login-email" placeholder="Email">
+                        <span asp-validation-for="LoginModel.Email"></span>
                     </div>
                     <div class="form-group">
-                        <label for="login-password">Password</label>
-                        <input type="password" class="form-control" id="login-password" placeholder="Password">
+                        <label asp-for="LoginModel.Password">Password</label>
+                        <input asp-for="LoginModel.Password" type="password" class="form-control" id="login-password" placeholder="Password">
+                        <span asp-validation-for="LoginModel.Email"></span>
                     </div>
                     <div class="d-flex justify-content-center py-2">
                         <button type="submit" class="btn btn-primary">Login</button>

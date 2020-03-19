@@ -1,14 +1,13 @@
 ﻿namespace OpenRedding.Identity.Areas.Identity.Pages.Account
 {
-    using System.Collections.Generic;
-    using System.Linq;
+    using System.Diagnostics;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
+    using OpenRedding.Identity.ViewModels;
     using OpenRedding.Infrastructure.Identity;
 
     [AllowAnonymous]
@@ -20,24 +19,26 @@
 
         public Login(
             SignInManager<OpenReddingUser> signInManager,
-            ILogger<Login> logger,
-            UserManager<OpenReddingUser> userManager)
+            UserManager<OpenReddingUser> userManager,
+            ILogger<Login> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            LoginModel = new LoginViewModel();
         }
-
-        public IList<AuthenticationScheme>? ExternalLogins { get; set; }
 
         public string? ReturnUrl { get; set; }
 
         [TempData]
         public string? ErrorMessage { get; set; }
 
+        [BindProperty]
+        public LoginViewModel LoginModel { get; set; }
+
 #pragma warning disable CA1054 // Uri parameters should not be strings
 
-        public async Task OnGetAsync(string? returnUrl = null)
+        public void OnGet(string? returnUrl = null)
 #pragma warning restore CA1054 // Uri parameters should not be strings
         {
             if (!string.IsNullOrEmpty(ErrorMessage))
@@ -45,55 +46,41 @@
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 
-            returnUrl ??= Url.Content("~/");
-
-            // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
-            ReturnUrl = returnUrl;
+            ReturnUrl = returnUrl ?? Url.Content("~/");
         }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 #pragma warning disable CA1054 // Uri parameters should not be strings
 
         public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
 #pragma warning restore CA1054 // Uri parameters should not be strings
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            returnUrl ??= Url.Content("~/");
-
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                /*
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
-                }
-                */
+                return Page();
             }
 
-            // If we got this far, something failed, redisplay form
-            return Page();
+            returnUrl ??= Url.Content("~/");
+
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+            var result = await _signInManager.PasswordSignInAsync(LoginModel.Email, LoginModel.Password, LoginModel.RememberMe, lockoutOnFailure: false);
+
+            if (result.Succeeded)
+            {
+                _logger.LogInformation($"User on request {Activity.Current?.Id ?? HttpContext.TraceIdentifier} has successfully signed in.");
+                return LocalRedirect(returnUrl);
+            }
+
+            if (result.IsLockedOut)
+            {
+                _logger.LogWarning($"User on request {Activity.Current?.Id ?? HttpContext.TraceIdentifier} has attempted to sign in whiled account has been locked.");
+                return RedirectToPage("./Lockout");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, $"The login attempt failed, please verify your email address and password before trying again.");
+                return Page();
+            }
         }
     }
 }
