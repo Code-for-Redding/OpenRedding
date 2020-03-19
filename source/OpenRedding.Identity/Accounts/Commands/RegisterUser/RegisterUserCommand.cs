@@ -2,13 +2,13 @@
 {
     using MediatR;
     using OpenRedding.Domain.Accounts.ViewModels;
-    using OpenRedding.Identity.Models;
+    using OpenRedding.Identity.ViewModels;
 
     public class RegisterUserCommand : IRequest<RegisteredUserViewModel>
     {
-        public RegisterUserCommand(RegisterUserAccountDto request) =>
+        public RegisterUserCommand(RegisterUserAccountViewModel request) =>
             Request = request;
 
-        public RegisterUserAccountDto Request { get; set; }
+        public RegisterUserAccountViewModel Request { get; set; }
     }
 }

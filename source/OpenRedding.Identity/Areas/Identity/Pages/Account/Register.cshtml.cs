@@ -7,7 +7,7 @@
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
     using OpenRedding.Identity.Accounts.Commands.RegisterUser;
-    using OpenRedding.Identity.Models;
+    using OpenRedding.Identity.ViewModels;
 
     [AllowAnonymous]
     public class Register : PageModel
@@ -19,11 +19,11 @@
         {
             _logger = logger;
             _mediator = mediator;
-            RegistrationModel = new RegisterUserAccountDto();
+            RegistrationModel = new RegisterUserAccountViewModel();
         }
 
         [BindProperty]
-        public RegisterUserAccountDto RegistrationModel { get; set; }
+        public RegisterUserAccountViewModel RegistrationModel { get; set; }
 
         public string? ReturnUrl { get; set; }
 

@@ -1,6 +1,5 @@
 ﻿namespace OpenRedding.Identity.Areas.Identity.Pages.Account
 {
-    using System.ComponentModel.DataAnnotations;
     using System.Text;
     using System.Text.Encodings.Web;
     using System.Threading.Tasks;
@@ -10,6 +9,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.AspNetCore.WebUtilities;
+    using OpenRedding.Identity.ViewModels;
     using OpenRedding.Infrastructure.Identity;
 
     [AllowAnonymous]
@@ -22,52 +22,42 @@
         {
             _userManager = userManager;
             _emailSender = emailSender;
-            Input = new InputModel();
+            ForgotPasswordInput = new ForgotPasswordViewModel();
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public ForgotPasswordViewModel ForgotPasswordInput { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(Input.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToPage("./ForgotPasswordConfirmation");
-                }
+                return Page();
+            }
 
-                // For more information on how to enable account confirmation and password reset please
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = Url.Page(
-                    "/Account/ResetPassword",
-                    pageHandler: null,
-                    values: new { area = "Identity", code },
-                    protocol: Request.Scheme);
-
-                await _emailSender.SendEmailAsync(
-                    Input?.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
+            var user = await _userManager.FindByEmailAsync(ForgotPasswordInput.Email);
+            if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+            {
+                // Don't reveal that the user does not exist or is not confirmed
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }
 
-            return Page();
-        }
+            // For more information on how to enable account confirmation and password reset please
+            // visit https://go.microsoft.com/fwlink/?LinkID=532713
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var callbackUrl = Url.Page(
+                "/Account/ResetPassword",
+                pageHandler: null,
+                values: new { area = "Identity", code },
+                protocol: Request.Scheme);
 
-#pragma warning disable CA1034 // Nested types should not be visible
+            await _emailSender.SendEmailAsync(
+                ForgotPasswordInput?.Email,
+                "Reset Password",
+                $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-        public class InputModel
-#pragma warning restore CA1034 // Nested types should not be visible
-        {
-            [Required]
-            [EmailAddress]
-            public string? Email { get; set; }
+            return RedirectToPage("./ForgotPasswordConfirmation");
         }
     }
 }

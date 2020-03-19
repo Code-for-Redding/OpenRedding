@@ -1,8 +1,8 @@
-﻿namespace OpenRedding.Identity.Models
+﻿namespace OpenRedding.Identity.ViewModels
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class RegisterUserAccountDto
+    public class RegisterUserAccountViewModel
     {
         [Required]
         [EmailAddress]
