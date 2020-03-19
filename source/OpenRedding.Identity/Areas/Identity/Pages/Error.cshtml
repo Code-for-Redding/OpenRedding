@@ -1,19 +1,6 @@
 ﻿@page
-@model ErrorModel
 @{
     ViewData["Title"] = "Error";
-}
-
-<!--
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
--->
-
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
 }
 
 <div class="row align-self-center w-100">
@@ -26,9 +13,9 @@
             <div class="card-footer">
                 <div class="d-flex">
                     <div class="mr-auto">
-                        <a asp-page="/About" class="px-2">About</a>
-                        <a asp-page="/Account/Login" class="px-2">Login</a>
-                        <a asp-page="/Account/Register">Register</a>
+                        <a asp-area="Identity" asp-page="/About" class="px-2">About</a>
+                        <a asp-area="Identity" asp-page="/Account/Login" class="px-2">Login</a>
+                        <a asp-area="Identity" asp-page="/Account/Register">Register</a>
                     </div>
                     <i onclick="window.open('https://github.com/joey32793/OpenRedding')" class="fab fa-github fa-2x px-2"></i>
                     <i onclick="window.open('https://registry.jsonresume.org/joey32793')" class="fas fa-code fa-2x px-2"></i>
