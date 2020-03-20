@@ -1,6 +1,6 @@
 ﻿namespace OpenRedding.Identity.ViewModels
 {
-	using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations;
 
     public class LoginViewModel
     {
@@ -14,5 +14,7 @@
 
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
+
+        public string? ReturnUrl { get; set; }
     }
 }

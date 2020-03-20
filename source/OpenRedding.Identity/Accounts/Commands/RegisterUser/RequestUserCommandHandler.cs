@@ -9,10 +9,10 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
-    using OpenRedding.Domain.Accounts.ViewModels;
+    using OpenRedding.Identity.ViewModels;
     using OpenRedding.Infrastructure.Identity;
 
-    public class RequestUserCommandHandler : IRequestHandler<RegisterUserCommand, RegisteredUserViewModel>
+    public class RequestUserCommandHandler : IRequestHandler<RegisterUserCommand, RegisterUserAccountViewModel>
     {
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IClientStore _clientStore;
@@ -34,7 +34,7 @@
             _configuration = configuration;
         }
 
-        public async Task<RegisteredUserViewModel> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<RegisterUserAccountViewModel> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             await Task.Delay(TimeSpan.FromMilliseconds(500));
 

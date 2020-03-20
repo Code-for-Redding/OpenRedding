@@ -3,7 +3,7 @@
     using MediatR;
     using OpenRedding.Domain.Accounts;
     using OpenRedding.Domain.Accounts.Dtos;
-    using OpenRedding.Domain.Accounts.ViewModels;
+    using OpenRedding.Identity.ViewModels;
 
     public class LoginUserCommand : IRequest<LoginViewModel>
     {
