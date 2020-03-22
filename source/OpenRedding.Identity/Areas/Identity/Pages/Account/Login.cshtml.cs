@@ -78,7 +78,7 @@
             }
             else
             {
-                ModelState.AddModelError(string.Empty, $"The login attempt failed, please verify your email address and password before trying again.");
+                ModelState.AddModelError(string.Empty, "The login attempt failed, please verify your email address and password before trying again.");
                 return Page();
             }
         }
