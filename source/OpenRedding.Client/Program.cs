@@ -1,6 +1,8 @@
 namespace OpenRedding.Client
 {
+    using System.Reflection;
     using System.Threading.Tasks;
+    using Fluxor;
     using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +14,11 @@ namespace OpenRedding.Client
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddBaseAddressHttpClient();
+            builder.Services.AddFluxor(options =>
+            {
+                options.ScanAssemblies(Assembly.GetExecutingAssembly());
+                options.UseReduxDevTools();
+            });
 
             await builder
                 .Build()
