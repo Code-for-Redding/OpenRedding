@@ -7,10 +7,28 @@
         <MatAppBarRow>
             <MatAppBarSection>
                 <MatIconButton Icon="menu" @onclick="OnMenuButtonClick"></MatIconButton>
-                <MatAppBarTitle Style="cursor: pointer;" Class="comfortaa" @onclick="(_ => NavigateToPage(NavigationContext.Home))">Open Redding</MatAppBarTitle>
+                <MatAppBarTitle Style="cursor: pointer;" @onclick="(_ => NavigateToPage(NavigationContext.Home))"><span class="comfortaa">Open Redding</span></MatAppBarTitle>
             </MatAppBarSection>
+            @* Todo: Add unauthroized view *@
             <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-                <MatIconButton Icon="code" @onclick="(_ => NavigateToPage(NavigationContext.GitHub))"></MatIconButton>
+                <div class="flex-container-row">
+                    <div class="flex-container-row cursor-pointer">
+                        <p class="comfortaa">Salaries</p>
+                        <MatIconButton Icon="account_balance"></MatIconButton>
+                    </div>
+                    <div class="flex-container-row cursor-pointer" @onclick="(() => NavigateToPage(NavigationContext.Register))">
+                        <p class="comfortaa">Register</p>
+                        <MatIconButton Icon="verified_user"></MatIconButton>
+                    </div>
+                    <div class="flex-container-row cursor-pointer" @onclick="(() => NavigateToPage(NavigationContext.Login))">
+                        <p class="comfortaa">Login</p>
+                        <MatIconButton Icon="perm_identity"></MatIconButton>
+                    </div>
+                    <div class="flex-container-row cursor-pointer">
+                        <p class="comfortaa">Support</p>
+                        <MatIconButton Icon="code"></MatIconButton>
+                    </div>
+                </div>
             </MatAppBarSection>
         </MatAppBarRow>
     </MatAppBar>
@@ -49,7 +67,7 @@
                 </MatNavMenu>
             </MatDrawer>
             <MatDrawerContent>
-                <div class="layout-container">
+                <div class="flex-container-column">
                     @Body
                     <Footer />
                 </div>
@@ -63,7 +81,10 @@
     private enum NavigationContext
     {
         Home,
-        GitHub
+        GitHub,
+        Register,
+        Login,
+        Salaries
     }
 
     private bool isOpen = false;
@@ -80,6 +101,12 @@
         {
             case NavigationContext.GitHub:
                 NavigationManager.NavigateTo("https://github.com/joey32793/OpenRedding");
+                break;
+            case NavigationContext.Register:
+                NavigationManager.NavigateTo("https://localhost:5003/identity/account/register?returnUrl=https://localhost:5001");
+                break;
+            case NavigationContext.Login:
+                NavigationManager.NavigateTo("https://localhost:5003/identity/account/login?returnUrl=https://localhost:5001");
                 break;
             default:
                 NavigationManager.NavigateTo("/");
