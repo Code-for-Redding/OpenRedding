@@ -5,6 +5,7 @@ namespace OpenRedding.Domain.Salaries.Entities
     /// </summary>
     public enum EmployeeAgency
     {
+        AllAgencies,
         ShastaCounty,
         Redding,
         Other

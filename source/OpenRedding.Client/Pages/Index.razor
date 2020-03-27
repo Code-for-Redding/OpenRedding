@@ -1,17 +1,54 @@
 ﻿@page "/"
+
+@using OpenRedding.Domain.Salaries.Dtos
+@using OpenRedding.Domain.Salaries.Entities
 @inject IJSRuntime JSRuntime
 
-<h1 class="comfortaa">Open Redding</h1>
+<div class="flex-container-column-center">
+    <MatH2><span class="comfortaa">Open Redding</span></MatH2>
+    <MatH5 Style="margin-top: -5px;">An open data portal for Redding, by the people, for the people</MatH5>
+    <div class="flex-container-row">
+        <div class="mat-layout-grid">
+            <div class="mat-layout-grid-inner">
+                <div class="mat-layout-grid-cell">
+                    <MatTextField Outlined="true" @bind-Value="name" Label="Name"></MatTextField>
+                </div>
+                <div class="mat-layout-grid-cell">
+                    <MatTextField Outlined="true" @bind-Value="jobTitle" Label="Job Title"></MatTextField>
+                </div>
+                <div class="mat-layout-grid-cell">
+                    <MatSelect Label="Agency" Outlined="true" TValue="string" @bind-Value="agency">
+                        <MatOptionString Value="@nameof(EmployeeAgency.AllAgencies)">All Agencies</MatOptionString>
+                        <MatOptionString Value="@nameof(EmployeeAgency.Redding)">Redding</MatOptionString>
+                        <MatOptionString Value="@nameof(EmployeeAgency.ShastaCounty)">Shasta County</MatOptionString>
+                        <MatOptionString Value="@nameof(EmployeeAgency.Other)">Other</MatOptionString>
+                    </MatSelect>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex-container-row">
+        <MatButton Raised="true">Search</MatButton>
+    </div>
+</div>
 
 <canvas class="particle-background"></canvas>
 
 @code
 {
+    string? name;
+
+    string? jobTitle;
+
+    string? agency;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
-        { 
+        {
             await JSRuntime.InvokeVoidAsync("initParticlesJs");
         }
+
+        var request = new EmployeeSalarySearchDto(null, null, null, null, null, null, null);
     }
 }

@@ -1,10 +1,12 @@
 ﻿namespace OpenRedding.Identity.Areas.Identity.Pages.Account
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using MediatR;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
+    using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.Logging;
     using OpenRedding.Identity.Accounts.Commands.RegisterUser;
     using OpenRedding.Identity.ViewModels;
@@ -20,6 +22,7 @@
             _logger = logger;
             _mediator = mediator;
             RegistrationModel = new RegisterUserAccountViewModel();
+            RouteParameters = new Dictionary<string, string?>();
         }
 
         [BindProperty]
@@ -27,12 +30,15 @@
 
         public string? ReturnUrl { get; set; }
 
+        public IDictionary<string, string?> RouteParameters { get; set; }
+
 #pragma warning disable CA1054 // Uri parameters should not be strings
 
         public void OnGet(string returnUrl)
 #pragma warning restore CA1054 // Uri parameters should not be strings
         {
             ReturnUrl = returnUrl;
+            RouteParameters.TryAdd("returnUrl", ReturnUrl);
         }
 
         /// <summary>

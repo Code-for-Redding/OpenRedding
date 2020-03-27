@@ -1,7 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 
-
 <MatAppBarContainer>
     <MatAppBar Fixed="true">
         <MatAppBarRow>
@@ -11,24 +10,10 @@
             </MatAppBarSection>
             @* Todo: Add unauthroized view *@
             <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-                <div class="flex-container-row">
-                    <div class="flex-container-row cursor-pointer">
-                        <p class="comfortaa">Salaries</p>
-                        <MatIconButton Icon="account_balance"></MatIconButton>
-                    </div>
-                    <div class="flex-container-row cursor-pointer" @onclick="(() => NavigateToPage(NavigationContext.Register))">
-                        <p class="comfortaa">Register</p>
-                        <MatIconButton Icon="verified_user"></MatIconButton>
-                    </div>
-                    <div class="flex-container-row cursor-pointer" @onclick="(() => NavigateToPage(NavigationContext.Login))">
-                        <p class="comfortaa">Login</p>
-                        <MatIconButton Icon="perm_identity"></MatIconButton>
-                    </div>
-                    <div class="flex-container-row cursor-pointer">
-                        <p class="comfortaa">Support</p>
-                        <MatIconButton Icon="code"></MatIconButton>
-                    </div>
-                </div>
+                <MatButton Unelevated="true" TrailingIcon="account_balance">Salaries</MatButton>
+                <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Register))" TrailingIcon="verified_user">Register</MatButton>
+                <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Login))" TrailingIcon="perm_identity">Login</MatButton>
+                <MatButton Unelevated="true" TrailingIcon="code">Support</MatButton>
             </MatAppBarSection>
         </MatAppBarRow>
     </MatAppBar>
@@ -69,7 +54,9 @@
             <MatDrawerContent>
                 <div class="flex-container-column">
                     @Body
-                    <Footer />
+                    <div style="padding-top: 10px;">
+                        <Footer />
+                    </div>
                 </div>
         </MatDrawerContent>
         </MatDrawerContainer>
