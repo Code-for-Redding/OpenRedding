@@ -8,27 +8,43 @@
     <MatH2><span class="comfortaa">Open Redding</span></MatH2>
     <MatH5 Style="margin-top: -5px;">An open data portal for Redding, by the people, for the people</MatH5>
     <div class="flex-container-row">
-        <div class="mat-layout-grid">
-            <div class="mat-layout-grid-inner">
-                <div class="mat-layout-grid-cell">
-                    <MatTextField Outlined="true" @bind-Value="name" Label="Name"></MatTextField>
+        <MatTabGroup Style="background-color: white;">
+            <MatTab Label="Salaries">
+                <div class="mat-layout-grid mat-elevation-z4">
+                    <div class="mat-layout-grid-inner">
+                        <div class="mat-layout-grid-cell">
+                            <MatTextField Outlined="true" @bind-Value="name" Label="Name"></MatTextField>
+                        </div>
+                        <div class="mat-layout-grid-cell">
+                            <MatTextField Outlined="true" @bind-Value="jobTitle" Label="Job Title"></MatTextField>
+                        </div>
+                        <div class="mat-layout-grid-cell">
+                            <MatSelect Label="Agency" Outlined="true" TValue="string" @bind-Value="agency">
+                                <MatOptionString Value="@nameof(EmployeeAgency.AllAgencies)">All Agencies</MatOptionString>
+                                <MatOptionString Value="@nameof(EmployeeAgency.Redding)">Redding</MatOptionString>
+                                <MatOptionString Value="@nameof(EmployeeAgency.ShastaCounty)">Shasta County</MatOptionString>
+                                <MatOptionString Value="@nameof(EmployeeAgency.Other)">Other</MatOptionString>
+                            </MatSelect>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: row; justify-content: center; align-content: center; padding-top: 10px;">
+                        <MatButton Style="margin: 8px;" Raised="true">Search Salaries</MatButton>
+                        <MatButton Style="margin: 8px;" Raised="true">All Salary Data</MatButton>
+                    </div>
                 </div>
-                <div class="mat-layout-grid-cell">
-                    <MatTextField Outlined="true" @bind-Value="jobTitle" Label="Job Title"></MatTextField>
+            </MatTab>
+            <MatTab Label="Budget">
+                <div class="mat-layout-grid">
+                    <div class="mat-layout-grid-inner">
+                        <div class="mat-layout-grid-cell-span-12">
+                            <div class="flex-container-column-center">
+                                <MatH6 Class="text-center">Coming soon... think you can help? We're always looking for people!</MatH6>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="mat-layout-grid-cell">
-                    <MatSelect Label="Agency" Outlined="true" TValue="string" @bind-Value="agency">
-                        <MatOptionString Value="@nameof(EmployeeAgency.AllAgencies)">All Agencies</MatOptionString>
-                        <MatOptionString Value="@nameof(EmployeeAgency.Redding)">Redding</MatOptionString>
-                        <MatOptionString Value="@nameof(EmployeeAgency.ShastaCounty)">Shasta County</MatOptionString>
-                        <MatOptionString Value="@nameof(EmployeeAgency.Other)">Other</MatOptionString>
-                    </MatSelect>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="flex-container-row">
-        <MatButton Raised="true">Search</MatButton>
+            </MatTab>
+        </MatTabGroup>
     </div>
 </div>
 
