@@ -8,11 +8,19 @@
                 <MatIconButton Icon="menu" @onclick="OnMenuButtonClick"></MatIconButton>
                 <MatAppBarTitle Style="cursor: pointer;" @onclick="(_ => NavigateToPage(NavigationContext.Home))"><span class="comfortaa">Open Redding</span></MatAppBarTitle>
             </MatAppBarSection>
-            @* Todo: Add unauthroized view *@
             <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-                <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Register))" TrailingIcon="verified_user">Register</MatButton>
-                <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Login))" TrailingIcon="perm_identity">Login</MatButton>
-                <MatButton Unelevated="true" TrailingIcon="code">Support</MatButton>
+                <AuthorizeView>
+                    <Authorized>
+                        <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Salaries))" TrailingIcon="account_circle">@context.User.Identity.Name</MatButton>
+                        <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Salaries))" TrailingIcon="account_balance">Register</MatButton>
+                        <MatButton Unelevated="true" TrailingIcon="code" OnClick="(() => NavigateToPage(NavigationContext.GitHub))">Support</MatButton>
+                    </Authorized>
+                    <NotAuthorized>
+                        <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Register))" TrailingIcon="verified_user">Register</MatButton>
+                        <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Login))" TrailingIcon="perm_identity">Login</MatButton>
+                        <MatButton Unelevated="true" TrailingIcon="code" OnClick="(() => NavigateToPage(NavigationContext.GitHub))">Support</MatButton>
+                    </NotAuthorized>
+                </AuthorizeView>
             </MatAppBarSection>
         </MatAppBarRow>
     </MatAppBar>
@@ -55,12 +63,12 @@
                     @Body
                     <Footer />
                 </div>
-        </MatDrawerContent>
+            </MatDrawerContent>
         </MatDrawerContainer>
     </MatAppBarContent>
 </MatAppBarContainer>
 
-@code 
+@code
 {
     private enum NavigationContext
     {
