@@ -2,6 +2,7 @@
 
 @using System.Security.Claims
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider State 
 
 <MatAppBarContainer>
     <MatAppBar Fixed="true">
@@ -48,7 +49,7 @@
                             <MatNavItem Href="/budget" Disabled="true">
                                 <MatIcon Icon="monetization_on"></MatIcon>&nbsp; Budget 
                             </MatNavItem>
-                            <MatNavItem Href="/logout">
+                            <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.Logout))">
                                 <MatIcon Icon="play_for_work"></MatIcon>&nbsp; Logout 
                             </MatNavItem>
                             <MatNavItem Href="/support">
@@ -59,10 +60,10 @@
                             <MatNavItem Href="/about">
                                 <MatIcon Icon="account_tree"></MatIcon>&nbsp; About
                             </MatNavItem>
-                            <MatNavItem Href="/register">
+                            <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.Register))">
                                 <MatIcon Icon="verified_user"></MatIcon>&nbsp; Register
                             </MatNavItem>
-                            <MatNavItem Href="/login">
+                            <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.Login))">
                                 <MatIcon Icon="perm_identity"></MatIcon>&nbsp; Login
                             </MatNavItem>
                             <MatNavItem Href="/support">
@@ -132,6 +133,9 @@
                 break;
             case NavigationContext.Login:
                 NavigationManager.NavigateTo("https://localhost:5003/identity/account/login?returnUrl=https://localhost:5001");
+                break;
+            case NavigationContext.Logout:
+                NavigationManager.NavigateTo("https://localhost:5003/identity/account/logout?returnUrl=https://localhost:5001");
                 break;
             default:
                 NavigationManager.NavigateTo("/");

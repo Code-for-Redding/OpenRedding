@@ -1,5 +1,6 @@
 ﻿namespace OpenRedding.Identity.Areas.Identity.Pages.Account
 {
+    using System;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
@@ -7,6 +8,7 @@
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
     using OpenRedding.Infrastructure.Identity;
+    using OpenRedding.Shared.Validation;
 
     [AllowAnonymous]
     public class Logout : PageModel
@@ -20,24 +22,29 @@
             _logger = logger;
         }
 
-        public void OnGet()
+        public string? ReturnUrl { get; set; }
+
+        public void OnGet(Uri returnUrl)
         {
+            Validate.NotNull(returnUrl, nameof(returnUrl));
+
+            ReturnUrl = string.IsNullOrWhiteSpace(returnUrl.OriginalString) ? Url.Content("~/") : returnUrl.OriginalString;
         }
 
-#pragma warning disable CA1054 // Uri parameters should not be strings
-
-        public async Task<IActionResult> OnPost(string? returnUrl = null)
-#pragma warning restore CA1054 // Uri parameters should not be strings
+        public async Task<IActionResult> OnPostAsync(Uri returnUrl)
         {
+            Validate.NotNull(returnUrl, nameof(returnUrl));
+
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
-            if (returnUrl != null)
+
+            if (string.IsNullOrWhiteSpace(returnUrl.OriginalString))
             {
-                return LocalRedirect(returnUrl);
+                return RedirectToPage("/Login");
             }
             else
             {
-                return RedirectToPage();
+                return Redirect(returnUrl.OriginalString);
             }
         }
     }
