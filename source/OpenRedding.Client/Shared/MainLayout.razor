@@ -7,20 +7,27 @@
     <MatAppBar Fixed="true">
         <MatAppBarRow>
             <MatAppBarSection>
-                <MatIconButton Icon="menu" @onclick="OnMenuButtonClick"></MatIconButton>
+                @if (isOpen)
+                {
+                    <MatIconButton Icon="format_indent_decrease" @onclick="OnMenuButtonClick"></MatIconButton>
+                }
+                else
+                {
+                    <MatIconButton Icon="menu" @onclick="OnMenuButtonClick"></MatIconButton>
+                }
                 <MatAppBarTitle Style="cursor: pointer;" @onclick="(_ => NavigateToPage(NavigationContext.Home))"><span class="comfortaa">Open Redding</span></MatAppBarTitle>
             </MatAppBarSection>
             <MatAppBarSection Align="@MatAppBarSectionAlign.End">
                 <AuthorizeView>
                     <Authorized>
-                        <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Salaries))" TrailingIcon="account_balance">Salaries</MatButton>
-                        <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.UserProfile))" TrailingIcon="account_circle">@UserIdentity</MatButton>
-                        <MatButton Unelevated="true" TrailingIcon="code" OnClick="(() => NavigateToPage(NavigationContext.GitHub))">Support</MatButton>
+                        <MatButton Style="text-transform: initial;" Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Salaries))" TrailingIcon="account_balance">Salaries</MatButton>
+                        <MatButton Style="text-transform: initial;" Dense="true" Disabled="true" OnClick="(() => NavigateToPage(NavigationContext.Budget))" TrailingIcon="monetization_on">Budget</MatButton>
+                        <MatButton Style="text-transform: initial;" Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.UserProfile))" TrailingIcon="account_circle">@UserIdentity</MatButton>
+                        <MatButton Style="text-transform: initial;" Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Logout))" TrailingIcon="play_for_work">Logout</MatButton>
                     </Authorized>
                     <NotAuthorized>
                         <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Register))" TrailingIcon="verified_user">Register</MatButton>
                         <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Login))" TrailingIcon="perm_identity">Login</MatButton>
-                        <MatButton Unelevated="true" TrailingIcon="code" OnClick="(() => NavigateToPage(NavigationContext.GitHub))">Support</MatButton>
                     </NotAuthorized>
                 </AuthorizeView>
             </MatAppBarSection>
@@ -29,35 +36,40 @@
     <MatAppBarContent>
         <MatDrawerContainer Style="width: 100vw; height: 100vh;">
             <MatDrawer @bind-Opened="@isOpen" Mode="@MatDrawerMode.Modal">
-                <MatNavMenu>
-                    <MatNavItem Href="/counter">Item 1</MatNavItem>
-                    <MatNavItem Disabled="true">Item 2</MatNavItem>
-                    <MatNavItem Href="/fetchdata">Item 3</MatNavItem>
-                    <MatNavSubMenu @bind-Expanded="@navSubMenuOpenState">
-                        <MatNavSubMenuHeader>
-                            <MatNavItem AllowSelection="false"><MatIcon Icon="all_inbox"></MatIcon>&nbsp; Item 3 - Expanded: @navSubMenuOpenState</MatNavItem>
-                        </MatNavSubMenuHeader>
-                        <MatNavSubMenuList>
-                            <MatNavItem Href="#">Item 3.A&nbsp; <MatIcon Icon="backup"></MatIcon></MatNavItem>
-                            <MatNavItem>Item 3.B&nbsp; <MatIcon Icon="build"></MatIcon></MatNavItem>
-                            <MatNavItem>Item 3.C&nbsp; <MatIcon Icon="explore"></MatIcon></MatNavItem>
-                        </MatNavSubMenuList>
-                    </MatNavSubMenu>
-                    <MatNavItem><MatIcon Icon="grade"></MatIcon>&nbsp; Item 4 </MatNavItem>
-                    <MatDivider></MatDivider>
-                    <MatNavItem><MatIcon Icon="face"></MatIcon>&nbsp; Item 5</MatNavItem>
-                    <MatNavSubMenu>
-                        <MatNavSubMenuHeader>
-                            <MatNavItem AllowSelection="false"><MatIcon Icon="explore"></MatIcon>&nbsp; Item 6</MatNavItem>
-                        </MatNavSubMenuHeader>
-                        <MatNavSubMenuList>
-                            <MatNavItem Disabled="true" Href="#">Item 6.A</MatNavItem>
-                            <MatNavItem>Item 6.B</MatNavItem>
-                            <MatNavItem>Item 6.C</MatNavItem>
-                        </MatNavSubMenuList>
-                    </MatNavSubMenu>
-                    <MatNavItem Href="https://blazorboilerplate.com/">Blazor Boilerplate - Href</MatNavItem>
-                    <MatNavItem Href="https://www.matblazor.com/">MatBlazor - Href</MatNavItem>
+                <MatNavMenu Style="margin-top: 5px;">
+                    <AuthorizeView>
+                        <Authorized>
+                            <MatNavItem Href="/about">
+                                <MatIcon Icon="account_tree"></MatIcon>&nbsp; About 
+                            </MatNavItem>
+                            <MatNavItem Href="/salaries">
+                                <MatIcon Icon="account_balance"></MatIcon>&nbsp; Salaries 
+                            </MatNavItem>
+                            <MatNavItem Href="/budget" Disabled="true">
+                                <MatIcon Icon="monetization_on"></MatIcon>&nbsp; Budget 
+                            </MatNavItem>
+                            <MatNavItem Href="/logout">
+                                <MatIcon Icon="play_for_work"></MatIcon>&nbsp; Logout 
+                            </MatNavItem>
+                            <MatNavItem Href="/support">
+                                <MatIcon Icon="code"></MatIcon>&nbsp; Support
+                            </MatNavItem>
+                        </Authorized>
+                        <NotAuthorized>
+                            <MatNavItem Href="/about">
+                                <MatIcon Icon="account_tree"></MatIcon>&nbsp; About
+                            </MatNavItem>
+                            <MatNavItem Href="/register">
+                                <MatIcon Icon="verified_user"></MatIcon>&nbsp; Register
+                            </MatNavItem>
+                            <MatNavItem Href="/login">
+                                <MatIcon Icon="perm_identity"></MatIcon>&nbsp; Login
+                            </MatNavItem>
+                            <MatNavItem Href="/support">
+                                <MatIcon Icon="code"></MatIcon>&nbsp; Support
+                            </MatNavItem>
+                        </NotAuthorized>
+                    </AuthorizeView>
                 </MatNavMenu>
             </MatDrawer>
             <MatDrawerContent>
@@ -79,9 +91,6 @@
 
     private bool isOpen = false;
 
-    private bool navSubMenuOpenState;
-
-
     protected override async Task OnInitializedAsync()
     {
         if (authenticationStateTask is null)
@@ -100,8 +109,10 @@
         GitHub,
         Register,
         Login,
+        Logout,
+        UserProfile,
         Salaries,
-        UserProfile
+        Budget
     }
 
     private void OnMenuButtonClick()

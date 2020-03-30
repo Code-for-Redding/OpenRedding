@@ -63,6 +63,10 @@
     text-align: center;
 }
 
+.text-intial {
+    text-transform: initial;
+}
+
 .cursor-pointer {
     cursor: pointer;
 }

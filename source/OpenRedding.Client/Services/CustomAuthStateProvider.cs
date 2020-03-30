@@ -12,7 +12,6 @@
             	new[]
                 {
                     new Claim(ClaimTypes.Name, "Joey Mckenzie"),
-                    new Claim(ClaimTypes.Email, "joey.mckenzie27@gmail.com"),
                 }, "Test auth");
 
             var user = new ClaimsPrincipal(identity);
