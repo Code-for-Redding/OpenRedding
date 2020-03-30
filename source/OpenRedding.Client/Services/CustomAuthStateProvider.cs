@@ -1,11 +1,8 @@
 ﻿namespace OpenRedding.Client.Services
 {
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
-	using Microsoft.AspNetCore.Components.Authorization;
+    using Microsoft.AspNetCore.Components.Authorization;
 
     public class CustomAuthStateProvider : AuthenticationStateProvider
     {
@@ -14,8 +11,9 @@
             var identity = new ClaimsIdentity(
             	new[]
                 {
-                    new Claim(ClaimTypes.Name, "mrfibuli"),
-                }, "Fake authentication type");
+                    new Claim(ClaimTypes.Name, "Joey Mckenzie"),
+                    new Claim(ClaimTypes.Email, "joey.mckenzie27@gmail.com"),
+                }, "Test auth");
 
             var user = new ClaimsPrincipal(identity);
 

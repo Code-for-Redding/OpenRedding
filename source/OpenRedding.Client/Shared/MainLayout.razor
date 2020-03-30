@@ -1,4 +1,6 @@
 ﻿@inherits LayoutComponentBase
+
+@using System.Security.Claims
 @inject NavigationManager NavigationManager
 
 <MatAppBarContainer>
@@ -11,8 +13,8 @@
             <MatAppBarSection Align="@MatAppBarSectionAlign.End">
                 <AuthorizeView>
                     <Authorized>
-                        <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Salaries))" TrailingIcon="account_circle">@context.User.Identity.Name</MatButton>
-                        <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Salaries))" TrailingIcon="account_balance">Register</MatButton>
+                        <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Salaries))" TrailingIcon="account_balance">Salaries</MatButton>
+                        <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.UserProfile))" TrailingIcon="account_circle">@UserIdentity</MatButton>
                         <MatButton Unelevated="true" TrailingIcon="code" OnClick="(() => NavigateToPage(NavigationContext.GitHub))">Support</MatButton>
                     </Authorized>
                     <NotAuthorized>
@@ -70,17 +72,37 @@
 
 @code
 {
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationStateTask { get; set; }
+
+    private string? UserIdentity { get; set; }
+
+    private bool isOpen = false;
+
+    private bool navSubMenuOpenState;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (authenticationStateTask is null)
+        {
+            throw new UnauthorizedAccessException("Not authentication states was found");
+        }
+
+        var user = (await authenticationStateTask).User;
+        var userEmail = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
+        UserIdentity = userEmail is null ? user.Identity.Name : userEmail.Value;
+    }
+
     private enum NavigationContext
     {
         Home,
         GitHub,
         Register,
         Login,
-        Salaries
+        Salaries,
+        UserProfile
     }
-
-    private bool isOpen = false;
-    private bool navSubMenuOpenState;
 
     private void OnMenuButtonClick()
     {
