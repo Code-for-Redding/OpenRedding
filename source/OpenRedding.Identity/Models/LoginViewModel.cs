@@ -1,4 +1,4 @@
-﻿namespace OpenRedding.Identity.ViewModels
+﻿namespace OpenRedding.Identity.Models
 {
     using System.ComponentModel.DataAnnotations;
 

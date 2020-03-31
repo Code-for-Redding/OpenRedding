@@ -9,7 +9,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.AspNetCore.WebUtilities;
-    using OpenRedding.Identity.ViewModels;
+    using OpenRedding.Identity.Models;
     using OpenRedding.Infrastructure.Identity;
 
     [AllowAnonymous]

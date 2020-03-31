@@ -7,7 +7,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
-    using OpenRedding.Identity.ViewModels;
+    using OpenRedding.Identity.Models;
     using OpenRedding.Infrastructure.Identity;
 
     [AllowAnonymous]

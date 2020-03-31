@@ -8,7 +8,7 @@
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
-    using OpenRedding.Identity.ViewModels;
+    using OpenRedding.Identity.Models;
     using OpenRedding.Infrastructure.Identity;
 
     public class AccountController : Controller
