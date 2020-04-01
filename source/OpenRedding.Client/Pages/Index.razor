@@ -12,13 +12,21 @@
             <MatTab Label="Salaries">
                 <div class="mat-layout-grid mat-elevation-z4">
                     <div class="mat-layout-grid-inner">
-                        <div class="mat-layout-grid-cell">
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">
                             <MatTextField Outlined="true" @bind-Value="name" Label="Name"></MatTextField>
                         </div>
-                        <div class="mat-layout-grid-cell">
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">
                             <MatTextField Outlined="true" @bind-Value="jobTitle" Label="Job Title"></MatTextField>
                         </div>
-                        <div class="mat-layout-grid-cell">
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">
+                            <MatSelect Label="Status" Outlined="true" TValue="string" @bind-Value="status">
+                                <MatOptionString Value="@nameof(EmployeeStatus.AllStatuses)">All Statuses</MatOptionString>
+                                <MatOptionString Value="@nameof(EmployeeStatus.FullTime)">Full-time</MatOptionString>
+                                <MatOptionString Value="@nameof(EmployeeStatus.PartTime)">Part-time</MatOptionString>
+                                <MatOptionString Value="@nameof(EmployeeStatus.Other)">Other</MatOptionString>
+                            </MatSelect>
+                        </div>
+                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">
                             <MatSelect Label="Agency" Outlined="true" TValue="string" @bind-Value="agency">
                                 <MatOptionString Value="@nameof(EmployeeAgency.AllAgencies)">All Agencies</MatOptionString>
                                 <MatOptionString Value="@nameof(EmployeeAgency.Redding)">Redding</MatOptionString>
@@ -57,6 +65,8 @@
     string? jobTitle;
 
     string? agency;
+
+    string? status;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

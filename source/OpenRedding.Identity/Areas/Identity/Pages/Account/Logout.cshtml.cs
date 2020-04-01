@@ -2,11 +2,13 @@
 {
     using System;
     using System.Threading.Tasks;
+    using MediatR;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.Extensions.Logging;
+    using OpenRedding.Identity.Accounts.Commands.LogoutUser;
     using OpenRedding.Infrastructure.Identity;
     using OpenRedding.Shared.Validation;
 
@@ -15,37 +17,51 @@
     {
         private readonly SignInManager<OpenReddingUser> _signInManager;
         private readonly ILogger<Logout> _logger;
+        private readonly IMediator _mediator;
 
-        public Logout(SignInManager<OpenReddingUser> signInManager, ILogger<Logout> logger)
+        public Logout(SignInManager<OpenReddingUser> signInManager, ILogger<Logout> logger, IMediator mediator)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _mediator = mediator;
         }
 
         public string? ReturnUrl { get; set; }
 
-        public void OnGet(Uri returnUrl)
+        public void OnGet(string logoutId, Uri returnUrl)
         {
-            Validate.NotNull(returnUrl, nameof(returnUrl));
+            LogoutOrValidateRequest(logoutId, returnUrl);
 
             ReturnUrl = string.IsNullOrWhiteSpace(returnUrl.OriginalString) ? Url.Content("~/") : returnUrl.OriginalString;
         }
 
-        public async Task<IActionResult> OnPostAsync(Uri returnUrl)
+        public async Task<IActionResult> OnPostAsync(string logoutId, Uri returnUrl)
         {
-            Validate.NotNull(returnUrl, nameof(returnUrl));
+            LogoutOrValidateRequest(logoutId, returnUrl);
 
-            await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
+            var logoutRequest = new LogoutUserCommand(logoutId, returnUrl, HttpContext);
+            var valdiatedReturnUrl = await _mediator.Send(logoutRequest);
 
-            if (string.IsNullOrWhiteSpace(returnUrl.OriginalString))
+            if (string.IsNullOrWhiteSpace(valdiatedReturnUrl))
             {
-                return RedirectToPage("/Login");
+                return RedirectToPage("/LoggedOut");
             }
             else
             {
-                return Redirect(returnUrl.OriginalString);
+                return Redirect(valdiatedReturnUrl);
             }
+        }
+
+        private void LogoutOrValidateRequest(string logoutId, Uri returnUrl)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                // User is not authenticated, so redirect to logged out page
+                RedirectToPage("/LoggedOut");
+            }
+
+            Validate.NotNull(logoutId, nameof(logoutId));
+            Validate.NotNull(returnUrl, nameof(returnUrl));
         }
     }
 }

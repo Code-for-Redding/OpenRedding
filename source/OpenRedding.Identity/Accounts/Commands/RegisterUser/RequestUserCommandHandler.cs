@@ -1,6 +1,7 @@
 ﻿namespace OpenRedding.Identity.Accounts.Commands.RegisterUser
 {
     using System;
+    using System.Linq;
     using System.Text;
     using System.Text.Encodings.Web;
     using System.Threading;
@@ -18,7 +19,7 @@
     using OpenRedding.Infrastructure.Identity;
     using OpenRedding.Shared.Validation;
 
-    public class RequestUserCommandHandler : IRequestHandler<RegisterUserCommand, ConfirmedRegisteredAccountDto>
+    public class RequestUserCommandHandler : IRequestHandler<RegisterUserCommand, RegisteredAccountDto>
     {
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IClientStore _clientStore;
@@ -43,36 +44,54 @@
             _emailSender = emailSender;
         }
 
-        public async Task<ConfirmedRegisteredAccountDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<RegisteredAccountDto> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             Validate.NotNull(request, nameof(request));
             Validate.NotNull(request.Request, nameof(request.Request));
 
-            var context = await _interaction.GetAuthorizationContextAsync(request.ReturnUrl);
-
-            var user = new OpenReddingUser { UserName = request.Request.Email, Email = request.Request.Email };
-            var result = await _userManager.CreateAsync(user, request.Request.Password);
-            if (result.Succeeded)
+            // Validate username uniqueness
+            var existingUser = await _userManager.FindByNameAsync(request.Request.Email);
+            if (existingUser is null)
             {
-                _logger.LogInformation($"User {request.Request.Email} has successfully been created");
+                var context = await _interaction.GetAuthorizationContextAsync(request.ReturnUrl.OriginalString);
 
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                var callbackUrl = request.UrlHelper.Page(
-                    "/Account/ConfirmEmail",
-                    pageHandler: null,
-                    values: new { area = "Identity", userId = user.Id, code },
-                    protocol: request.HttpRequest.Scheme);
+                if (context != null && !string.IsNullOrWhiteSpace(context.ClientId))
+                {
+                    var client = await _clientStore.FindEnabledClientByIdAsync(context.ClientId);
+                }
 
-                await _emailSender.SendEmailAsync(request.Request.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                var user = new OpenReddingUser { UserName = request.Request.Email, Email = request.Request.Email };
+                var result = await _userManager.CreateAsync(user, request.Request.Password);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation($"User {request.Request.Email} has successfully been created");
+
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    var callbackUrl = request.UrlHelper.Page(
+                        "/Account/ConfirmEmail",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId = user.Id, code },
+                        protocol: request.HttpRequest.Scheme);
+
+                    await _emailSender.SendEmailAsync(request.Request.Email, "Confirm your email", $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                }
+
+                if (result.Errors.Any())
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        _logger.LogError($"Error encountered during user creation for {request.Request.Email}: {error.Description}");
+                        request.ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+
+                return new RegisteredAccountDto(user, _userManager.Options.SignIn.RequireConfirmedAccount);
             }
 
-            foreach (var error in result.Errors)
-            {
-                request.ModelState.AddModelError(string.Empty, error.Description);
-            }
-
-            return new ConfirmedRegisteredAccountDto(_userManager.Options.SignIn.RequireConfirmedAccount, user);
+            // User exists, add the model state error and return the response
+            request.ModelState.AddModelError(string.Empty, "The email address entered is already in use");
+            return new RegisteredAccountDto(default);
         }
     }
 }

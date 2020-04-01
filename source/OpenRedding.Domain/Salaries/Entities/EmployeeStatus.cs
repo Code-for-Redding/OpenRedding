@@ -7,6 +7,7 @@ namespace OpenRedding.Domain.Salaries.Entities
     {
         FullTime,
         PartTime,
-        Other
+        Other,
+        AllStatuses
     }
 }

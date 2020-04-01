@@ -1,17 +1,23 @@
 ﻿namespace OpenRedding.Identity
 {
+    using System.Linq;
     using System.Reflection;
     using FluentValidation;
+    using IdentityServer4.EntityFramework.DbContexts;
+    using IdentityServer4.EntityFramework.Mappers;
     using MediatR;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Hosting;
     using OpenRedding.Identity.Middleware;
     using OpenRedding.Infrastructure.Extensions;
+    using OpenRedding.Infrastructure.Identity;
+    using OpenRedding.Shared.Validation;
 
     public class Startup
     {
@@ -49,6 +55,8 @@
 
         public void Configure(IApplicationBuilder app)
         {
+            InitializeIdentityConfigurationTables(app);
+
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -72,6 +80,55 @@
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
+        }
+
+        private void InitializeIdentityConfigurationTables(IApplicationBuilder app)
+        {
+            Validate.NotNull(app, nameof(app));
+
+            using var serviceScope = app.ApplicationServices
+                .GetService<IServiceScopeFactory>()
+                .CreateScope();
+
+            serviceScope.ServiceProvider
+                .GetRequiredService<PersistedGrantDbContext>()
+                .Database
+                .Migrate();
+
+            var configurationDbContext = serviceScope.ServiceProvider
+                .GetRequiredService<ConfigurationDbContext>();
+
+            configurationDbContext.Database.Migrate();
+
+            if (!configurationDbContext.Clients.Any())
+            {
+                foreach (var client in IdentityConfiguration.ApiClients)
+                {
+                    configurationDbContext.Clients.Add(client.ToEntity());
+                }
+
+                configurationDbContext.SaveChanges();
+            }
+
+            if (!configurationDbContext.IdentityResources.Any())
+            {
+                foreach (var resource in IdentityConfiguration.Resources)
+                {
+                    configurationDbContext.IdentityResources.Add(resource.ToEntity());
+                }
+
+                configurationDbContext.SaveChanges();
+            }
+
+            if (!configurationDbContext.ApiResources.Any())
+            {
+                foreach (var resource in IdentityConfiguration.Apis)
+                {
+                    configurationDbContext.ApiResources.Add(resource.ToEntity());
+                }
+
+                configurationDbContext.SaveChanges();
+            }
         }
     }
 }

@@ -32,7 +32,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRedding.Identity", "sou
 		{9DFD8BE9-6BF5-49F9-96DE-EB3B9C284B9F} = {9DFD8BE9-6BF5-49F9-96DE-EB3B9C284B9F}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRedding.Client", "source\OpenRedding.Client\OpenRedding.Client.csproj", "{88657FB0-2D0D-4329-9046-B0D29B83531B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRedding.Client", "source\OpenRedding.Client\OpenRedding.Client.csproj", "{88657FB0-2D0D-4329-9046-B0D29B83531B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

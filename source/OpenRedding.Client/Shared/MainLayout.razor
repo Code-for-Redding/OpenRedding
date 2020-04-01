@@ -135,7 +135,9 @@
                 NavigationManager.NavigateTo("https://localhost:5003/identity/account/login?returnUrl=https://localhost:5001");
                 break;
             case NavigationContext.Logout:
-                NavigationManager.NavigateTo("https://localhost:5003/identity/account/logout?returnUrl=https://localhost:5001");
+                var logoutGuid = Guid.NewGuid();
+                var returnUrl = "https://localhost:5001";
+                NavigationManager.NavigateTo($"https://localhost:5003/identity/account/logout?logoutId={logoutGuid.ToString()}&returnUrl={returnUrl}");
                 break;
             default:
                 NavigationManager.NavigateTo("/");

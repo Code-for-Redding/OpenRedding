@@ -53,7 +53,7 @@
         {
             Validate.NotNull(returnUrl, nameof(returnUrl));
 
-            var scrubbedReturnUrl = string.IsNullOrWhiteSpace(returnUrl.OriginalString) ? Url.Content("~/") : returnUrl.OriginalString;
+            // var scrubbedReturnUrl = string.IsNullOrWhiteSpace(returnUrl.OriginalString) ? Url.Content("~/") : returnUrl.OriginalString;
             if (!ModelState.IsValid || RegistrationModel is null)
             {
                 _logger.LogWarning("Invalid user registration attempted");
@@ -63,18 +63,43 @@
             }
 
             _logger.LogInformation("Validating user registration request");
-            var command = new RegisterUserCommand(RegistrationModel, ModelState, Url, Request, scrubbedReturnUrl);
+            var command = new RegisterUserCommand(RegistrationModel, ModelState, Url, Request, returnUrl);
             var registeredUser = await _mediator.Send(command);
+
             Validate.NotNull(registeredUser, nameof(registeredUser));
+
+            // Check for any errors during user creation
+            if (!ModelState.IsValid || registeredUser.User is null)
+            {
+                _logger.LogWarning("User registratrion has failed, returning to registration page");
+                return Page();
+            }
 
             if (registeredUser.RequireConfirmedAccount)
             {
                 return RedirectToPage("RegisterConfirmation", new { email = registeredUser.User.Email });
             }
+            else if (!string.IsNullOrWhiteSpace(returnUrl.OriginalString))
+            {
+                if (HttpContext.User.Identity.IsAuthenticated)
+                {
+                    return Redirect(returnUrl.OriginalString);
+                }
+                else if (ModelState.IsValid)
+                {
+                    await _signInManager.SignInAsync(registeredUser.User, isPersistent: false);
+                    return Redirect(returnUrl.OriginalString);
+                }
+                else
+                {
+                    // Something most likely went wrong, re-render the page
+                    return Page();
+                }
+            }
             else
             {
-                await _signInManager.SignInAsync(registeredUser.User, isPersistent: false);
-                return LocalRedirect(scrubbedReturnUrl);
+                // Something most likely went wrong, re-render the page
+                return Page();
             }
         }
     }

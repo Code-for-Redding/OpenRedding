@@ -1,14 +1,15 @@
 ﻿namespace OpenRedding.Identity.Accounts.Commands.RegisterUser
 {
+    using System;
     using MediatR;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.ModelBinding;
     using OpenRedding.Identity.Models;
 
-    public class RegisterUserCommand : IRequest<ConfirmedRegisteredAccountDto>
+    public class RegisterUserCommand : IRequest<RegisteredAccountDto>
     {
-        public RegisterUserCommand(RegisterUserAccountViewModel request, ModelStateDictionary modelState, IUrlHelper urlHelper, HttpRequest httpRequest, string returnUrl) =>
+        public RegisterUserCommand(RegisterUserAccountViewModel request, ModelStateDictionary modelState, IUrlHelper urlHelper, HttpRequest httpRequest, Uri returnUrl) =>
             (Request, ModelState, UrlHelper, HttpRequest, ReturnUrl) = (request, modelState, urlHelper, httpRequest, returnUrl);
 
         public RegisterUserAccountViewModel Request { get; }
@@ -19,6 +20,6 @@
 
         public HttpRequest HttpRequest { get; }
 
-        public string ReturnUrl { get; }
+        public Uri ReturnUrl { get; }
     }
 }
