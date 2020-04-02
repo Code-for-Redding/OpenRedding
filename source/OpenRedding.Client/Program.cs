@@ -2,11 +2,13 @@ namespace OpenRedding.Client
 {
     using System.Reflection;
     using System.Threading.Tasks;
+    using Blazored.LocalStorage;
     using Fluxor;
     using Microsoft.AspNetCore.Components.Authorization;
     using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
     using Microsoft.Extensions.DependencyInjection;
     using OpenRedding.Client.Services;
+    using OpenRedding.Shared.Identity;
 
     public static class Program
     {
@@ -16,11 +18,12 @@ namespace OpenRedding.Client
             builder.RootComponents.Add<App>("app");
 
             // Add authorization services
-            builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+            builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
 
             builder.Services.AddBaseAddressHttpClient();
+            builder.Services.AddApiAuthorization(options => options.ProviderOptions.ConfigurationEndpoint = "https://localhost:5003/.well-known/openid-configuration");
             builder.Services.AddFluxor(options =>
             {
                 options.ScanAssemblies(Assembly.GetExecutingAssembly());

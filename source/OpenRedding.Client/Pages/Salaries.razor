@@ -1,0 +1,26 @@
+﻿@page "/salaries"
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject IAccessTokenProvider AuthenticationService
+@inject NavigationManager Navigation
+@inject HttpClient HttpClient
+@attribute [Authorize]
+
+<MatH2>Salaries</MatH2>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        HttpClient.BaseAddress = new Uri(Navigation.BaseUri);
+
+        var tokenResult = await AuthenticationService.RequestAccessToken();
+        Console.WriteLine($"tokenResult: {tokenResult}");
+
+        if (tokenResult.TryGetToken(out var token))
+        {
+            HttpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token.Value}");
+            Console.WriteLine(token.Value);
+        }
+    }
+} 

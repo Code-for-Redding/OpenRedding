@@ -1,5 +1,11 @@
 ﻿@page "/"
 
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Blazored.LocalStorage
+
+@inject IAccessTokenProvider AuthenticationService
+@inject ILocalStorageService LocalStorageService
+
 @using OpenRedding.Domain.Salaries.Dtos
 @using OpenRedding.Domain.Salaries.Entities
 @inject IJSRuntime JSRuntime
@@ -76,5 +82,16 @@
         }
 
         var request = new EmployeeSalarySearchDto(null, null, null, null, null, null, null);
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var tokenResult = await AuthenticationService.RequestAccessToken();
+        tokenResult.TryGetToken(out var accessToken);
+
+        if (!(accessToken is null))
+        {
+            await LocalStorageService.SetItemAsync("access_token", accessToken.Value);
+        }
     }
 }

@@ -2,11 +2,10 @@
 {
     using System.Collections.Generic;
     using IdentityServer4.Models;
+    using OpenRedding.Shared.Identity;
 
     public static class IdentityConfiguration
     {
-        private const string OpenReddingReadScope = "read:open_redding_api";
-
         public static IEnumerable<IdentityResource> Resources =>
             new IdentityResource[]
             {
@@ -20,7 +19,7 @@
             {
                 new ApiResource("open_redding_api", "Open Redding API")
                 {
-                    Scopes = { new Scope(OpenReddingReadScope) }
+                    Scopes = { new Scope(OpenReddingIdentityConstants.OpenReddingReadScope) }
                 }
             };
 
@@ -29,22 +28,22 @@
             {
                 new Client
                 {
-                    ClientId = "open_redding_ui",
+                    ClientId = OpenReddingIdentityConstants.BlazorClientId,
                     ClientName = "Open Redding SPA Client",
-                    ClientUri = "http://localhost:5002",
+                    ClientUri = "http://localhost:5001",
 
                     AllowedGrantTypes = GrantTypes.Code,
-                    AllowedScopes = { "openid", "profile", "email", OpenReddingReadScope },
+                    AllowedScopes = { "openid", "profile", "email", OpenReddingIdentityConstants.OpenReddingReadScope },
                     RequirePkce = true,
                     RequireClientSecret = false,
-                    PostLogoutRedirectUris = { "http://localhost:5002/index.html" },
-                    AllowedCorsOrigins = { "http://localhost:5002" },
+                    PostLogoutRedirectUris = { "http://localhost:5003" },
+                    AllowedCorsOrigins = { "http://localhost:5003" },
                     RedirectUris =
                     {
-                        "http://localhost:5002/index.html",
-                        "http://localhost:5002/callback.html",
-                        "http://localhost:5002/silent.html",
-                        "http://localhost:5002/popup.html",
+                        "http://localhost:5003/index.html",
+                        "http://localhost:5003/callback.html",
+                        "http://localhost:5003/silent.html",
+                        "http://localhost:5003/popup.html",
                     }
                 }
             };

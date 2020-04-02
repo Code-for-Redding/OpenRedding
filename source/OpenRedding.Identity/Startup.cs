@@ -69,6 +69,7 @@
             // Enable ASP.NET Core specific middleware
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             // Auth middleware
             app.UseAuthentication();
@@ -99,6 +100,7 @@
                 .GetRequiredService<ConfigurationDbContext>();
 
             configurationDbContext.Database.Migrate();
+            configurationDbContext.SaveChanges();
 
             if (!configurationDbContext.Clients.Any())
             {
@@ -112,11 +114,6 @@
 
             if (!configurationDbContext.IdentityResources.Any())
             {
-                foreach (var resource in IdentityConfiguration.Resources)
-                {
-                    configurationDbContext.IdentityResources.Add(resource.ToEntity());
-                }
-
                 configurationDbContext.SaveChanges();
             }
 

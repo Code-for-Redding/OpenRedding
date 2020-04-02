@@ -3,6 +3,7 @@
     using System;
     using System.Reflection;
     using Core.Data;
+    using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.EntityFrameworkCore;
@@ -54,12 +55,12 @@
                 var builder = services.AddIdentityServer(options => options.Authentication.CookieLifetime = TimeSpan.FromHours(2))
                     .AddConfigurationStore(options => options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, DbContextOptions))
                     .AddOperationalStore(options => options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, DbContextOptions))
-                    .AddAspNetIdentity<OpenReddingUser>()
-                    .AddInMemoryIdentityResources(IdentityConfiguration.Resources)
-                    .AddInMemoryApiResources(IdentityConfiguration.Apis)
-                    .AddInMemoryClients(IdentityConfiguration.ApiClients);
+                    .AddAspNetIdentity<OpenReddingUser>();
 
                 builder.AddDeveloperSigningCredential();
+
+                services.AddAuthentication()
+                    .AddIdentityServerJwt();
             }
         }
     }
