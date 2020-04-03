@@ -4,11 +4,8 @@ namespace OpenRedding.Client
     using System.Threading.Tasks;
     using Blazored.LocalStorage;
     using Fluxor;
-    using Microsoft.AspNetCore.Components.Authorization;
     using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
     using Microsoft.Extensions.DependencyInjection;
-    using OpenRedding.Client.Services;
-    using OpenRedding.Shared.Identity;
 
     public static class Program
     {

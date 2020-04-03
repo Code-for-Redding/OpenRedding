@@ -1,8 +1,11 @@
 ﻿@inherits LayoutComponentBase
 
 @using System.Security.Claims
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider State
+@inject SignOutSessionStateManager SignOutManager
+@inject IAccessTokenProvider AuthenticationService 
 
 <MatAppBarContainer>
     <MatAppBar Fixed="true">
@@ -41,16 +44,16 @@
                     <AuthorizeView>
                         <Authorized>
                             <MatNavItem Href="/about">
-                                <MatIcon Icon="account_tree"></MatIcon>&nbsp; About 
+                                <MatIcon Icon="account_tree"></MatIcon>&nbsp; About
                             </MatNavItem>
                             <MatNavItem Href="/salaries">
-                                <MatIcon Icon="account_balance"></MatIcon>&nbsp; Salaries 
+                                <MatIcon Icon="account_balance"></MatIcon>&nbsp; Salaries
                             </MatNavItem>
                             <MatNavItem Href="/budget" Disabled="true">
-                                <MatIcon Icon="monetization_on"></MatIcon>&nbsp; Budget 
+                                <MatIcon Icon="monetization_on"></MatIcon>&nbsp; Budget
                             </MatNavItem>
                             <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.Logout))">
-                                <MatIcon Icon="play_for_work"></MatIcon>&nbsp; Logout 
+                                <MatIcon Icon="play_for_work"></MatIcon>&nbsp; Logout
                             </MatNavItem>
                             <MatNavItem Href="/support">
                                 <MatIcon Icon="code"></MatIcon>&nbsp; Support
@@ -102,6 +105,23 @@
         var user = (await authenticationStateTask).User;
         var userEmail = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
         UserIdentity = userEmail is null ? user.Identity.Name : userEmail.Value;
+
+        var accessToken = await AuthenticationService.RequestAccessToken();
+
+        if (accessToken is null)
+        {
+            return;
+        }
+
+        Console.WriteLine(accessToken);
+        accessToken.TryGetToken(out var token);
+
+        if (token is null || string.IsNullOrWhiteSpace(token.Value))
+        {
+            return;
+        }
+
+        Console.WriteLine(token.Value);
     }
 
     private enum NavigationContext
@@ -121,7 +141,7 @@
         isOpen = !isOpen;
     }
 
-    private void NavigateToPage(NavigationContext context)
+    private async Task NavigateToPage(NavigationContext context)
     {
         switch (context)
         {
@@ -136,8 +156,9 @@
                 break;
             case NavigationContext.Logout:
                 var logoutGuid = Guid.NewGuid();
-                var returnUrl = "https://localhost:5001";
-                NavigationManager.NavigateTo($"https://localhost:5003/identity/account/logout?logoutId={logoutGuid.ToString()}&returnUrl={returnUrl}");
+                var returnUrl = NavigationManager.BaseUri;
+                await SignOutManager.SetSignOutState();
+                NavigationManager.NavigateTo("authentication/logout");
                 break;
             default:
                 NavigationManager.NavigateTo("/");

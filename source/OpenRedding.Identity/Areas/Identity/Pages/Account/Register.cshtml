@@ -65,8 +65,8 @@
             <div class="card-footer">
                 <div class="d-flex">
                     <div class="mr-auto">
-                        <a asp-area="Identity" asp-page="/About" asp-all-route-data="@Model.RouteParameters" class="px-2">About</a>
-                        <a asp-area="Identity" asp-page="/Account/Login">Login</a>
+                        <a asp-area="Identity" asp-page="/About" asp-route-returnUrl="@Model.ReturnUrl" class="px-2">About</a>
+                        <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Model.ReturnUrl">Login</a>
                     </div>
                     <i onclick="window.open('https://github.com/joey32793/OpenRedding')" class="fab fa-github fa-2x px-2"></i>
                     <i onclick="window.open('https://registry.jsonresume.org/joey32793')" class="fas fa-code fa-2x px-2"></i>

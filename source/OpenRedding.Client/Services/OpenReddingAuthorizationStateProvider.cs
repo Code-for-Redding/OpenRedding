@@ -4,42 +4,50 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Security.Claims;
     using System.Text.Json;
     using System.Threading.Tasks;
     using Blazored.LocalStorage;
     using Microsoft.AspNetCore.Components.Authorization;
+    using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
     public class OpenReddingAuthorizationStateProvider : AuthenticationStateProvider
     {
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorage;
+        private readonly IAccessTokenProvider _authenticationService;
 
-        public OpenReddingAuthorizationStateProvider(HttpClient httpClient, ILocalStorageService localStorage)
+        public OpenReddingAuthorizationStateProvider(HttpClient httpClient, ILocalStorageService localStorage, IAccessTokenProvider authenticationService)
         {
             _httpClient = httpClient;
             _localStorage = localStorage;
+            _authenticationService = authenticationService;
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            /*
+            // Instantiate the default unauthenticated state
+            var defaultState = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+
+            // Grab the access token, return the default state if no token is found
             var tokenResult = await _authenticationService.RequestAccessToken();
-
-            tokenResult.TryGetToken(out var accessToken);
-
-            if (accessToken is null)
+            if (tokenResult is null)
             {
-                return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+                return defaultState;
             }
 
+            // Attempt to retrieve the JWT, return the default state if none is found
+            tokenResult.TryGetToken(out var accessToken);
+            if (accessToken is null)
+            {
+                return defaultState;
+            }
+
+            // Attach the default header on all requests
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.Value);
 
             return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(accessToken.Value), "jwt")));
-            */
-            await Task.Delay(TimeSpan.FromMilliseconds(10));
-
-            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
 
         public void MarkUserAsAuthenticated(string email)
@@ -72,7 +80,7 @@
 
             if (roles != null)
             {
-                if (roles.ToString().Trim().StartsWith("["))
+                if (roles.ToString().Trim().StartsWith("[", StringComparison.CurrentCultureIgnoreCase))
                 {
                     var parsedRoles = JsonSerializer.Deserialize<string[]>(roles.ToString());
 
@@ -101,8 +109,12 @@
         {
             switch (base64.Length % 4)
             {
-                case 2: base64 += "=="; break;
-                case 3: base64 += "="; break;
+                case 2:
+                    base64 += "==";
+                    break;
+                case 3:
+                    base64 += "=";
+                    break;
             }
 
             return Convert.FromBase64String(base64);
