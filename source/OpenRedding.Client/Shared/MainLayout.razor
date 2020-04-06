@@ -3,9 +3,8 @@
 @using System.Security.Claims
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @inject NavigationManager NavigationManager
-@inject AuthenticationStateProvider State
+@inject AuthenticationStateProvider AuthenticationState
 @inject SignOutSessionStateManager SignOutManager
-@inject IAccessTokenProvider AuthenticationService 
 
 <MatAppBarContainer>
     <MatAppBar Fixed="true">
@@ -43,7 +42,7 @@
                 <MatNavMenu Style="margin-top: 5px;">
                     <AuthorizeView>
                         <Authorized>
-                            <MatNavItem Href="/about">
+                            <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.About))">
                                 <MatIcon Icon="account_tree"></MatIcon>&nbsp; About
                             </MatNavItem>
                             <MatNavItem Href="/salaries">
@@ -69,7 +68,7 @@
                             <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.Login))">
                                 <MatIcon Icon="perm_identity"></MatIcon>&nbsp; Login
                             </MatNavItem>
-                            <MatNavItem Href="/support">
+                            <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.GitHub))">
                                 <MatIcon Icon="code"></MatIcon>&nbsp; Support
                             </MatNavItem>
                         </NotAuthorized>
@@ -106,27 +105,13 @@
         var userEmail = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
         UserIdentity = userEmail is null ? user.Identity.Name : userEmail.Value;
 
-        var accessToken = await AuthenticationService.RequestAccessToken();
-
-        if (accessToken is null)
-        {
-            return;
-        }
-
-        Console.WriteLine(accessToken);
-        accessToken.TryGetToken(out var token);
-
-        if (token is null || string.IsNullOrWhiteSpace(token.Value))
-        {
-            return;
-        }
-
-        Console.WriteLine(token.Value);
+        var token = await AuthenticationState.GetAuthenticationStateAsync();
     }
 
     private enum NavigationContext
     {
         Home,
+        About,
         GitHub,
         Register,
         Login,
@@ -145,6 +130,9 @@
     {
         switch (context)
         {
+            case NavigationContext.About:
+                NavigationManager.NavigateTo("about");
+                break;
             case NavigationContext.GitHub:
                 NavigationManager.NavigateTo("https://github.com/joey32793/OpenRedding");
                 break;

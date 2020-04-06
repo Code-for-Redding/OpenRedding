@@ -8,30 +8,38 @@
     using System.Security.Claims;
     using System.Text.Json;
     using System.Threading.Tasks;
-    using Blazored.LocalStorage;
     using Microsoft.AspNetCore.Components.Authorization;
     using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+    using OpenRedding.Domain.Accounts.Services;
 
     public class OpenReddingAuthorizationStateProvider : AuthenticationStateProvider
     {
         private readonly HttpClient _httpClient;
-        private readonly ILocalStorageService _localStorage;
-        private readonly IAccessTokenProvider _authenticationService;
+        private readonly IAccessTokenProvider _accessTokenProvider;
+        private readonly IOpenReddingAuthenticationService _authenticationService;
 
-        public OpenReddingAuthorizationStateProvider(HttpClient httpClient, ILocalStorageService localStorage, IAccessTokenProvider authenticationService)
+        public OpenReddingAuthorizationStateProvider(HttpClient httpClient, IAccessTokenProvider accessTokenProvider, IOpenReddingAuthenticationService authenticationService)
         {
             _httpClient = httpClient;
-            _localStorage = localStorage;
+            _accessTokenProvider = accessTokenProvider;
             _authenticationService = authenticationService;
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            // Instantiate the default unauthenticated state
             var defaultState = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
 
+            Console.WriteLine("Retrieving authentication token");
+            var cachedAccessToken = await _authenticationService.GetRequestToken();
+
+            if (string.IsNullOrWhiteSpace(cachedAccessToken))
+            {
+                Console.WriteLine("No cached token found");
+                return defaultState;
+            }
+
             // Grab the access token, return the default state if no token is found
-            var tokenResult = await _authenticationService.RequestAccessToken();
+            var tokenResult = await _accessTokenProvider.RequestAccessToken();
             if (tokenResult is null)
             {
                 return defaultState;

@@ -52,7 +52,11 @@
                 var key = configuration["SendGridKey"];
                 services.TryAddTransient<IEmailSender>(_ => new SendGridEmailSender(key));
 
-                var builder = services.AddIdentityServer(options => options.Authentication.CookieLifetime = TimeSpan.FromHours(2))
+                var builder = services.AddIdentityServer(options =>
+                    {
+                        options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
+                        options.UserInteraction.LoginUrl = "/identity/account/login";
+                    })
                     .AddConfigurationStore(options => options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, DbContextOptions))
                     .AddOperationalStore(options => options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, DbContextOptions))
                     .AddAspNetIdentity<OpenReddingUser>();

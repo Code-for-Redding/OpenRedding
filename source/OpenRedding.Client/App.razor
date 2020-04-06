@@ -6,6 +6,15 @@
         <Router AppAssembly="@typeof(Program).Assembly">
             <Found Context="routeData">
                 <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                    <Authorizing>
+                        <div class="mat-layout-grid">
+                            <div class="mat-layout-grid-inner">
+                                <div class="mat-layout-grid-cell mat-layout-grid-cell-span-8">
+                                    <MatProgressBar Indeterminate="true"></MatProgressBar>
+                                </div>
+                            </div>
+                        </div>
+                    </Authorizing>
                     <NotAuthorized>
                         <RedirectToLogin />
                     </NotAuthorized>

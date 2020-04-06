@@ -17,7 +17,7 @@
         public static IEnumerable<ApiResource> Apis =>
             new ApiResource[]
             {
-                new ApiResource("open_redding_api", "Open Redding API")
+                new ApiResource(OpenReddingIdentityConstants.OpenReddingApiClientId, "Open Redding API")
                 {
                     Scopes = { new Scope(OpenReddingIdentityConstants.OpenReddingReadScope) }
                 }

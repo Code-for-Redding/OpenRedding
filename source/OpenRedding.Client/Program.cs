@@ -6,6 +6,8 @@ namespace OpenRedding.Client
     using Fluxor;
     using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
     using Microsoft.Extensions.DependencyInjection;
+    using OpenRedding.Client.Services;
+    using OpenRedding.Domain.Accounts.Services;
 
     public static class Program
     {
@@ -26,6 +28,9 @@ namespace OpenRedding.Client
                 options.ScanAssemblies(Assembly.GetExecutingAssembly());
                 options.UseReduxDevTools();
             });
+
+            // Add custom services
+            builder.Services.AddScoped<IOpenReddingAuthenticationService, OpenReddingAuthenticationService>();
 
             await builder
                 .Build()

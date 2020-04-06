@@ -1,5 +1,6 @@
 ﻿namespace OpenRedding.Identity.Areas.Identity.Pages.Account
 {
+    using System;
     using System.Diagnostics;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,7 @@
     using Microsoft.Extensions.Logging;
     using OpenRedding.Identity.Models;
     using OpenRedding.Infrastructure.Identity;
+    using OpenRedding.Shared.Validation;
 
     [AllowAnonymous]
     public class Login : PageModel
@@ -36,30 +38,28 @@
         [BindProperty]
         public LoginViewModel LoginModel { get; set; }
 
-#pragma warning disable CA1054 // Uri parameters should not be strings
-
-        public void OnGet(string? returnUrl = null)
-#pragma warning restore CA1054 // Uri parameters should not be strings
+        public void OnGet(Uri returnUrl)
         {
+            Validate.NotNull(returnUrl, nameof(returnUrl));
+
             if (!string.IsNullOrEmpty(ErrorMessage))
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
             }
 
-            ReturnUrl = returnUrl ?? Url.Content("~/");
+            ReturnUrl = string.IsNullOrWhiteSpace(returnUrl.OriginalString) ? Url.Content("~/") : returnUrl.OriginalString;
         }
 
-#pragma warning disable CA1054 // Uri parameters should not be strings
-
-        public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
-#pragma warning restore CA1054 // Uri parameters should not be strings
+        public async Task<IActionResult> OnPostAsync(Uri returnUrl)
         {
+            Validate.NotNull(returnUrl, nameof(returnUrl));
+
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            returnUrl ??= Url.Content("~/");
+            var scrubbedReturnUrl = string.IsNullOrWhiteSpace(returnUrl.OriginalString) ? Url.Content("~/") : returnUrl.OriginalString;
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, set lockoutOnFailure: true
@@ -68,7 +68,7 @@
             if (result.Succeeded)
             {
                 _logger.LogInformation($"User on request {Activity.Current?.Id ?? HttpContext.TraceIdentifier} has successfully signed in.");
-                return LocalRedirect(returnUrl);
+                return Redirect(scrubbedReturnUrl);
             }
 
             if (result.IsLockedOut)
