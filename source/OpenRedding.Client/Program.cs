@@ -4,10 +4,10 @@ namespace OpenRedding.Client
     using System.Threading.Tasks;
     using Blazored.LocalStorage;
     using Fluxor;
+    using Microsoft.AspNetCore.Components.Authorization;
     using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
     using Microsoft.Extensions.DependencyInjection;
     using OpenRedding.Client.Services;
-    using OpenRedding.Domain.Accounts.Services;
 
     public static class Program
     {
@@ -30,7 +30,7 @@ namespace OpenRedding.Client
             });
 
             // Add custom services
-            builder.Services.AddScoped<IOpenReddingAuthenticationService, OpenReddingAuthenticationService>();
+            builder.Services.AddScoped<AuthenticationStateProvider, OpenReddingAuthenticationStateProvider>();
 
             await builder
                 .Build()

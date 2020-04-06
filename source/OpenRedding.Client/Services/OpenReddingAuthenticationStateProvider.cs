@@ -8,21 +8,60 @@
     using System.Security.Claims;
     using System.Text.Json;
     using System.Threading.Tasks;
+    using Blazored.LocalStorage;
+    using IdentityModel.Client;
     using Microsoft.AspNetCore.Components.Authorization;
-    using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-    using OpenRedding.Domain.Accounts.Services;
+    using OpenRedding.Shared.Identity;
 
-    public class OpenReddingAuthorizationStateProvider : AuthenticationStateProvider
+    public class OpenReddingAuthenticationStateProvider : AuthenticationStateProvider
     {
-        private readonly HttpClient _httpClient;
-        private readonly IAccessTokenProvider _accessTokenProvider;
-        private readonly IOpenReddingAuthenticationService _authenticationService;
+        private const string AccessTokenKey = "access_token";
 
-        public OpenReddingAuthorizationStateProvider(HttpClient httpClient, IAccessTokenProvider accessTokenProvider, IOpenReddingAuthenticationService authenticationService)
+        private readonly HttpClient _httpClient;
+        private readonly ILocalStorageService _localStorageService;
+
+        public OpenReddingAuthenticationStateProvider(HttpClient httpClient, ILocalStorageService localStorageService)
         {
             _httpClient = httpClient;
-            _accessTokenProvider = accessTokenProvider;
-            _authenticationService = authenticationService;
+            _localStorageService = localStorageService;
+        }
+
+        public async Task<string?> GetRequestToken()
+        {
+            Console.WriteLine("Retrieving cached key...");
+            if (await _localStorageService.ContainKeyAsync(AccessTokenKey))
+            {
+                Console.WriteLine("Cached token found");
+                return await _localStorageService.GetItemAsync<string?>(AccessTokenKey);
+            }
+
+            Console.WriteLine("No token found, attempting call for access token...");
+            using var clientProperties = new TokenRequest
+            {
+                Address = "https://localhost:5003/connect/token",
+                GrantType = "code",
+
+                ClientId = OpenReddingIdentityConstants.BlazorClientId,
+
+                Parameters =
+                {
+                    { "scope", OpenReddingIdentityConstants.OpenReddingReadScope }
+                }
+            };
+
+            Console.WriteLine("Calling token endpoint...");
+            var clientToken = await _httpClient.RequestTokenAsync(clientProperties);
+
+            if (clientToken?.IsError != false)
+            {
+                Console.WriteLine("No token returnped, unauthorized request attempt");
+                return string.Empty;
+            }
+
+            Console.WriteLine("Token request successful, caching access token");
+            await _localStorageService.SetItemAsync(AccessTokenKey, clientToken.AccessToken);
+
+            return clientToken.AccessToken;
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -30,7 +69,7 @@
             var defaultState = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
 
             Console.WriteLine("Retrieving authentication token");
-            var cachedAccessToken = await _authenticationService.GetRequestToken();
+            var cachedAccessToken = await GetRequestToken();
 
             if (string.IsNullOrWhiteSpace(cachedAccessToken))
             {
@@ -38,24 +77,10 @@
                 return defaultState;
             }
 
-            // Grab the access token, return the default state if no token is found
-            var tokenResult = await _accessTokenProvider.RequestAccessToken();
-            if (tokenResult is null)
-            {
-                return defaultState;
-            }
-
-            // Attempt to retrieve the JWT, return the default state if none is found
-            tokenResult.TryGetToken(out var accessToken);
-            if (accessToken is null)
-            {
-                return defaultState;
-            }
-
             // Attach the default header on all requests
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.Value);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", cachedAccessToken);
 
-            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(accessToken.Value), "jwt")));
+            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(cachedAccessToken), "jwt")));
         }
 
         public void MarkUserAsAuthenticated(string email)
