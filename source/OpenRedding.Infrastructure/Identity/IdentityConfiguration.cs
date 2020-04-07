@@ -19,7 +19,13 @@
             {
                 new ApiResource(OpenReddingIdentityConstants.OpenReddingApiClientId, "Open Redding API")
                 {
-                    Scopes = { new Scope(OpenReddingIdentityConstants.OpenReddingReadScope) }
+                    Scopes =
+                    {
+                        new Scope(OpenReddingIdentityConstants.OpenReddingReadScope),
+                        new Scope(new IdentityResources.OpenId().Name),
+                        new Scope(new IdentityResources.Profile().Name),
+                        new Scope(new IdentityResources.Email().Name)
+                    }
                 }
             };
 
@@ -31,19 +37,17 @@
                     ClientId = OpenReddingIdentityConstants.BlazorClientId,
                     ClientName = "Open Redding SPA Client",
                     ClientUri = "http://localhost:5001",
+                    ClientSecrets = { new Secret("test") },
 
                     AllowedGrantTypes = GrantTypes.Code,
                     AllowedScopes = { "openid", "profile", "email", OpenReddingIdentityConstants.OpenReddingReadScope },
-                    RequirePkce = true,
+                    RequirePkce = false,
                     RequireClientSecret = false,
-                    PostLogoutRedirectUris = { "http://localhost:5003" },
-                    AllowedCorsOrigins = { "http://localhost:5003" },
+                    PostLogoutRedirectUris = { "https://localhost:5001" },
+                    AllowedCorsOrigins = { "https://localhost:5001" },
                     RedirectUris =
                     {
-                        "http://localhost:5003/index.html",
-                        "http://localhost:5003/callback.html",
-                        "http://localhost:5003/silent.html",
-                        "http://localhost:5003/popup.html",
+                        "https://localhost:5003"
                     }
                 }
             };

@@ -6,10 +6,12 @@
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Security.Claims;
+    using System.Text;
     using System.Text.Json;
     using System.Threading.Tasks;
     using Blazored.LocalStorage;
     using IdentityModel.Client;
+    using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.Components.Authorization;
     using OpenRedding.Shared.Identity;
 
@@ -19,29 +21,36 @@
 
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorageService;
+        private readonly NavigationManager _navigationManager;
 
-        public OpenReddingAuthenticationStateProvider(HttpClient httpClient, ILocalStorageService localStorageService)
+        public OpenReddingAuthenticationStateProvider(HttpClient httpClient, ILocalStorageService localStorageService, NavigationManager navigationManager)
         {
             _httpClient = httpClient;
             _localStorageService = localStorageService;
+            _navigationManager = navigationManager;
         }
 
         public async Task<string?> GetRequestToken()
         {
-            Console.WriteLine("Retrieving cached key...");
+            Console.WriteLine("Attempting to retrieve cached token...");
             if (await _localStorageService.ContainKeyAsync(AccessTokenKey))
             {
                 Console.WriteLine("Cached token found");
                 return await _localStorageService.GetItemAsync<string?>(AccessTokenKey);
             }
 
-            Console.WriteLine("No token found, attempting call for access token...");
-            using var clientProperties = new TokenRequest
+            Console.WriteLine("No token found, attempting call for authorization token...");
+            await GetAuthorizationCode();
+
+            Console.WriteLine("Initializing client token request...");
+            using var clientProperties = new AuthorizationCodeTokenRequest
             {
                 Address = "https://localhost:5003/connect/token",
-                GrantType = "code",
-
                 ClientId = OpenReddingIdentityConstants.BlazorClientId,
+                RedirectUri = _navigationManager.BaseUri,
+                GrantType = "code",
+                ClientSecret = "test",
+                Code = "code",
 
                 Parameters =
                 {
@@ -50,7 +59,7 @@
             };
 
             Console.WriteLine("Calling token endpoint...");
-            var clientToken = await _httpClient.RequestTokenAsync(clientProperties);
+            var clientToken = await _httpClient.RequestAuthorizationCodeTokenAsync(clientProperties);
 
             if (clientToken?.IsError != false)
             {
@@ -151,6 +160,34 @@
             }
 
             return Convert.FromBase64String(base64);
+        }
+
+        private async Task GetAuthorizationCode()
+        {
+            Console.WriteLine("Calling discovery endpoint...");
+            var discoveryEndpointResponse = await _httpClient.GetDiscoveryDocumentAsync("https://localhost:5003/.well-known/openid-configuration");
+
+            if (discoveryEndpointResponse?.IsError != false)
+            {
+                Console.WriteLine("No response form discover endpoint, unauthorized attempt");
+                throw new UnauthorizedAccessException("Discovery endpoint was not available");
+            }
+
+            var scopes = OpenReddingIdentityConstants.Scopes
+                .Aggregate((current, next) => $"{current} {next}");
+
+            var requestUriWithQueryParameters = new StringBuilder(discoveryEndpointResponse.AuthorizeEndpoint)
+                .Append("?client_id=").Append(OpenReddingIdentityConstants.BlazorClientId)
+                .Append("&response_type=code")
+                .Append("&state=").Append(Guid.NewGuid())
+                .Append("&redirect_uri=").Append(_navigationManager.BaseUri)
+                .Append("&scope=").Append(scopes);
+
+            var authorizationCodeRequestUri = new Uri(requestUriWithQueryParameters.ToString());
+
+            Console.WriteLine("Requesting authorization code...");
+            var authorizationCodeResponse = await _httpClient.GetAsync(authorizationCodeRequestUri);
+            authorizationCodeResponse.EnsureSuccessStatusCode();
         }
     }
 }
