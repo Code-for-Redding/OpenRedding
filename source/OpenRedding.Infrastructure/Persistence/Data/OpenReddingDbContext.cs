@@ -7,12 +7,10 @@
     using Core.Data;
     using Domain.Salaries.Entities;
     using EFCore.BulkExtensions;
-    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
-    using OpenRedding.Infrastructure.Identity;
 
-    public class OpenReddingDbContext : IdentityDbContext<OpenReddingUser>, IOpenReddingDbContext
+    public class OpenReddingDbContext : DbContext, IOpenReddingDbContext
     {
         private static readonly ILoggerFactory ConsoleLogger = LoggerFactory.Create(builder => builder.AddConsole());
 

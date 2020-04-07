@@ -4,6 +4,7 @@
     using System.Reflection;
     using Core.Data;
     using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.EntityFrameworkCore;
@@ -39,14 +40,12 @@
             // Add Dapper dependencies
             services.TryAddScoped<IUnitOfWork>(_ => new UnitOfWork(connectionString));
 
-            // Add custom services
-            // services.AddHttpClient<ISalaryTableSeeder, SalaryTableSeeder>(options => options.Timeout = TimeSpan.FromSeconds(30));
             if (addIdentityServer)
             {
                 // Add Identity and IS4
+                services.AddDbContext<OpenReddingIdentityDbContext>(options => options.UseSqlServer(connectionString, DbContextOptions));
                 services.AddIdentity<OpenReddingUser, IdentityRole>()
-                    .AddEntityFrameworkStores<OpenReddingDbContext>()
-                    .AddDefaultTokenProviders();
+                    .AddEntityFrameworkStores<OpenReddingIdentityDbContext>();
 
                 // Add SendGrid
                 var key = configuration["SendGridKey"];
@@ -56,10 +55,13 @@
                     {
                         options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
                         options.UserInteraction.LoginUrl = "/identity/account/login";
+                        options.Endpoints.EnableAuthorizeEndpoint = true;
+                        options.Endpoints.EnableDiscoveryEndpoint = true;
+                        options.Endpoints.EnableTokenEndpoint = true;
                     })
                     .AddConfigurationStore(options => options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, DbContextOptions))
                     .AddOperationalStore(options => options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, DbContextOptions))
-                    .AddAspNetIdentity<OpenReddingUser>();
+                    .AddApiAuthorization<OpenReddingUser, OpenReddingIdentityDbContext>();
 
                 builder.AddDeveloperSigningCredential();
 

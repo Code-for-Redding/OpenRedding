@@ -32,7 +32,6 @@ namespace OpenRedding.Client
 
             // Add custom services
             builder.Services.AddScoped<IOpenReddingOAuth2Service, OpenReddingOAuth2Service>();
-            builder.Services.AddScoped<AuthenticationStateProvider, OpenReddingAuthenticationStateProvider>();
 
             await builder
                 .Build()
