@@ -25,7 +25,9 @@
                         new Scope(new IdentityResources.OpenId().Name),
                         new Scope(new IdentityResources.Profile().Name),
                         new Scope(new IdentityResources.Email().Name)
-                    }
+                    },
+
+                    ApiSecrets = { new Secret("test") },
                 }
             };
 
@@ -36,7 +38,7 @@
                 {
                     ClientId = OpenReddingIdentityConstants.BlazorClientId,
                     ClientName = "Open Redding SPA Client",
-                    ClientUri = "http://localhost:5001",
+                    ClientUri = "https://localhost:5001",
                     ClientSecrets = { new Secret("test") },
 
                     AllowedGrantTypes = GrantTypes.Code,

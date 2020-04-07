@@ -8,6 +8,7 @@ namespace OpenRedding.Client
     using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
     using Microsoft.Extensions.DependencyInjection;
     using OpenRedding.Client.Services;
+    using OpenRedding.Domain.Accounts.Services;
 
     public static class Program
     {
@@ -30,6 +31,7 @@ namespace OpenRedding.Client
             });
 
             // Add custom services
+            builder.Services.AddScoped<IOpenReddingOAuth2Service, OpenReddingOAuth2Service>();
             builder.Services.AddScoped<AuthenticationStateProvider, OpenReddingAuthenticationStateProvider>();
 
             await builder

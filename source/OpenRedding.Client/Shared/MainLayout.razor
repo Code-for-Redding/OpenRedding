@@ -135,10 +135,10 @@
                 NavigationManager.NavigateTo("https://github.com/joey32793/OpenRedding");
                 break;
             case NavigationContext.Register:
-                NavigationManager.NavigateTo("https://localhost:5003/identity/account/register?returnUrl=https://localhost:5001");
+                NavigationManager.NavigateTo("authentication/register");
                 break;
             case NavigationContext.Login:
-                NavigationManager.NavigateTo("https://localhost:5003/identity/account/login?returnUrl=https://localhost:5001");
+                NavigationManager.NavigateTo("authentication/login");
                 break;
             case NavigationContext.Logout:
                 var logoutGuid = Guid.NewGuid();

@@ -4,8 +4,10 @@
 
     public interface IOpenReddingOAuth2Service
     {
-        Task<string?> GetActivationCode();
-
         Task<string?> GetAccessToken();
+
+        Task<string?> GetCachedAccessToken(bool intializeTokeRequest = false);
+
+        Task<string?> GetAuthorizationCode();
     }
 }
