@@ -25,7 +25,7 @@
             Validate.NotNull(configuration, nameof(configuration));
 
             var connectionString = configuration["ConnectionString"];
-            var migrationsAssembly = Assembly.GetExecutingAssembly().GetName().Name;
+            var migrationsAssembly = Assembly.GetExecutingAssembly().FullName;
             void DbContextOptions(SqlServerDbContextOptionsBuilder builder)
             {
                 // Configuring Connection Resiliency: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
@@ -45,7 +45,8 @@
                 // Add Identity and IS4
                 services.AddDbContext<OpenReddingIdentityDbContext>(options => options.UseSqlServer(connectionString, DbContextOptions));
                 services.AddIdentity<OpenReddingUser, IdentityRole>()
-                    .AddEntityFrameworkStores<OpenReddingIdentityDbContext>();
+                    .AddEntityFrameworkStores<OpenReddingIdentityDbContext>()
+                    .AddDefaultTokenProviders();
 
                 // Add SendGrid
                 var key = configuration["SendGridKey"];
@@ -59,10 +60,14 @@
                         options.Endpoints.EnableDiscoveryEndpoint = true;
                         options.Endpoints.EnableTokenEndpoint = true;
                     })
-                    .AddConfigurationStore(options => options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, DbContextOptions))
-                    .AddOperationalStore(options => options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, DbContextOptions))
+                    .AddInMemoryApiResources(IdentityConfiguration.Apis)
+                    .AddInMemoryClients(IdentityConfiguration.ApiClients)
+                    .AddInMemoryIdentityResources(IdentityConfiguration.Resources)
+                    .AddInMemoryPersistedGrants()
                     .AddApiAuthorization<OpenReddingUser, OpenReddingIdentityDbContext>();
 
+                    // .AddConfigurationStore(options => options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, DbContextOptions))
+                    // .AddOperationalStore(options => options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, DbContextOptions))
                 builder.AddDeveloperSigningCredential();
 
                 services.AddAuthentication()

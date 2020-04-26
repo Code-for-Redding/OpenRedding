@@ -27,7 +27,7 @@
                         new Scope(new IdentityResources.Email().Name)
                     },
 
-                    ApiSecrets = { new Secret("test") },
+                    ApiSecrets = { new Secret("test") }
                 }
             };
 
@@ -45,12 +45,9 @@
                     AllowedScopes = { "openid", "profile", "email", OpenReddingIdentityConstants.OpenReddingReadScope },
                     RequirePkce = false,
                     RequireClientSecret = false,
-                    PostLogoutRedirectUris = { "https://localhost:5001" },
-                    AllowedCorsOrigins = { "https://localhost:5001" },
-                    RedirectUris =
-                    {
-                        "https://localhost:5003"
-                    }
+                    PostLogoutRedirectUris = { "https://localhost:5001/" },
+                    AllowedCorsOrigins = { "https://localhost:5001/" },
+                    RedirectUris = { "https://localhost:5001/" },
                 }
             };
     }

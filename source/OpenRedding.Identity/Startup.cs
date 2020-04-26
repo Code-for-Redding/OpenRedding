@@ -17,6 +17,7 @@
     using OpenRedding.Identity.Middleware;
     using OpenRedding.Infrastructure.Extensions;
     using OpenRedding.Infrastructure.Identity;
+    using OpenRedding.Infrastructure.Persistence.Data;
     using OpenRedding.Shared.Validation;
 
     public class Startup
@@ -55,8 +56,7 @@
 
         public void Configure(IApplicationBuilder app)
         {
-            InitializeIdentityConfigurationTables(app);
-
+            // InitializeIdentityConfigurationTables(app);
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -92,7 +92,7 @@
                 .CreateScope();
 
             serviceScope.ServiceProvider
-                .GetRequiredService<PersistedGrantDbContext>()
+                .GetRequiredService<OpenReddingIdentityDbContext>()
                 .Database
                 .Migrate();
 

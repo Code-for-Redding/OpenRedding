@@ -2,8 +2,10 @@
 {
     public static class OpenReddingIdentityConstants
     {
-        public const string BlazorClientId = "open_redding_ui";
-        public const string OpenReddingApiClientId = "open_redding_api";
+        // TODO: If this client ID is changed, you must updated appsettings.json in the
+        // OpenRedding.Client project for configuration purposes
+        public const string BlazorClientId = "OpenRedding.Client";
+        public const string OpenReddingApiClientId = "OpenRedding.Api";
         public const string OpenReddingReadScope = "read:open_redding_api";
 
         public static readonly string[] Scopes =

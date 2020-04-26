@@ -18,14 +18,14 @@
                 {
                     <MatIconButton Icon="menu" @onclick="OnMenuButtonClick"></MatIconButton>
                 }
-                <MatAppBarTitle Style="cursor: pointer;" @onclick="(_ => NavigateToPage(NavigationContext.Home))"><span class="comfortaa">Open Redding</span></MatAppBarTitle>
+                <MatAppBarTitle Style="cursor: pointer;" @onclick="(() => NavigateToPage(NavigationContext.Home))"><span class="comfortaa">Open Redding</span></MatAppBarTitle>
             </MatAppBarSection>
             <MatAppBarSection Align="@MatAppBarSectionAlign.End">
                 <AuthorizeView>
                     <Authorized>
                         <MatButton Style="text-transform: initial;" Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Salaries))" TrailingIcon="account_balance">Salaries</MatButton>
                         <MatButton Style="text-transform: initial;" Dense="true" Disabled="true" OnClick="(() => NavigateToPage(NavigationContext.Budget))" TrailingIcon="monetization_on">Budget</MatButton>
-                        <MatButton Style="text-transform: initial;" Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.UserProfile))" TrailingIcon="account_circle">@UserIdentity</MatButton>
+                        <MatButton Style="text-transform: initial;" Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.UserProfile))" TrailingIcon="verified_user">@UserIdentity</MatButton>
                         <MatButton Style="text-transform: initial;" Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Logout))" TrailingIcon="play_for_work">Logout</MatButton>
                     </Authorized>
                     <NotAuthorized>
@@ -135,10 +135,10 @@
                 NavigationManager.NavigateTo("https://github.com/joey32793/OpenRedding");
                 break;
             case NavigationContext.Register:
-                NavigationManager.NavigateTo("authentication/register");
+                NavigationManager.NavigateTo($"authentication/register?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}");
                 break;
             case NavigationContext.Login:
-                NavigationManager.NavigateTo("authentication/login");
+                NavigationManager.NavigateTo($"authentication/login?returnUrl={Uri.EscapeDataString(NavigationManager.Uri)}/");
                 break;
             case NavigationContext.Logout:
                 var logoutGuid = Guid.NewGuid();
