@@ -1,6 +1,5 @@
 ﻿@inherits LayoutComponentBase
 
-@using System.Security.Claims
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
 @inject NavigationManager NavigationManager
@@ -25,12 +24,15 @@
                     <Authorized>
                         <MatButton Style="text-transform: initial;" Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Salaries))" TrailingIcon="account_balance">Salaries</MatButton>
                         <MatButton Style="text-transform: initial;" Dense="true" Disabled="true" OnClick="(() => NavigateToPage(NavigationContext.Budget))" TrailingIcon="monetization_on">Budget</MatButton>
-                        <MatButton Style="text-transform: initial;" Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.UserProfile))" TrailingIcon="verified_user">@UserIdentity</MatButton>
+                        <MatButton Style="text-transform: initial;" Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.UserProfile))" TrailingIcon="verified_user">@context.User.Identity.Name</MatButton>
                         <MatButton Style="text-transform: initial;" Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Logout))" TrailingIcon="play_for_work">Logout</MatButton>
                     </Authorized>
                     <NotAuthorized>
+                        @*
                         <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Register))" TrailingIcon="verified_user">Register</MatButton>
+                        *@
                         <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Login))" TrailingIcon="perm_identity">Login</MatButton>
+                        <MatButton Style="text-transform: initial;" Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Logout))" TrailingIcon="play_for_work">Logout</MatButton>
                     </NotAuthorized>
                 </AuthorizeView>
             </MatAppBarSection>
@@ -62,9 +64,11 @@
                             <MatNavItem Href="/about">
                                 <MatIcon Icon="account_tree"></MatIcon>&nbsp; About
                             </MatNavItem>
+                            @*
                             <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.Register))">
                                 <MatIcon Icon="verified_user"></MatIcon>&nbsp; Register
                             </MatNavItem>
+                            *@
                             <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.Login))">
                                 <MatIcon Icon="perm_identity"></MatIcon>&nbsp; Login
                             </MatNavItem>
@@ -87,12 +91,9 @@
 
 @code
 {
+    @*
     [CascadingParameter]
     private Task<AuthenticationState>? authenticationStateTask { get; set; }
-
-    private string? UserIdentity { get; set; }
-
-    private bool isOpen = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -105,6 +106,10 @@
         var userEmail = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
         UserIdentity = userEmail is null ? user.Identity.Name : userEmail.Value;
     }
+    *@
+    private string? UserIdentity { get; set; }
+
+    private bool isOpen = false;
 
     private enum NavigationContext
     {

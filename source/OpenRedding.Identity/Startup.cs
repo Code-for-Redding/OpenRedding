@@ -42,6 +42,16 @@
             services.AddMediatR(executingAssembly);
             services.AddValidatorsFromAssembly(executingAssembly);
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Identity Default", policy =>
+                {
+                    policy.WithOrigins("https://localhost:5001")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
+
             // Add MediatR middleware
             services.TryAddTransient(typeof(IPipelineBehavior<,>), typeof(IdentityRequestValidationBehavior<,>));
 
@@ -56,20 +66,21 @@
 
         public void Configure(IApplicationBuilder app)
         {
-            // InitializeIdentityConfigurationTables(app);
+            InitializeIdentityConfigurationTables(app);
+
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Identity/Error");
             }
 
             // Enable ASP.NET Core specific middleware
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors("Identity Default");
 
             // Auth middleware
             app.UseAuthentication();

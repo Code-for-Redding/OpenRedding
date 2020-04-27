@@ -17,7 +17,7 @@ namespace OpenRedding.Client
     {
         public static async Task Main(string[] args)
         {
-            const string OpenReddingDomain = "https://localhost:5001/";
+            const string OpenReddingDomain = "https://localhost:5001";
             const string IdentityServerDomain = "https://localhost:5003";
 
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -36,8 +36,6 @@ namespace OpenRedding.Client
 
             builder.Services.AddOidcAuthentication(options =>
             {
-                builder.Configuration.Bind("Local", options.ProviderOptions);
-
                 options.AuthenticationPaths.LogInPath = $"{IdentityServerDomain}/identity/account/login?returnUrl={OpenReddingDomain}";
                 options.AuthenticationPaths.LogInCallbackPath = OpenReddingDomain;
                 options.AuthenticationPaths.LogInFailedPath = $"{IdentityServerDomain}/identity/account/login?returnUrl={OpenReddingDomain}";
@@ -47,17 +45,24 @@ namespace OpenRedding.Client
                 options.AuthenticationPaths.LogOutFailedPath = OpenReddingDomain;
                 options.AuthenticationPaths.LogOutSucceededPath = OpenReddingDomain;
 
-                options.AuthenticationPaths.RegisterPath = $"{IdentityServerDomain}/identity/account/register";
-
-                options.UserOptions.AuthenticationType = $"{IdentityServerDomain}/_configuration/{OpenReddingIdentityConstants.BlazorClientId}";
+                /*
+                options.AuthenticationPaths.RegisterPath = $"{IdentityServerDomain}/identity/account/register?returnUrl={OpenReddingDomain}";
+                options.AuthenticationPaths.RemoteRegisterPath = $"{IdentityServerDomain}/identity/account/register?returnUrl={OpenReddingDomain}";
+                */
 
                 options.ProviderOptions.Authority = IdentityServerDomain;
                 options.ProviderOptions.ClientId = OpenReddingIdentityConstants.BlazorClientId;
+                options.ProviderOptions.RedirectUri = $"{OpenReddingDomain}/";
+                options.ProviderOptions.ResponseMode = "query";
+                options.ProviderOptions.ResponseType = "token";
+                options.UserOptions.AuthenticationType = $"{IdentityServerDomain}/_configuration/{OpenReddingIdentityConstants.BlazorClientId}";
 
                 foreach (var scope in OpenReddingIdentityConstants.Scopes)
                 {
                     options.ProviderOptions.DefaultScopes.Add(scope);
                 }
+
+                builder.Configuration.Bind("Local", options.ProviderOptions);
             });
 
             builder.Services.AddFluxor(options =>

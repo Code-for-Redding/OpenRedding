@@ -4,7 +4,6 @@
     using System.Reflection;
     using Core.Data;
     using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Identity.UI.Services;
     using Microsoft.EntityFrameworkCore;
@@ -60,14 +59,10 @@
                         options.Endpoints.EnableDiscoveryEndpoint = true;
                         options.Endpoints.EnableTokenEndpoint = true;
                     })
-                    .AddInMemoryApiResources(IdentityConfiguration.Apis)
-                    .AddInMemoryClients(IdentityConfiguration.ApiClients)
-                    .AddInMemoryIdentityResources(IdentityConfiguration.Resources)
-                    .AddInMemoryPersistedGrants()
+                    .AddConfigurationStore(options => options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, DbContextOptions))
+                    .AddOperationalStore(options => options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, DbContextOptions))
                     .AddApiAuthorization<OpenReddingUser, OpenReddingIdentityDbContext>();
 
-                    // .AddConfigurationStore(options => options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, DbContextOptions))
-                    // .AddOperationalStore(options => options.ConfigureDbContext = builder => builder.UseSqlServer(connectionString, DbContextOptions))
                 builder.AddDeveloperSigningCredential();
 
                 services.AddAuthentication()

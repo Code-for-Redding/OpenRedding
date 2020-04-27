@@ -39,15 +39,13 @@
                     ClientId = OpenReddingIdentityConstants.BlazorClientId,
                     ClientName = "Open Redding SPA Client",
                     ClientUri = "https://localhost:5001",
-                    ClientSecrets = { new Secret("test") },
 
-                    AllowedGrantTypes = GrantTypes.Code,
+                    AllowedGrantTypes = GrantTypes.Implicit,
                     AllowedScopes = { "openid", "profile", "email", OpenReddingIdentityConstants.OpenReddingReadScope },
-                    RequirePkce = false,
-                    RequireClientSecret = false,
+                    AllowedCorsOrigins = { "https://localhost:5001" },
                     PostLogoutRedirectUris = { "https://localhost:5001/" },
-                    AllowedCorsOrigins = { "https://localhost:5001/" },
                     RedirectUris = { "https://localhost:5001/" },
+                    RequireConsent = false
                 }
             };
     }
