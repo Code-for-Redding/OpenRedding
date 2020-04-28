@@ -36,9 +36,9 @@ namespace OpenRedding.Client
 
             builder.Services.AddOidcAuthentication(options =>
             {
-                options.AuthenticationPaths.LogInPath = $"{IdentityServerDomain}/identity/account/login?returnUrl={OpenReddingDomain}";
+                options.AuthenticationPaths.LogInPath = $"{IdentityServerDomain}/identity/account/login";
                 options.AuthenticationPaths.LogInCallbackPath = OpenReddingDomain;
-                options.AuthenticationPaths.LogInFailedPath = $"{IdentityServerDomain}/identity/account/login?returnUrl={OpenReddingDomain}";
+                options.AuthenticationPaths.LogInFailedPath = $"{IdentityServerDomain}/identity/account/login";
 
                 options.AuthenticationPaths.LogOutPath = $"{IdentityServerDomain}/identity/account/logout";
                 options.AuthenticationPaths.LogOutCallbackPath = OpenReddingDomain;
