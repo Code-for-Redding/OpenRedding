@@ -1,29 +1,9 @@
 ﻿@page "/salaries"
 
-@using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication 
-
 @inject NavigationManager Navigation
 @inject HttpClient HttpClient
-@inject IAccessTokenProvider AuthenticationService 
-
-@attribute [Authorize]
 
 <MatH2>Salaries</MatH2>
 
 @code {
-    protected override async Task OnInitializedAsync()
-    {
-        var tokenResult = await AuthenticationService.RequestAccessToken();
-
-        if (tokenResult.TryGetToken(out var token))
-        {
-            HttpClient.DefaultRequestHeaders.Add("Authorization",
-                $"Bearer {token.Value}");
-        }
-        else
-        {
-            Navigation.NavigateTo(tokenResult.RedirectUrl);
-        }
-    }
-} 
+}
