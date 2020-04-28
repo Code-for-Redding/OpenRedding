@@ -60,10 +60,6 @@
         Home,
         About,
         GitHub,
-        Register,
-        Login,
-        Logout,
-        UserProfile,
         Salaries,
         Budget
     }
@@ -77,6 +73,9 @@
     {
         switch (context)
         {
+            case NavigationContext.Salaries:
+                NavigationManager.NavigateTo("salaries");
+                break;
             case NavigationContext.About:
                 NavigationManager.NavigateTo("about");
                 break;
