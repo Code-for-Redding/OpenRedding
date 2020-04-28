@@ -1,37 +1,83 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">OpenRedding.Spa</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
+﻿@inject NavigationManager NavigationManager
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </li>
-    </ul>
-</div>
+<MatAppBarContainer>
+    <MatAppBar Fixed="true">
+        <MatAppBarRow>
+            <MatAppBarSection>
+                <MatIconButton Icon="menu" @onclick="OnMenuButtonClick"></MatIconButton>
+                <MatAppBarTitle Style="cursor: pointer;" @onclick="(_ => NavigateToPage(NavigationContext.Home))">Open Redding</MatAppBarTitle>
+            </MatAppBarSection>
+            <MatAppBarSection Align="@MatAppBarSectionAlign.End">
+                <MatIconButton Icon="code" @onclick="(_ => NavigateToPage(NavigationContext.GitHub))"></MatIconButton>
+            </MatAppBarSection>
+        </MatAppBarRow>
+    </MatAppBar>
+    <MatAppBarContent>
+        <MatDrawerContainer Style="width: 100vw; height: 100vh;">
+            <MatDrawer @bind-Opened="@isOpen" Mode="@MatDrawerMode.Modal">
+                <MatNavMenu>
+                    <MatNavItem>Item 1</MatNavItem>
+                    <MatNavItem Disabled="true">Item 2</MatNavItem>
+                    <MatNavSubMenu @bind-Expanded="@navSubMenuOpenState">
+                        <MatNavSubMenuHeader>
+                            <MatNavItem AllowSelection="false"><MatIcon Icon="all_inbox"></MatIcon>&nbsp; Item 3 - Expanded: @navSubMenuOpenState</MatNavItem>
+                        </MatNavSubMenuHeader>
+                        <MatNavSubMenuList>
+                            <MatNavItem Href="#">Item 3.A&nbsp; <MatIcon Icon="backup"></MatIcon></MatNavItem>
+                            <MatNavItem>Item 3.B&nbsp; <MatIcon Icon="build"></MatIcon></MatNavItem>
+                            <MatNavItem>Item 3.C&nbsp; <MatIcon Icon="explore"></MatIcon></MatNavItem>
+                        </MatNavSubMenuList>
+                    </MatNavSubMenu>
+                    <MatNavItem><MatIcon Icon="grade"></MatIcon>&nbsp; Item 4 </MatNavItem>
+                    <MatDivider></MatDivider>
+                    <MatNavItem><MatIcon Icon="face"></MatIcon>&nbsp; Item 5</MatNavItem>
+                    <MatNavSubMenu>
+                        <MatNavSubMenuHeader>
+                            <MatNavItem AllowSelection="false"><MatIcon Icon="explore"></MatIcon>&nbsp; Item 6</MatNavItem>
+                        </MatNavSubMenuHeader>
+                        <MatNavSubMenuList>
+                            <MatNavItem Disabled="true" Href="#">Item 6.A</MatNavItem>
+                            <MatNavItem>Item 6.B</MatNavItem>
+                            <MatNavItem>Item 6.C</MatNavItem>
+                        </MatNavSubMenuList>
+                    </MatNavSubMenu>
+                    <MatNavItem Href="https://blazorboilerplate.com/">Blazor Boilerplate - Href</MatNavItem>
+                    <MatNavItem Href="https://www.matblazor.com/">MatBlazor - Href</MatNavItem>
+                </MatNavMenu>
+            </MatDrawer>
+            <MatDrawerContent>
+                <p>Page Content</p>
+            </MatDrawerContent>
+        </MatDrawerContainer>
+    </MatAppBarContent>
+</MatAppBarContainer>
 
-@code {
-    private bool collapseNavMenu = true;
-
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+@code
+{
+    private enum NavigationContext
     {
-        collapseNavMenu = !collapseNavMenu;
+        Home,
+        GitHub
+    }
+
+    private bool isOpen = false;
+    private bool navSubMenuOpenState;
+
+    private void OnMenuButtonClick()
+    {
+        isOpen = !isOpen;
+    }
+
+    private void NavigateToPage(NavigationContext context)
+    {
+        switch (context)
+        {
+            case NavigationContext.GitHub:
+                NavigationManager.NavigateTo("https://github.com/joey32793/OpenRedding");
+                break;
+            default:
+                NavigationManager.NavigateTo("/");
+                break;
+        }
     }
 }

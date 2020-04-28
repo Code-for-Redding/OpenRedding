@@ -1,0 +1,27 @@
+﻿@page
+@model Logout
+@{
+    ViewData["Title"] = "Log out";
+}
+
+<div class="row align-self-center w-100">
+    <div class="col-6 mx-auto">
+        <div class="card">
+            <div class="card-body text-center">
+                <h4>Heading out?</h4>
+                <p>If you're ready to sign out, please confirm by clicking below.</p>
+                <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div class="d-flex justify-content-center py-2">
+                        <button type="submit" class="btn btn-primary">Logout</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex mx-auto">
+                    <i onclick="window.open('https://github.com/joey32793/OpenRedding')" class="fab fa-github fa-2x px-2"></i>
+                    <i onclick="window.open('https://registry.jsonresume.org/joey32793')" class="fas fa-code fa-2x px-2"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+﻿@page
+@model AccessDenied
+@{
+    ViewData["Title"] = "Access denied";
+}
+
+<div class="row align-self-center w-100">
+    <div class="col-6 mx-auto">
+        <div class="card border-warning">
+            <div class="card-body text-center">
+                <h4>Nice try...</h4>
+                <p>You do not have access to this resource.</p>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex">
+                    <div class="mr-auto">
+                        <a asp-area="Identity" asp-page="/About" class="px-2">About</a>
+                        <a asp-area="Identity" asp-page="/Account/Login" class="px-2">Login</a>
+                        <a asp-area="Identity" asp-page="/Account/Register">Register</a>
+                    </div>
+                    <i onclick="window.open('https://github.com/joey32793/OpenRedding')" class="fab fa-github fa-2x px-2"></i>
+                    <i onclick="window.open('https://registry.jsonresume.org/joey32793')" class="fas fa-code fa-2x px-2"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

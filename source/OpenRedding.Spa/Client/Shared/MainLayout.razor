@@ -1,16 +1,55 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="sidebar">
-    <NavMenu />
-</div>
+@inject NavigationManager Navigation
 
-<div class="main">
-    <div class="top-row px-4 auth">
-        <LoginDisplay />
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-    </div>
+<MatAppBarContainer>
+    <MatAppBar Fixed="true">
+        <MatAppBarRow>
+            <MatAppBarSection>
+                @if (isOpen)
+                {
+                    <MatIconButton Icon="format_indent_decrease" @onclick="OnMenuButtonClick"></MatIconButton>
+                }
+                else
+                {
+                    <MatIconButton Icon="menu" @onclick="OnMenuButtonClick"></MatIconButton>
+                }
+                <MatAppBarTitle Style="cursor: pointer;" @onclick="NavigateToHome"><span class="comfortaa">Open Redding</span></MatAppBarTitle>
+            </MatAppBarSection>
+            <MatAppBarSection Align="@MatAppBarSectionAlign.End">
+                <LoginDisplay />
+            </MatAppBarSection>
+        </MatAppBarRow>
+    </MatAppBar>
+    <MatAppBarContent>
+        <MatDrawerContainer Style="width: 100vw; height: 100vh;">
+            <MatDrawer @bind-Opened="@isOpen" Mode="@MatDrawerMode.Modal">
+                <MatNavMenu Style="margin-top: 5px;">
+                    <MatDrawerLoginDisplay />
+                </MatNavMenu>
+            </MatDrawer>
+            <MatDrawerContent>
+                <div class="flex-container-column">
+                    @Body
+                    <Footer />
+                </div>
+            </MatDrawerContent>
+        </MatDrawerContainer>
+    </MatAppBarContent>
+</MatAppBarContainer>
 
-    <div class="content px-4">
-        @Body
-    </div>
-</div>
+@code {
+
+    private bool isOpen = false;
+
+    private void OnMenuButtonClick()
+    {
+        isOpen = !isOpen;
+    }
+
+    private void NavigateToHome()
+    {
+        Navigation.NavigateTo("/");
+    }
+
+}

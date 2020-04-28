@@ -1,0 +1,47 @@
+﻿@page
+@model Login
+@{
+    ViewData["Title"] = "Open Redding";
+}
+
+<div class="row align-self-center w-100">
+    <div class="col-6 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="text-center">Welcome to Open Redding!</h4>
+                <p class="text-center">Before continuing, please sign in below</p>
+                <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div asp-validation-summary="All" class="text-danger py-2"></div>
+                    <div class="form-group">
+                        <label asp-for="LoginModel.Email"></label>
+                        <input asp-for="LoginModel.Email" type="email" class="form-control" id="login-email" placeholder="Email">
+                        <span asp-validation-for="LoginModel.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LoginModel.Password">Password</label>
+                        <input asp-for="LoginModel.Password" type="password" class="form-control" id="login-password" placeholder="Password">
+                        <span asp-validation-for="LoginModel.Password" class="text-danger"></span>
+                    </div>
+                    <div class="d-flex justify-content-center py-2">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                </form>
+                <div class="d-flex py-2 justify-content-center">
+                    <a class="px-4" asp-page="/Account/Register" asp-route-returnUrl="@Model.ReturnUrl">Register an account</a>
+                    <a asp-page="/Account/ForgotPassword" text-danger"">Forgot Password?</a>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex">
+                    <a asp-page="/About" class="mr-auto px-2">About</a>
+                    <i onclick="window.open('https://github.com/joey32793/OpenRedding')" class="fab fa-github fa-2x px-2"></i>
+                    <i onclick="window.open('https://registry.jsonresume.org/joey32793')" class="fas fa-code fa-2x px-2"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

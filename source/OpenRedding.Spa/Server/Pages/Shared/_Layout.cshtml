@@ -1,20 +1,58 @@
-﻿<!DOCTYPE html>
-<html>
+﻿@*
 
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <title>@ViewBag.Title</title>
+        <link href="~/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/css/app.css" rel="stylesheet" />
+    </head>
+
+    <body>
+        <div class="main">
+            <div class="content px-4">
+                @RenderBody()
+            </div>
+        </div>
+    </body>
+    </html>
+
+*@
+
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.AspNetCore.Mvc.ViewEngines
+@inject IWebHostEnvironment Environment
+@inject ICompositeViewEngine Engine
+
+<!DOCTYPE html>
+<html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>@ViewBag.Title</title>
-    <link href="~/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/css/app.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="~/img/idserver_icon.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="~/img/idserver_icon.png" />
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/347e8bc9c7.js" crossorigin="anonymous"></script>
+
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-materia.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
-
-<body>
-    <div class="main">
-        <div class="content px-4">
+<body id="main-background">
+    <div class="container">
+        <main role="main" class="row d-flex justify-content-center py-2">
+            <img onclick="window.open('https://identityserver.io/')" class="img-fluid" style="transform: scale(0.5); margin-bottom: -50px; margin-top: -20px;" src="~/img/idserver_trademark.png" alt="Identity Server 4" />
             @RenderBody()
-        </div>
+        </main>
     </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
 </body>
-
 </html>
+

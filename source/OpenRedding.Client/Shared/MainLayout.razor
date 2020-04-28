@@ -20,21 +20,7 @@
                 <MatAppBarTitle Style="cursor: pointer;" @onclick="(() => NavigateToPage(NavigationContext.Home))"><span class="comfortaa">Open Redding</span></MatAppBarTitle>
             </MatAppBarSection>
             <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-                <AuthorizeView>
-                    <Authorized>
-                        <MatButton Style="text-transform: initial;" Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Salaries))" TrailingIcon="account_balance">Salaries</MatButton>
-                        <MatButton Style="text-transform: initial;" Dense="true" Disabled="true" OnClick="(() => NavigateToPage(NavigationContext.Budget))" TrailingIcon="monetization_on">Budget</MatButton>
-                        <MatButton Style="text-transform: initial;" Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.UserProfile))" TrailingIcon="verified_user">@context.User.Identity.Name</MatButton>
-                        <MatButton Style="text-transform: initial;" Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Logout))" TrailingIcon="play_for_work">Logout</MatButton>
-                    </Authorized>
-                    <NotAuthorized>
-                        @*
-                        <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Register))" TrailingIcon="verified_user">Register</MatButton>
-                        *@
-                        <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Login))" TrailingIcon="perm_identity">Login</MatButton>
-                        <MatButton Style="text-transform: initial;" Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Logout))" TrailingIcon="play_for_work">Logout</MatButton>
-                    </NotAuthorized>
-                </AuthorizeView>
+                <LoginDisplay />
             </MatAppBarSection>
         </MatAppBarRow>
     </MatAppBar>
@@ -42,41 +28,7 @@
         <MatDrawerContainer Style="width: 100vw; height: 100vh;">
             <MatDrawer @bind-Opened="@isOpen" Mode="@MatDrawerMode.Modal">
                 <MatNavMenu Style="margin-top: 5px;">
-                    <AuthorizeView>
-                        <Authorized>
-                            <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.About))">
-                                <MatIcon Icon="account_tree"></MatIcon>&nbsp; About
-                            </MatNavItem>
-                            <MatNavItem Href="/salaries">
-                                <MatIcon Icon="account_balance"></MatIcon>&nbsp; Salaries
-                            </MatNavItem>
-                            <MatNavItem Href="/budget" Disabled="true">
-                                <MatIcon Icon="monetization_on"></MatIcon>&nbsp; Budget
-                            </MatNavItem>
-                            <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.Logout))">
-                                <MatIcon Icon="play_for_work"></MatIcon>&nbsp; Logout
-                            </MatNavItem>
-                            <MatNavItem Href="/support">
-                                <MatIcon Icon="code"></MatIcon>&nbsp; Support
-                            </MatNavItem>
-                        </Authorized>
-                        <NotAuthorized>
-                            <MatNavItem Href="/about">
-                                <MatIcon Icon="account_tree"></MatIcon>&nbsp; About
-                            </MatNavItem>
-                            @*
-                            <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.Register))">
-                                <MatIcon Icon="verified_user"></MatIcon>&nbsp; Register
-                            </MatNavItem>
-                            *@
-                            <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.Login))">
-                                <MatIcon Icon="perm_identity"></MatIcon>&nbsp; Login
-                            </MatNavItem>
-                            <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.GitHub))">
-                                <MatIcon Icon="code"></MatIcon>&nbsp; Support
-                            </MatNavItem>
-                        </NotAuthorized>
-                    </AuthorizeView>
+                    <MatDrawerLoginDisplay />
                 </MatNavMenu>
             </MatDrawer>
             <MatDrawerContent>
@@ -89,25 +41,7 @@
     </MatAppBarContent>
 </MatAppBarContainer>
 
-@code
-{
-    @*
-    [CascadingParameter]
-    private Task<AuthenticationState>? authenticationStateTask { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (authenticationStateTask is null)
-        {
-            throw new UnauthorizedAccessException("Not authentication states was found");
-        }
-
-        var user = (await authenticationStateTask).User;
-        var userEmail = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email);
-        UserIdentity = userEmail is null ? user.Identity.Name : userEmail.Value;
-    }
-    *@
-    private string? UserIdentity { get; set; }
+@code {
 
     private bool isOpen = false;
 

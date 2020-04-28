@@ -1,0 +1,91 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+
+<AuthorizeView>
+    <Authorized>
+        <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.About))">
+            <MatIcon Icon="account_tree"></MatIcon>&nbsp; About
+        </MatNavItem>
+        <MatNavItem Href="/salaries">
+            <MatIcon Icon="account_balance"></MatIcon>&nbsp; Salaries
+        </MatNavItem>
+        <MatNavItem Href="/budget" Disabled="true">
+            <MatIcon Icon="monetization_on"></MatIcon>&nbsp; Budget
+        </MatNavItem>
+        <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.Logout))">
+            <MatIcon Icon="play_for_work"></MatIcon>&nbsp; Logout
+        </MatNavItem>
+        <MatNavItem Href="/support">
+            <MatIcon Icon="code"></MatIcon>&nbsp; Support
+        </MatNavItem>
+    </Authorized>
+    <NotAuthorized>
+        <MatNavItem Href="/about">
+            <MatIcon Icon="account_tree"></MatIcon>&nbsp; About
+        </MatNavItem>
+        <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.Register))">
+            <MatIcon Icon="verified_user"></MatIcon>&nbsp; Register
+        </MatNavItem>
+        <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.Login))">
+            <MatIcon Icon="perm_identity"></MatIcon>&nbsp; Login
+        </MatNavItem>
+        <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.GitHub))">
+            <MatIcon Icon="code"></MatIcon>&nbsp; Support
+        </MatNavItem>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+
+    private bool isOpen = false;
+
+    private enum NavigationContext
+    {
+        Home,
+        About,
+        GitHub,
+        Register,
+        Login,
+        Logout,
+        UserProfile,
+        Salaries,
+        Budget
+    }
+
+    private void OnMenuButtonClick()
+    {
+        isOpen = !isOpen;
+    }
+
+    private async Task NavigateToPage(NavigationContext context)
+    {
+        switch (context)
+        {
+            case NavigationContext.About:
+                Navigation.NavigateTo("about");
+                break;
+            case NavigationContext.GitHub:
+                Navigation.NavigateTo("https://github.com/joey32793/OpenRedding");
+                break;
+            case NavigationContext.Register:
+                Navigation.NavigateTo("authentication/register");
+                break;
+            case NavigationContext.Login:
+                Navigation.NavigateTo("authentication/login");
+                break;
+            case NavigationContext.Logout:
+                var logoutGuid = Guid.NewGuid();
+                var returnUrl = Navigation.BaseUri;
+                await SignOutManager.SetSignOutState();
+                Navigation.NavigateTo("authentication/logout");
+                break;
+            default:
+                Navigation.NavigateTo("/");
+                break;
+        }
+    }
+}
