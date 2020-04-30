@@ -12,19 +12,20 @@ namespace OpenRedding.Core.Extensions
         /// <param name="employee">Employee database model.</param>
         /// <returns>Mapped employee search DTO.</returns>
         /// <exception cref="ArgumentNullException">Throws if entity is null for validation.</exception>
-        public static EmployeeSalarySearchDto ToEmployeeSalarySearchDto(this Employee employee)
+        public static EmployeeSalarySearchResultDto ToEmployeeSalarySearchResultDto(this Employee employee)
         {
             if (employee is null)
             {
                 throw new ArgumentNullException(nameof(employee), "Employee to map from cannot be null");
             }
 
-            return new EmployeeSalarySearchDto(
+            return new EmployeeSalarySearchResultDto(
                 employee.EmployeeId,
                 employee.EmployeeName,
                 employee.JobTitle,
                 employee.EmployeeAgency.ToString(),
                 employee.EmployeeStatus.ToString(),
+                employee.Year,
                 employee.BasePay,
                 employee.TotalPayWithBenefits);
         }
@@ -84,8 +85,8 @@ namespace OpenRedding.Core.Extensions
                 OvertimePay = employeeDto.OvertimePay,
                 PensionDebt = employeeDto.PensionDebt ?? decimal.Zero,
                 TotalPayWithBenefits = employeeDto.TotalPayWithBenefits,
-                EmployeeAgency = EmployeeAgency.Other,
-                EmployeeStatus = EmployeeStatus.Other,
+                EmployeeAgency = OpenReddingEnumConverter.ConvertAgencyFromString(employeeDto.EmployeeAgency),
+                EmployeeStatus = OpenReddingEnumConverter.ConvertStatusFromString(employeeDto.EmployeeStatus),
                 Notes = employeeDto.Notes,
                 Year = employeeDto.Year
             };

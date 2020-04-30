@@ -42,12 +42,10 @@ namespace OpenRedding.Infrastructure.Mappings
                 .Name("Year");
 
             Map(e => e.EmployeeStatus)
-                .Name("Status")
-                .ConvertUsing(CustomConverters.StatusConverter);
+                .Name("Status");
 
             Map(e => e.EmployeeAgency)
-                .Name("Agency")
-                .ConvertUsing(CustomConverters.AgencyConverter);
+                .Name("Agency");
         }
     }
 }

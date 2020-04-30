@@ -25,45 +25,45 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
 
         public async Task<EmployeeSearchResultList> Handle(GetEmployeeSalariesQuery request, CancellationToken cancellationToken)
         {
-            ArgumentValidation.ValidateNotNull(request);
             ArgumentValidation.CheckNotNull(request, nameof(request));
+            ArgumentValidation.CheckNotNull(request.SearchRequest, nameof(request.SearchRequest));
 
             // Request context to not track entity since we're not making any updates
             var queriedSalaries = _context.Employees.AsNoTracking();
 
             // Filter by job title, if available
-            if (!string.IsNullOrWhiteSpace(request.JobTitle))
+            if (!string.IsNullOrWhiteSpace(request.SearchRequest.JobTitle))
             {
-                // NOTE: As of EF Core 3.0, StringComparison no longer works due to server-side evaulation of queries
+                // NOTE: As of EF Core 3.0, StringComparison no longer works due to server-side evaluation of queries
                 Expression<Func<Employee, bool>> canFilterByEmployeeJobTitle = e =>
-                    !string.IsNullOrWhiteSpace(e.JobTitle) && e.JobTitle.Contains(request.JobTitle);
+                    !string.IsNullOrWhiteSpace(e.JobTitle) && e.JobTitle.Contains(request.SearchRequest.JobTitle);
 
                 queriedSalaries = queriedSalaries.Where(canFilterByEmployeeJobTitle);
             }
 
             // Filter by name, if available
-            if (!string.IsNullOrWhiteSpace(request.Name))
+            if (!string.IsNullOrWhiteSpace(request.SearchRequest.Name))
             {
-                // NOTE: As of EF Core 3.0, StringComparison no longer works due to server-side evaulation of queries
+                // NOTE: As of EF Core 3.0, StringComparison no longer works due to server-side evaluation of queries
                 Expression<Func<Employee, bool>> canFilterByEmployeeName = e =>
-                    !string.IsNullOrWhiteSpace(e.EmployeeName) && e.EmployeeName.Contains(request.Name);
+                    !string.IsNullOrWhiteSpace(e.EmployeeName) && e.EmployeeName.Contains(request.SearchRequest.Name);
 
                 queriedSalaries = queriedSalaries.Where(canFilterByEmployeeName);
             }
 
             // Filter by agency, if available
-            if (!string.IsNullOrWhiteSpace(request.Agency) && Enum.TryParse(request.Agency, true, out EmployeeAgency employeeAgency))
+            if (!string.IsNullOrWhiteSpace(request.SearchRequest.Agency) && Enum.TryParse(request.SearchRequest.Agency, true, out EmployeeAgency employeeAgency))
             {
                 queriedSalaries = queriedSalaries.Where(e => e.EmployeeAgency == employeeAgency);
             }
 
             // Filter by status, if available
-            if (!string.IsNullOrWhiteSpace(request.Status) && Enum.TryParse(request.Status, true, out EmployeeStatus employeeStatus))
+            if (!string.IsNullOrWhiteSpace(request.SearchRequest.Status) && Enum.TryParse(request.SearchRequest.Status, true, out EmployeeStatus employeeStatus))
             {
                 queriedSalaries = queriedSalaries.Where(e => e.EmployeeStatus == employeeStatus);
             }
 
-            if (!string.IsNullOrWhiteSpace(request.SortBy) && Enum.TryParse(request.SortBy, true, out OpenReddingSortOption sortOption))
+            if (!string.IsNullOrWhiteSpace(request.SearchRequest.SortBy) && Enum.TryParse(request.SearchRequest.SortBy, true, out OpenReddingSortOption sortOption))
             {
                 queriedSalaries = sortOption switch
                 {
@@ -83,7 +83,7 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
             var totalResults = queriedSalaries.Count();
             var resultingSalaries = await queriedSalaries
                 .SkipAndTakeDefault(request.Page)
-                .Select(e => e.ToEmployeeSalarySearchDto())
+                .Select(e => e.ToEmployeeSalarySearchResultDto())
                 .ToListAsync(cancellationToken);
 
             return new EmployeeSearchResultList(resultingSalaries, totalResults);

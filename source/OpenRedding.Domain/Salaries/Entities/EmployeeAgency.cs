@@ -8,6 +8,7 @@ namespace OpenRedding.Domain.Salaries.Entities
         AllAgencies,
         ShastaCounty,
         Redding,
-        Other
+        Other,
+        Unknown
     }
 }

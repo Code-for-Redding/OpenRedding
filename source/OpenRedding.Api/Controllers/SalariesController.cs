@@ -8,6 +8,7 @@ namespace OpenRedding.Api.Controllers
     using OpenRedding.Api;
     using OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries;
     using OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary;
+    using OpenRedding.Domain.Salaries.Dtos;
 
     public class SalariesController : OpenReddingBaseController
     {
@@ -28,7 +29,8 @@ namespace OpenRedding.Api.Controllers
             [FromQuery] string? sortBy)
         {
             _logger.LogInformation($"Querying salaries: name [{name}], jobTitle [{jobTitle}], agency [{agency}], status [{status}], sortBy [{sortBy}]");
-            return await Mediator.Send(new GetEmployeeSalariesQuery(name, jobTitle, agency, status, sortBy));
+            var searchRequest = new EmployeeSalarySearchRequestDto(name, jobTitle, agency, status, sortBy);
+            return await Mediator.Send(new GetEmployeeSalariesQuery(searchRequest));
         }
 
         [HttpGet("{id}")]
