@@ -26,11 +26,12 @@ namespace OpenRedding.Api.Controllers
             [FromQuery] string? jobTitle,
             [FromQuery] string? agency,
             [FromQuery] string? status,
-            [FromQuery] string? sortBy)
+            [FromQuery] string? sortBy,
+            [FromQuery] int? page)
         {
             _logger.LogInformation($"Querying salaries: name [{name}], jobTitle [{jobTitle}], agency [{agency}], status [{status}], sortBy [{sortBy}]");
             var searchRequest = new EmployeeSalarySearchRequestDto(name, jobTitle, agency, status, sortBy);
-            return await Mediator.Send(new GetEmployeeSalariesQuery(searchRequest));
+            return await Mediator.Send(new GetEmployeeSalariesQuery(searchRequest, page));
         }
 
         [HttpGet("{id}")]

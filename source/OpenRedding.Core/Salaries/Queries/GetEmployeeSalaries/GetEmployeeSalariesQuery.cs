@@ -6,8 +6,8 @@
 
     public class GetEmployeeSalariesQuery : OpenReddingRequest<EmployeeSearchResultList>
     {
-        public GetEmployeeSalariesQuery(EmployeeSalarySearchRequestDto searchRequest, int page = 1) =>
-            (SearchRequest, Page) = (searchRequest, page);
+        public GetEmployeeSalariesQuery(EmployeeSalarySearchRequestDto searchRequest, int? page) =>
+            (SearchRequest, Page) = (searchRequest, page ?? 1);
 
         public EmployeeSalarySearchRequestDto SearchRequest { get; }
 

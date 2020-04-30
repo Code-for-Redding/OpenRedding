@@ -19,7 +19,7 @@ namespace OpenRedding.Core.Tests.Salaries
         {
             // Arrange
             var searchRequest = new EmployeeSalarySearchRequestDto("John", default, default, default, default);
-            var query = new GetEmployeeSalariesQuery(searchRequest);
+            var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
             // Act
@@ -40,7 +40,7 @@ namespace OpenRedding.Core.Tests.Salaries
         {
             // Arrange
             var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, default);
-            var query = new GetEmployeeSalariesQuery(searchRequest);
+            var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
             // Act
@@ -69,7 +69,7 @@ namespace OpenRedding.Core.Tests.Salaries
         {
             // Arrange
             var searchRequest = new EmployeeSalarySearchRequestDto(default, default, "Redding", default, default);
-            var query = new GetEmployeeSalariesQuery(searchRequest);
+            var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
             // Act
@@ -94,7 +94,7 @@ namespace OpenRedding.Core.Tests.Salaries
         {
             // Arrange
             var searchRequest = new EmployeeSalarySearchRequestDto(default, default, default, "PartTime", default);
-            var query = new GetEmployeeSalariesQuery(searchRequest);
+            var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
             // Act
@@ -115,7 +115,7 @@ namespace OpenRedding.Core.Tests.Salaries
         {
             // Arrange
             var searchRequest = new EmployeeSalarySearchRequestDto("This", "Employee", "Doesn't", "Exist!", default);
-            var query = new GetEmployeeSalariesQuery(searchRequest);
+            var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
             // Act
@@ -132,7 +132,7 @@ namespace OpenRedding.Core.Tests.Salaries
         {
             // Arrange
             var searchRequest = new EmployeeSalarySearchRequestDto("Joe", default, default, default, nameof(OpenReddingSortOption.AscendingName));
-            var query = new GetEmployeeSalariesQuery(searchRequest);
+            var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
             // Act
@@ -152,7 +152,7 @@ namespace OpenRedding.Core.Tests.Salaries
         {
             // Arrange
             var searchRequest = new EmployeeSalarySearchRequestDto("Joe", default, default, default, nameof(OpenReddingSortOption.DescendingName));
-            var query = new GetEmployeeSalariesQuery(searchRequest);
+            var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
             // Act
@@ -172,7 +172,7 @@ namespace OpenRedding.Core.Tests.Salaries
         {
             // Arrange
             var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, nameof(OpenReddingSortOption.AscendingJobTitle));
-            var query = new GetEmployeeSalariesQuery(searchRequest);
+            var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
             // Act
@@ -193,7 +193,7 @@ namespace OpenRedding.Core.Tests.Salaries
         {
             // Arrange
             var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, nameof(OpenReddingSortOption.DescendingJobTitle));
-            var query = new GetEmployeeSalariesQuery(searchRequest);
+            var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
             // Act
@@ -214,7 +214,7 @@ namespace OpenRedding.Core.Tests.Salaries
         {
             // Arrange
             var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, nameof(OpenReddingSortOption.AscendingBaseSalary));
-            var query = new GetEmployeeSalariesQuery(searchRequest);
+            var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
             // Act
@@ -235,7 +235,7 @@ namespace OpenRedding.Core.Tests.Salaries
         {
             // Arrange
             var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, nameof(OpenReddingSortOption.DescendingBaseSalary));
-            var query = new GetEmployeeSalariesQuery(searchRequest);
+            var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
             // Act
@@ -256,7 +256,7 @@ namespace OpenRedding.Core.Tests.Salaries
         {
             // Arrange
             var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, nameof(OpenReddingSortOption.AscendingTotalSalary));
-            var query = new GetEmployeeSalariesQuery(searchRequest);
+            var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
             // Act
@@ -277,7 +277,7 @@ namespace OpenRedding.Core.Tests.Salaries
         {
             // Arrange
             var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, nameof(OpenReddingSortOption.DescendingTotalSalary));
-            var query = new GetEmployeeSalariesQuery(searchRequest);
+            var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
             // Act

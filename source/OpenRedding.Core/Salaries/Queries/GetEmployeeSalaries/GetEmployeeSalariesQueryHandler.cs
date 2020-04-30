@@ -18,10 +18,8 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
     {
         private readonly IOpenReddingDbContext _context;
 
-        public GetEmployeeSalariesQueryHandler(IOpenReddingDbContext context)
-        {
+        public GetEmployeeSalariesQueryHandler(IOpenReddingDbContext context) =>
             _context = context;
-        }
 
         public async Task<EmployeeSearchResultList> Handle(GetEmployeeSalariesQuery request, CancellationToken cancellationToken)
         {
