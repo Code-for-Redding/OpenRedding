@@ -6,7 +6,7 @@
 
 <div class="flex-container-column-center">
     <MatH2><span class="comfortaa">Open Redding</span></MatH2>
-    <MatH5 Style="margin-top: -5px;">An open data portal for Redding, by the people, for the people</MatH5>
+    <MatH5 Style="margin-top: -5px;">An open data portal for Redding, by the people, for the people.</MatH5>
     <div class="flex-container-row">
         <MatTabGroup Style="background-color: white;">
             <MatTab Label="Salaries">
@@ -35,9 +35,10 @@
                             </MatSelect>
                         </div>
                     </div>
-                    <div style="display: flex; flex-direction: row; justify-content: center; align-content: center; padding-top: 10px;">
-                        <MatButton Style="margin: 8px;" Raised="true">Search Salaries</MatButton>
-                        <MatButton Style="margin: 8px;" Raised="true">All Salary Data</MatButton>
+                    <div style="padding-top: 10px;" class="flex-container-row-center" s>
+                        <MatTooltip Tooltip="@SearchTooltip">
+                            <MatButton RefBack="@context" Style="margin: 8px;" Raised="true">Search Salaries</MatButton>
+                        </MatTooltip>
                     </div>
                 </div>
             </MatTab>
@@ -60,9 +61,11 @@
 
 @code
 {
+    const string SearchTooltip = "To search all salary data, leave all fields blank";
+
     string? name;
 
-    string? jobTitle;
+    private string? jobTitle;
 
     string? agency;
 
