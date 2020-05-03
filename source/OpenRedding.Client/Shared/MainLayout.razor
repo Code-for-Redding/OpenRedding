@@ -18,7 +18,16 @@
             </MatAppBarSection>
             <MatAppBarSection Align="@MatAppBarSectionAlign.End">
                 <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Salaries))" TrailingIcon="account_balance">Salaries</MatButton>
-                <MatButton Dense="true" Disabled="true" OnClick="(() => NavigateToPage(NavigationContext.Budget))" TrailingIcon="monetization_on">Budget</MatButton>
+                <MatTooltip Tooltip="@DisabledNavItemTooltip" TargetId="budget-nav-item">
+                    <span id="budget-nav-item">
+                        <MatButton RefBack="@context" Dense="true" Disabled="true" OnClick="(() => NavigateToPage(NavigationContext.Budget))" TrailingIcon="monetization_on">Budget</MatButton>
+                    </span>
+                </MatTooltip>
+                <MatTooltip Tooltip="@DisabledNavItemTooltip" TargetId="zoning-nav-item">
+                    <span id="zoning-nav-item">
+                        <MatButton RefBack="@context" Dense="true" Disabled="true" OnClick="(() => NavigateToPage(NavigationContext.Zoning))" TrailingIcon="location_city">Zoning</MatButton>
+                    </span>
+                </MatTooltip>
                 <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.About))" TrailingIcon="account_tree">About</MatButton>
             </MatAppBarSection>
         </MatAppBarRow>
@@ -36,6 +45,9 @@
                     <MatNavItem Href="/budget" Disabled="true">
                         <MatIcon Icon="monetization_on"></MatIcon>&nbsp; Budget
                     </MatNavItem>
+                    <MatNavItem Href="/zoning" Disabled="true">
+                        <MatIcon Icon="location_city"></MatIcon>&nbsp; Zoning
+                    </MatNavItem>
                     <MatNavItem Href="/support">
                         <MatIcon Icon="code"></MatIcon>&nbsp; Support
                     </MatNavItem>
@@ -44,7 +56,9 @@
             <MatDrawerContent>
                 <div class="flex-container-column">
                     @Body
+                    @*
                     <Footer />
+                    *@
                 </div>
             </MatDrawerContent>
         </MatDrawerContainer>
@@ -52,6 +66,8 @@
 </MatAppBarContainer>
 
 @code {
+
+    const string DisabledNavItemTooltip = "This feature is currently under development and will be released at a later date";
 
     private bool isOpen = false;
 
@@ -61,7 +77,8 @@
         About,
         GitHub,
         Salaries,
-        Budget
+        Budget,
+        Zoning
     }
 
     private void OnMenuButtonClick()

@@ -1,0 +1,27 @@
+﻿<MatCard class="demo-mat-card">
+    <MatCardContent Class="text-center">
+        <MatCardMedia Wide="true" ImageUrl="@ImageUrl"></MatCardMedia>
+        <div class="demo-mat-card-content">
+            <MatHeadline4 class="demo-mat-card-clean-margin">
+                <strong>@Title</strong>
+            </MatHeadline4>
+        </div>
+
+        <MatBody2 class="demo-mat-card-content demo-mat-card-clean-margin">
+            @Body
+        </MatBody2>
+    </MatCardContent>
+</MatCard>
+
+@code {
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public string? Body { get; set; }
+
+    [Parameter]
+    public string? ImageUrl { get; set; }
+
+}

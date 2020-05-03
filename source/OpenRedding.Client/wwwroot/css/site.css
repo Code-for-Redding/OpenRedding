@@ -167,3 +167,20 @@ app {
     left: 0;
     z-index: -1;
 }
+
+.demo-mat-card {
+    max-width: 400px;
+}
+
+.demo-mat-card-content {
+    padding: 1rem;
+}
+
+.demo-mat-card-clean-margin {
+    margin: 0px;
+}
+
+/* Workaround to get MatSelect to span the entire div */
+.salary-dropdown > .mdc-select__anchor {
+    width: 100%;
+}
