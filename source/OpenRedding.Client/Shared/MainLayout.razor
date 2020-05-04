@@ -2,6 +2,13 @@
 
 @inject NavigationManager NavigationManager
 
+<NavMenu />
+
+<div class="container mx-auto">
+    @Body
+</div>
+
+@*
 <MatAppBarContainer>
     <MatAppBar Fixed="true">
         <MatAppBarRow>
@@ -56,14 +63,12 @@
             <MatDrawerContent>
                 <div class="flex-container-column">
                     @Body
-                    @*
-                    <Footer />
-                    *@
                 </div>
             </MatDrawerContent>
         </MatDrawerContainer>
     </MatAppBarContent>
 </MatAppBarContainer>
+*@
 
 @code {
 
