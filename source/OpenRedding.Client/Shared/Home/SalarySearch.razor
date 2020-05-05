@@ -1,0 +1,71 @@
+﻿@using OpenRedding.Domain.Salaries.Entities
+
+<div class="mx-auto">
+    <div class="flex flex-col justify-center">
+        <div class="flex flex-row">
+            <div class="w-full md:w-1/4 px-3">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="search-name">
+                    Name
+                </label>
+                <input @bind-value="name" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="search-name" type="text" placeholder="e.g. John Smith">
+            </div>
+            <div class="w-full md:w-1/4 px-3">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="search-job-title">
+                    Job Title
+                </label>
+                <input @bind-value="jobTitle" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="search-job-title" type="text" placeholder="e.g. Engineer">
+            </div>
+            <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-status">
+                    Status
+                </label>
+                <div class="relative">
+                    <select @bind="status" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 cursor-pointer" id="search-status">
+                        <option class="text-gray-700 cursor-not-allowed" disabled>Select a status</option>
+                        <option class="cursor-pointer" value="@nameof(EmployeeStatus.AllStatuses)">All Statuses</option>
+                        <option class="cursor-pointer" value="@nameof(EmployeeStatus.FullTime)">Full-time</option>
+                        <option class="cursor-pointer" value="@nameof(EmployeeStatus.PartTime)">Part-time</option>
+                        <option class="cursor-pointer" value="@nameof(EmployeeStatus.Other)">Other</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+                    </div>
+                </div>
+            </div>
+            <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="search-agency">
+                    Agency
+                </label>
+                <div class="relative">
+                    <select @bind="agency" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 cursor-pointer" id="search-agency">
+                        <option class="text-gray-700 cursor-not-allowed" disabled>Select an agency</option>
+                        <option class="cursor-pointer" value="@nameof(EmployeeAgency.AllAgencies)">All Agencies</option>
+                        <option class="cursor-pointer" value="@nameof(EmployeeAgency.Redding)">Redding</option>
+                        <option class="cursor-pointer" value="@nameof(EmployeeAgency.ShastaCounty)">Shasta County</option>
+                        <option class="cursor-pointer" value="@nameof(EmployeeAgency.Other)">Other</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-row justify-center py-4">
+            <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow md:w-1/4">
+                Search
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    const string SearchTooltip = "To search all salary data, leave all fields blank";
+
+    private string? name;
+
+    private string? jobTitle;
+
+    private string? agency;
+
+    private string? status;
+}
