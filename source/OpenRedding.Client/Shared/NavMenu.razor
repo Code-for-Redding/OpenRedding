@@ -1,45 +1,64 @@
-﻿<nav class="flex items-center justify-between flex-wrap bg-blue-500 p-4">
-    <div class="flex items-center flex-shrink-0 text-white mr-6">
-        <div class="flex flex-row justify-between">
-            <img class="rounded h-8 w-10" src="/img/favicon.png">
-            <a href="/" class="font-semibold text-xl tracking-tight px-2">Open Redding</a>
-        </div>
-        <div class="px-4 flex flex-row justify-around">
-            <NavLink href="/salaries" Match="@NavLinkMatch.Prefix">
-                <span class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">Salaries</span>
-            </NavLink>
-            <div class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4 cursor-not-allowed tooltip">
-                Budget
-                <span class="tooltiptext">This feature is currently under active development and will be released at a later date</span>
-            </div>
-            <div class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4 cursor-not-allowed tooltip">
-                Zoning
-                <span class="tooltiptext">This feature is currently under active development and will be released at a later date</span>
-            </div>
-        </div>
-    </div>
-    <div class="block lg:hidden">
-        <button class="flex items-end px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
-            <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg>
-        </button>
-    </div>
-    @*
-        <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-            <div class="text-sm lg:flex-grow">
-                <NavLink href="/salaries" Match="@NavLinkMatch.Prefix">
-                    <span class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">Salaries</span>
+﻿@*
+    <nav class="flex items-center justify-between flex-wrap bg-blue-500 p-4">
+        <div class="flex items-center flex-shrink-0 text-white mr-6">
+            <div class="px-4 flex flex-row justify-center">
+                <img class="rounded h-8" src="/img/favicon.png">
+                <a href="/" class="font-semibold text-xl tracking-tight px-2"><span class="comfortaa">Open Redding</span></a>
+                <NavLink class="mt-1 px-2" href="/salaries" Match="@NavLinkMatch.Prefix">
+                    <span class="text-teal-200 hover:text-white">Salaries</span>
                 </NavLink>
-                <div class="flex flex-col justify-center">
-                    <div class="relative mx-2 hidden">
-                        <div class="bg-black text-white text-xs rounded py-1 px-4 right-0 bottom-full">
-                            <p>This feature is currently under active development and will be released at a later date</p>
-                            <svg class="absolute text-black h-2 w-full left-0 top-full" x="0px" y="0px" viewBox="0 0 255 255" xml:space="preserve"><polygon class="fill-current" points="0,0 127.5,127.5 255,0" /></svg>
-                        </div>
-                    </div>
-                    <span class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4 cursor-not-allowed">Budget</span>
+                <div class="mt-1 px-2 text-teal-200 hover:text-white cursor-not-allowed tooltip">
+                    Budget
+                    <span class="mr-10 mt-2 tooltiptext">This feature is currently under active development and will be released at a later date</span>
                 </div>
-                <span class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white cursor-not-allowed">Zoning</span>
+                <div class="mt-1 px-2 text-teal-200 hover:text-white cursor-not-allowed tooltip">
+                    Zoning
+                    <span class="mr-10 mt-2 tooltiptext">This feature is currently under active development and will be released at a later date</span>
+                </div>
             </div>
         </div>
-    *@
-</nav>
+        <div class="block lg:hidden">
+            <button class="flex items-end px-3 py-2 border rounded text-teal-200 border-white hover:text-white hover:border-white">
+                <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg>
+            </button>
+        </div>
+    </nav>
+*@
+<header class="bg-gray-900 sm:flex sm:justify-between sm:items-center sm:px-4 sm:py-3">
+    <div class="flex items-center justify-between px-4 py-3 sm:p-0">
+        <div>
+            <img class="h-8" src="/img/logo-inverted.svg" alt="Workcation">
+        </div>
+        <div class="sm:hidden">
+            <button @onclick="ToggleMenu" type="button" class="block text-gray-500 hover:text-white focus:text-white focus:outline-none">
+                <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
+                    <path v-if="isOpen" fill-rule="evenodd" d="M18.278 16.864a1 1 0 0 1-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 0 1-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 0 1 1.414-1.414l4.829 4.828 4.828-4.828a1 1 0 1 1 1.414 1.414l-4.828 4.829 4.828 4.828z" />
+                    <path v-if="!isOpen" fill-rule="evenodd" d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+    <nav class="@NavBarClassList">
+        <a href="#" class="block px-2 py-1 text-white font-semibold rounded hover:bg-gray-800">List your property</a>
+        <a href="#" class="mt-1 block px-2 py-1 text-white font-semibold rounded hover:bg-gray-800 sm:mt-0 sm:ml-2">Trips</a>
+        <a href="#" class="mt-1 block px-2 py-1 text-white font-semibold rounded hover:bg-gray-800 sm:mt-0 sm:ml-2">Messages</a>
+    </nav>
+</header>
+
+@code {
+
+    private bool isOpen;
+
+    private string NavBarClassList = "px-2 pt-2 pb-4 sm:flex sm:p-0 hidden";
+
+    protected override void OnInitialized()
+    {
+
+    }
+
+    private void ToggleMenu()
+    {
+        isOpen = !isOpen;
+        NavBarClassList = isOpen ? "px-2 pt-2 pb-4 sm:flex sm:p-0 hidden" : "px-2 pt-2 pb-4 sm:flex sm:p-0 block";
+    }
+}

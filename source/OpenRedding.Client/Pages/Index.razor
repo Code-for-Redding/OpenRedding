@@ -3,14 +3,14 @@
 @using OpenRedding.Domain.Salaries.Dtos
 @using OpenRedding.Domain.Salaries.Entities
 @using OpenRedding.Client.Components
-@using OpenRedding.Client.Shared.Home
+@using OpenRedding.Client.Shared.Home 
 
 @inject IJSRuntime JSRuntime
 
 <div id="landing-page" class="flex flex-col p-2">
     <div class="flex flex-col text-center ">
         <div class="py-2">
-            <p class="text-5xl">Open Redding</p>
+            <p class="text-5xl comfortaa">Open Redding</p>
         </div>
         <div class="p-0">
             <h5 class="text-xl">An open data portal for Redding, by the people, for the people.</h5>
@@ -44,10 +44,12 @@
         </div>
     *@
 
-    <div class="flex flex-row justify-around py-2">
-        <OpenReddingCard Body="Redding's data, all in one place." Title="Explore" ImageUrl="/img/code.jpg"></OpenReddingCard>
-        <OpenReddingCard Body="Built in analytics to help you stay informed." Title="Analyze" ImageUrl="/img/sundial_bridge.jpg"></OpenReddingCard>
-        <OpenReddingCard Body="Generate downloadable reports of any records." Title="Create" ImageUrl="/img/earth.jpg"></OpenReddingCard>
+    <div class="flex flex-row justify-center">
+        <div class="grid grid-cols-3 gap-4">
+            <OpenReddingCard Body="Redding's data, all in one place." Title="Explore" ImageUrl="/img/code.jpg"></OpenReddingCard>
+            <OpenReddingCard Body="Built in analytics to help you stay informed." Title="Analyze" ImageUrl="/img/sundial_bridge.jpg"></OpenReddingCard>
+            <OpenReddingCard Body="Generate downloadable reports of any records." Title="Create" ImageUrl="/img/earth.jpg"></OpenReddingCard>
+        </div>
     </div>
 
     @*
