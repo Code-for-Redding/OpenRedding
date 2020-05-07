@@ -1,0 +1,52 @@
+﻿@* Salary search *@
+<div class="form-group row px-2">
+
+    @* Name *@
+    <div class="col-md-3">
+        <div class="d-flex flex-column">
+            <label class="col-form-label text-white-90" for="salary-search-name">Name</label>
+            <input type="text" class="form-control" placeholder="e.g. Richard Hendricks" id="salary-search-name">
+        </div>
+    </div>
+
+    @* Job title *@
+    <div class="col-md-3">
+        <div class="d-flex flex-column">
+            <label class="col-form-label text-white-90" for="salary-search-job-title">Job Title</label>
+            <input type="text" class="form-control" placeholder="e.g. Engineer" id="salary-search-job-title">
+        </div>
+    </div>
+
+    @* Agency *@
+    <div class="col-md-3">
+        <div class="d-flex flex-column">
+            <label class="col-form-label text-white-90" for="agency-dropdown">Agency</label>
+            <select id="agency-dropdown" class="form-control">
+                <option disabled>Select an agency</option>
+                <option>All Agencies</option>
+                <option>Redding</option>
+                <option>Shasta County</option>
+                <option>Other</option>
+            </select>
+        </div>
+    </div>
+
+    @* Status *@
+    <div class="col-md-3">
+        <div class="d-flex flex-column">
+            <label class="col-form-label text-white-90" for="agency-dropdown">Status</label>
+            <select id="status-dropdown" class="form-control">
+                <option disabled>Select a status</option>
+                <option>All Statuses</option>
+                <option>Full-time</option>
+                <option>Part-time</option>
+                <option>Other</option>
+            </select>
+        </div>
+    </div>
+
+    @* Search button *@
+    <div class="pt-4 d-flex flex-row mx-auto">
+        <button class="btn btn-lg btn-secondary" type="button" data-toggle="tooltip" data-placement="bottom" title="To browse all salary data, leave all fields above blank">Search</button>
+    </div>
+</div>

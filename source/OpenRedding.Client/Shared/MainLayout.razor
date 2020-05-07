@@ -2,68 +2,11 @@
 
 @inject NavigationManager NavigationManager
 
-<MatAppBarContainer>
-    <MatAppBar Fixed="true">
-        <MatAppBarRow>
-            <MatAppBarSection>
-                @if (isOpen)
-                {
-                    <MatIconButton Icon="format_indent_decrease" @onclick="OnMenuButtonClick"></MatIconButton>
-                }
-                else
-                {
-                    <MatIconButton Icon="menu" @onclick="OnMenuButtonClick"></MatIconButton>
-                }
-                <MatAppBarTitle Style="cursor: pointer;" @onclick="(() => NavigateToPage(NavigationContext.Home))"><span class="comfortaa">Open Redding</span></MatAppBarTitle>
-            </MatAppBarSection>
-            <MatAppBarSection Align="@MatAppBarSectionAlign.End">
-                <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.Salaries))" TrailingIcon="account_balance">Salaries</MatButton>
-                <MatTooltip Tooltip="@DisabledNavItemTooltip" TargetId="budget-nav-item">
-                    <span id="budget-nav-item">
-                        <MatButton RefBack="@context" Dense="true" Disabled="true" OnClick="(() => NavigateToPage(NavigationContext.Budget))" TrailingIcon="monetization_on">Budget</MatButton>
-                    </span>
-                </MatTooltip>
-                <MatTooltip Tooltip="@DisabledNavItemTooltip" TargetId="zoning-nav-item">
-                    <span id="zoning-nav-item">
-                        <MatButton RefBack="@context" Dense="true" Disabled="true" OnClick="(() => NavigateToPage(NavigationContext.Zoning))" TrailingIcon="location_city">Zoning</MatButton>
-                    </span>
-                </MatTooltip>
-                <MatButton Unelevated="true" OnClick="(() => NavigateToPage(NavigationContext.About))" TrailingIcon="account_tree">About</MatButton>
-            </MatAppBarSection>
-        </MatAppBarRow>
-    </MatAppBar>
-    <MatAppBarContent>
-        <MatDrawerContainer Style="width: 100vw; height: 100vh;">
-            <MatDrawer @bind-Opened="@isOpen" Mode="@MatDrawerMode.Modal">
-                <MatNavMenu Style="margin-top: 5px;">
-                    <MatNavItem OnClick="(() => NavigateToPage(NavigationContext.About))">
-                        <MatIcon Icon="account_tree"></MatIcon>&nbsp; About
-                    </MatNavItem>
-                    <MatNavItem Href="/salaries">
-                        <MatIcon Icon="account_balance"></MatIcon>&nbsp; Salaries
-                    </MatNavItem>
-                    <MatNavItem Href="/budget" Disabled="true">
-                        <MatIcon Icon="monetization_on"></MatIcon>&nbsp; Budget
-                    </MatNavItem>
-                    <MatNavItem Href="/zoning" Disabled="true">
-                        <MatIcon Icon="location_city"></MatIcon>&nbsp; Zoning
-                    </MatNavItem>
-                    <MatNavItem Href="/support">
-                        <MatIcon Icon="code"></MatIcon>&nbsp; Support
-                    </MatNavItem>
-                </MatNavMenu>
-            </MatDrawer>
-            <MatDrawerContent>
-                <div class="flex-container-column">
-                    @Body
-                    @*
-                    <Footer />
-                    *@
-                </div>
-            </MatDrawerContent>
-        </MatDrawerContainer>
-    </MatAppBarContent>
-</MatAppBarContainer>
+<NavMenu />
+
+@Body
+
+<Footer />
 
 @code {
 

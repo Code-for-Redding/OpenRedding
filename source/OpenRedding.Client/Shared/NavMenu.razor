@@ -1,0 +1,55 @@
+﻿@inject NavigationManager Navigation
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div style="cursor: pointer;" @onclick="NavigateToHome" class="d-flex flex-row">
+        <img style="max-width: 60px; max-height: 37px;" src="/img/favicon.png" class="rounded" />
+        <span class="navbar-brand font-weight-bold ml-2 comfortaa">Open Redding</span>
+    </div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#open-redding-navbar" aria-controls="open-redding-navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="open-redding-navbar">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <NavLink class="nav-link" href="/salaries">
+                    <i class="fas fa-money-bill mt-1"></i>
+                    <span class="ml-2">Salaries</span>
+                </NavLink>
+            </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="@DisabledNavItem">
+                <NavLink class="nav-link disabled">
+                    <i class="fas fa-funnel-dollar mt-1"></i>
+                    <span class="ml-2">Budget</span>
+                </NavLink>
+            </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="@DisabledNavItem">
+                <NavLink class="nav-link disabled">
+                    <i class="fas fa-map-marked-alt mt-1"></i>
+                    <span class="ml-2">Zoning</span>
+                </NavLink>
+            </li>
+        </ul>
+        <div class="my-2 my-lg-0">
+            <button class="btn btn-outline-info">
+                <i class="fas fa-code mr-1"></i>
+                Contribute
+            </button>
+            <button class="btn btn-outline-success">
+                <i class="fas fa-mug-hot mr-1"></i>
+                Buy me a coffee
+            </button>
+        </div>
+    </div>
+</nav>
+
+@code {
+
+    const string DisabledNavItem = "This feature is currently under development and will be available at a later date";
+
+    private void NavigateToHome()
+    {
+        Navigation.NavigateTo("/");
+    }
+
+}

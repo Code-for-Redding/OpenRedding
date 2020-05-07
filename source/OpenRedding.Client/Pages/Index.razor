@@ -1,124 +1,90 @@
 ﻿@page "/"
 
-@using OpenRedding.Domain.Salaries.Dtos
-@using OpenRedding.Domain.Salaries.Entities
 @using OpenRedding.Client.Components 
+@using OpenRedding.Client.Shared
 
-@inject IJSRuntime JSRuntime
+<div id="landing-page">
 
-<div id="landing-page" class="flex-container-column-center">
-    <MatH2><span class="comfortaa">Open Redding</span></MatH2>
-    <MatH5 Style="margin-top: -5px;">An open data portal for Redding, by the people, for the people.</MatH5>
-    <div class="flex-container-column">
-        <MatTabGroup Style="background-color: white;">
-            <MatTab Label="Salaries">
-                <div class="mat-layout-grid mat-elevation-z4">
-                    <div class="mat-layout-grid-inner">
-                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">
-                            <MatTextField Style="width: 100%;" Outlined="true" @bind-Value="name" Label="Name"></MatTextField>
-                        </div>
-                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">
-                            <MatTextField Style="width: 100%;" Outlined="true" @bind-Value="jobTitle" Label="Job Title"></MatTextField>
-                        </div>
-                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">
-                            <MatSelect Class="salary-dropdown" Label="Status" Outlined="true" TValue="string" @bind-Value="status">
-                                <MatOptionString Value="@nameof(EmployeeStatus.AllStatuses)">All Statuses</MatOptionString>
-                                <MatOptionString Value="@nameof(EmployeeStatus.FullTime)">Full-time</MatOptionString>
-                                <MatOptionString Value="@nameof(EmployeeStatus.PartTime)">Part-time</MatOptionString>
-                                <MatOptionString Value="@nameof(EmployeeStatus.Other)">Other</MatOptionString>
-                            </MatSelect>
-                        </div>
-                        <div class="mat-layout-grid-cell mat-layout-grid-cell-span-3">
-                            <MatSelect Class="salary-dropdown" Label="Agency" Outlined="true" TValue="string" @bind-Value="agency">
-                                <MatOptionString Value="@nameof(EmployeeAgency.AllAgencies)">All Agencies</MatOptionString>
-                                <MatOptionString Value="@nameof(EmployeeAgency.Redding)">Redding</MatOptionString>
-                                <MatOptionString Value="@nameof(EmployeeAgency.ShastaCounty)">Shasta County</MatOptionString>
-                                <MatOptionString Value="@nameof(EmployeeAgency.Other)">Other</MatOptionString>
-                            </MatSelect>
-                        </div>
-                    </div>
-                    <div style="padding-top: 10px;" class="flex-container-row-center">
-                        <MatTooltip Tooltip="@SearchTooltip">
-                            <MatButton RefBack="@context" Style="margin: 8px;" Raised="true">Search Salaries</MatButton>
-                        </MatTooltip>
-                    </div>
-                </div>
-            </MatTab>
-            <MatTab Label="Budget">
-                <div class="mat-layout-grid">
-                    <div class="mat-layout-grid-inner">
-                        <div class="mat-layout-grid-cell-span-12">
-                            <div class="flex-container-column-center">
-                                <MatH6 Class="text-center">Coming soon... think you can <a href="https://github.com/joey32793/OpenRedding/issues">help</a>? We're always looking for people!</MatH6>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </MatTab>
-            <MatTab Label="Zoning">
-                <div class="mat-layout-grid">
-                    <div class="mat-layout-grid-inner">
-                        <div class="mat-layout-grid-cell-span-12">
-                            <div class="flex-container-column-center">
-                                <MatH6 Class="text-center">Coming soon... think you can <a href="https://github.com/joey32793/OpenRedding/issues">help</a>? We're always looking for people!</MatH6>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </MatTab>
-        </MatTabGroup>
+    @* Background image container *@
+    <div style="background-image: url('/img/simple_blue.jpg'); background-size: cover;" class="py-5">
 
-        @* Hero cards *@
-        <div class="flex-container-row-center">
-            <div class="mat-layout-grid">
-                <div class="mat-layout-grid-inner">
-                    <div class="mat-layout-grid-cell">
-                        <OpenReddingCard Body="Redding's data, all in one place." Title="Explore" ImageUrl="/img/code.jpg"></OpenReddingCard>
+        @* Header section *@
+        <section id="landing-page-header" class="d-flex flex-column mx-auto text-center text-black-75">
+            <h1 class="comfortaa">Open Redding</h1>
+            <h6>An open data portal for Redding, for the people, by the people.</h6>
+        </section>
+
+        <div class="container">
+
+            @* Search panels *@
+            <section id="landing-page-search" class="py-4">
+                <div class="d-flex flex-column justify-content-center align-content-center">
+
+                    @* Button toggle group *@
+                    <div class="d-flex flex-row justify-content-center py-4">
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-info active">
+                                <input @onclick="(() => selectedSearchOption = SearchOption.Salaries)" type="radio" name="options" id="salary-radio-option" autocomplete="off" checked="checked"> Salaries
+                            </label>
+                            <label class="btn btn-info">
+                                <input @onclick="(() => selectedSearchOption = SearchOption.Budget)" type="radio" name="options" id="budget-radio-option" autocomplete="off"> Budget
+                            </label>
+                            <label class="btn btn-info">
+                                <input @onclick="(() => selectedSearchOption = SearchOption.Zoning)" type="radio" name="options" id="zoning-radio-option" autocomplete="off"> Zoning
+                            </label>
+                        </div>
                     </div>
-                    <div class="mat-layout-grid-cell">
+
+                    @* Content *@
+                    @if (selectedSearchOption is SearchOption.Salaries)
+                    {
+                        <SalarySearch />
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning text-center">
+                            <h4 class="alert-heading">Coming soon...</h4>
+                            <p class="mb-0">This feature is currently under development. Think you can <a href="https://github.com/joey32793/OpenRedding/issues" target="_blank">help?</a> We're always looking for collaborators!</p>
+                        </div>
+                    }
+                </div>
+            </section>
+
+            @* Card heroes *@
+            <section id="landing-page-card-heroes">
+                <div class="row px-3">
+                    <div class="col-md-4">
+                        <OpenReddingCard Body="Data for the City of Redding, all in one place." Title="Explore" ImageUrl="/img/code.jpg"></OpenReddingCard>
+                    </div>
+                    <div class="col-md-4">
                         <OpenReddingCard Body="Built in analytics to help you stay informed." Title="Analyze" ImageUrl="/img/sundial_bridge.jpg"></OpenReddingCard>
                     </div>
-                    <div class="mat-layout-grid-cell">
-                        <OpenReddingCard Body="Browse our API and generate your own personal reports." Title="Create" ImageUrl="/img/mt-shasta.jpg"></OpenReddingCard>
+                    <div class="col-md-4">
+                        <OpenReddingCard Body="Generate downloadable reports of any records." Title="Create" ImageUrl="/img/earth.jpg"></OpenReddingCard>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
     </div>
 
-    <MatDivider></MatDivider>
+    @* About section *@
+    <section class="mt-5 container" id="open-redding-about">
+        <About />
+    </section>
 
-    <div style="margin-top: 30px;" class="flex-container-column-center">
-        <div class="flex-container-row-center">
-            <MatButton Icon="favorite" Label="Support"></MatButton>
-            <MatButton Link="https://github.com/BlazorComponents/MatBlazor">
-                <i class="fa fa-github" aria-hidden="true"></i> &nbsp; Github
-            </MatButton>
-        </div>
-        <MatSubtitle1>Licensed under MIT - <a href="https://www.brewdude.tech" target="_blank">Joey Mckenzie</a></MatSubtitle1>
-    </div>
 </div>
 
-<canvas class="particle-background"></canvas>
-
 @code {
+
+    private enum SearchOption
+    {
+        Salaries,
+        Budget,
+        Zoning
+    }
+
     const string SearchTooltip = "To search all salary data, leave all fields blank";
 
-    string? name;
+    private SearchOption selectedSearchOption;
 
-    private string? jobTitle;
-
-    string? agency;
-
-    string? status;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await JSRuntime.InvokeVoidAsync("initParticlesJs");
-        }
-
-        var request = new EmployeeSalarySearchRequestDto(default, default, default, default, default);
-    }
 }
