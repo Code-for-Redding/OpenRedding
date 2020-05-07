@@ -32,6 +32,8 @@ namespace OpenRedding.Client
                 options.UseReduxDevTools();
             });
 
+            builder.Services.AddScoped<OpenReddingApiService>();
+
             await builder
                 .Build()
                 .RunAsync();
