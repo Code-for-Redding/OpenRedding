@@ -15,14 +15,14 @@
         @* Psuedo header *@
         <div class="text-center">
             <h4 class="card-title text-center">Search Criteria</h4>
-            <h6 class="card-subtitle mb-2 text-muted">Enter values below, then hit the button below to refine your results</h6>
+            <h6 class="card-subtitle mb-2 text-muted">Enter values below, then hit the search button to refine your results</h6>
         </div>
 
         @* Refined search fields *@
         <div class="d-flex flex-column align-content-center">
 
             @* Name, job title, agency, and status *@
-            <div class="d-flex flex-row justify-content-center">
+            <div class="row justify-content-center">
                 @* Name *@
                 <div class="col-md-3">
                     <div class="d-flex flex-column">
@@ -69,7 +69,7 @@
             </div>
 
             @* Year, base pay range, total pay range *@
-            <div class="d-flex flex-row justify-content-center">
+            <div class="row justify-content-center">
                 @* Name *@
                 <div class="col-md-4">
                     <div class="d-flex flex-column">
@@ -111,25 +111,62 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        @* Search button *@
-        <div class="mt-3 d-flex flex-row">
-            <div class="mx-auto">
-                <button @onclick="(() => Dispatcher.Dispatch(new LoadEmployeeSalariesAction(null, true)))" class="btn btn btn-outline-info " type="button">Search</button>
-                <span class="px-1"></span>
-                <button class="btn btn btn-outline-success" type="button">Reset</button>
-                <span class="px-1"></span>
-                <button class="btn btn btn-outline-danger" type="button">Download</button>
+            @* Buttons and metadata *@
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <div class="d-flex flex-column mt-4">
+                        @* Search button *@
+                        <div class="mt-3 d-flex flex-row">
+                            <div class="mx-auto">
+                                <button @onclick="(() => Dispatcher.Dispatch(new LoadEmployeeSalariesAction(null, true)))" class="btn btn btn-outline-info " type="button">Search</button>
+                                <span class="px-1"></span>
+                                <button class="btn btn btn-outline-success" type="button">Reset</button>
+                                <span class="px-1"></span>
+                                <button class="btn btn btn-outline-danger" type="button">Download</button>
+                            </div>
+                        </div>
+
+                        @* Page and result count *@
+                        <div class="d-flex flex-row justify-content-center mt-3">
+                            <span><strong>Results</strong>: @ResultCount</span>
+                            <span class="px-2"></span>
+                            <span><strong>Pages</strong>: @PageCount</span>
+                        </div>
+                    </div>
+                </div>
+
+                @* Sort by *@
+                <div class="col-md-4">
+                    <div class="d-flex flex-column">
+                        @* Sort options *@
+                        <label class="col-form-label" for="agency-dropdown">Sort Options</label>
+                        <select id="agency-dropdown" class="form-control">
+                            <option disabled>Select a field to sort by</option>
+                            <option>Default</option>
+                            @foreach (var option in sortOptions)
+                            {
+                                <option>@option</option>
+                            }
+                        </select>
+
+                        @* Sort order radio buttons *@
+                        <div class="py-2 btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-outline-primary active">
+                                <input type="radio" name="options" id="sort-by-default" autocomplete="off" checked=""> Default
+                            </label>
+                            <label class="btn btn-outline-primary">
+                                <input type="radio" name="options" id="sort-by-ascending" autocomplete="off"> Ascending
+                            </label>
+                            <label class="btn btn-outline-primary">
+                                <input type="radio" name="options" id="sort-by-desceding" autocomplete="off"> Descending
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        @* Page and result count *@
-        <div class="d-flex flex-row justify-content-center mt-3">
-            <span><strong>Results</strong>: @ResultCount</span>
-            <span class="px-2"></span>
-            <span><strong>Pages</strong>: @PageCount</span>
-        </div>
     </div>
 </div>
 
@@ -156,6 +193,17 @@
         "$200,000 - $249,999",
         "$250,000 - $299,999",
         "$300,000 and greater"
+    };
+
+    private IEnumerable<string> sortOptions = new List<string>
+    {
+        "Name",
+        "Job title",
+        "Agency",
+        "Status",
+        "Fiscal year",
+        "Base pay",
+        "Total pay with benefits",
     };
 
     [Parameter]
