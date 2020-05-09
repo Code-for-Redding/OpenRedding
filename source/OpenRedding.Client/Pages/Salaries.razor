@@ -1,12 +1,109 @@
-﻿@page "/salaries"
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@page "/salaries"
+
+@using Fluxor
+@using OpenRedding.Client.Store.Features.Salaries 
+@using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries 
+@using OpenRedding.Domain.Salaries.ViewModels 
 
 @inject NavigationManager Navigation
-@inject HttpClient HttpClient
+@inject IState<SalariesState> State 
+@inject IDispatcher Dispatcher
 
-<section id="open-redding-salaries" class="container">
-    <h2 class="text-center">Salaries</h2>
+<section id="open-redding-salaries" class="container mt-4">
+    <h2 class="text-center font-weight-bolder mb-1">Salaries</h2>
+
+    @if (State.Value.IsLoading)
+    {
+        <div class="d-flex flex-row justify-content-center mt-5">
+            <div class="spinner-border text-info" role="status">
+                <span class="sr-only">Loading salary data...</span>
+            </div>
+        </div>
+    }
+    else if (State.Value.SalaryResults is null)
+    {
+        <div class="d-flex flex-column justify-content-center">
+            <div class="alert alert-light text-center">
+                <h4 class="alert-heading">Uh oh...</h4>
+                <p class="mb-0">Looks like there was an issue retrieving the data, click the button below to try again.</p>
+                <button @onclick="(() => Dispatcher.Dispatch(new LoadEmployeeSalariesAction(null)))" class="mt-3 btn btn-outline-info">Refresh</button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <RefinedSalarySearch PageCount="State.Value.SalaryResults.Pages" ResultCount="State.Value.SalaryResults.Count" />
+
+        @if (State.Value.IsTableRefresh)
+        {
+            <div class="d-flex flex-row justify-content-center mt-5">
+                <div class="spinner-border text-info" role="status">
+                    <span class="sr-only">Loading salary data...</span>
+                </div>
+            </div>
+        }
+        else
+        {
+            @* Salary table data *@
+            <table class="table table-hover mt-2">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Job Title</th>
+                        <th scope="col">Agency</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Year</th>
+                        <th scope="col">Base Pay</th>
+                        <th scope="col">Total Pay with Benefits</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var employeeSalary in State.Value.SalaryResults.Employees)
+                    {
+                        <tr>
+                            <td>@employeeSalary.Name</td>
+                            <td>@employeeSalary.JobTitle</td>
+                            <td>@employeeSalary.Agency</td>
+                            <td>@employeeSalary.Status</td>
+                            <td>@employeeSalary.Year</td>
+                            <td>@employeeSalary.BasePay</td>
+                            <td>@employeeSalary.TotalPayWithBenefits</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="mt-3 d-flex">
+                <ul class="pagination mx-auto">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">&laquo;</a>
+                    </li>
+
+                    @* Pagination links *@
+                    @for (var pageNumber = 1; pageNumber <= State.Value.SalaryResults.Pages; pageNumber++)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" href="#">@pageNumber</a>
+                        </li>
+                    }
+
+                    <li class="page-item">
+                        <a class="page-link" href="#">&raquo;</a>
+                    </li>
+                </ul>
+            </div>
+        }
+    }
 
 </section>
 
 @code {
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
 }

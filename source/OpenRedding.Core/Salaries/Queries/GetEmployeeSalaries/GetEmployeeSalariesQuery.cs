@@ -4,7 +4,7 @@
     using OpenRedding.Domain.Salaries.Dtos;
     using OpenRedding.Domain.Salaries.ViewModels;
 
-    public class GetEmployeeSalariesQuery : OpenReddingRequest<EmployeeSearchResultList>
+    public class GetEmployeeSalariesQuery : OpenReddingRequest<EmployeeSearchResultViewModelList>
     {
         public GetEmployeeSalariesQuery(EmployeeSalarySearchRequestDto searchRequest, int? page) =>
             (SearchRequest, Page) = (searchRequest, page ?? 1);

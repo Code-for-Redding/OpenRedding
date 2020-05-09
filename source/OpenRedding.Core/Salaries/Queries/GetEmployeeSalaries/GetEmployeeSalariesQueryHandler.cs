@@ -14,14 +14,14 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
     using OpenRedding.Domain.Common.Dto;
     using Shared;
 
-    public class GetEmployeeSalariesQueryHandler : IRequestHandler<GetEmployeeSalariesQuery, EmployeeSearchResultList>
+    public class GetEmployeeSalariesQueryHandler : IRequestHandler<GetEmployeeSalariesQuery, EmployeeSearchResultViewModelList>
     {
         private readonly IOpenReddingDbContext _context;
 
         public GetEmployeeSalariesQueryHandler(IOpenReddingDbContext context) =>
             _context = context;
 
-        public async Task<EmployeeSearchResultList> Handle(GetEmployeeSalariesQuery request, CancellationToken cancellationToken)
+        public async Task<EmployeeSearchResultViewModelList> Handle(GetEmployeeSalariesQuery request, CancellationToken cancellationToken)
         {
             ArgumentValidation.CheckNotNull(request, nameof(request));
             ArgumentValidation.CheckNotNull(request.SearchRequest, nameof(request.SearchRequest));
@@ -84,7 +84,7 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
                 .Select(e => e.ToEmployeeSalarySearchResultDto())
                 .ToListAsync(cancellationToken);
 
-            return new EmployeeSearchResultList(resultingSalaries, totalResults);
+            return new EmployeeSearchResultViewModelList(resultingSalaries, totalResults);
         }
     }
 }

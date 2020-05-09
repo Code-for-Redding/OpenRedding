@@ -20,17 +20,18 @@ namespace OpenRedding.Api.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(EmployeeSearchResultList), StatusCodes.Status200OK)]
-        public async Task<EmployeeSearchResultList> GetEmployeeSalaries(
+        [ProducesResponseType(typeof(EmployeeSearchResultViewModelList), StatusCodes.Status200OK)]
+        public async Task<EmployeeSearchResultViewModelList> GetEmployeeSalaries(
             [FromQuery] string? name,
             [FromQuery] string? jobTitle,
             [FromQuery] string? agency,
             [FromQuery] string? status,
             [FromQuery] string? sortBy,
+            [FromQuery] int? year,
             [FromQuery] int? page)
         {
             _logger.LogInformation($"Querying salaries: name [{name}], jobTitle [{jobTitle}], agency [{agency}], status [{status}], sortBy [{sortBy}]");
-            var searchRequest = new EmployeeSalarySearchRequestDto(name, jobTitle, agency, status, sortBy);
+            var searchRequest = new EmployeeSalarySearchRequestDto(name, jobTitle, agency, status, sortBy, year);
             return await Mediator.Send(new GetEmployeeSalariesQuery(searchRequest, page));
         }
 

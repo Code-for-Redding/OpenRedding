@@ -15,11 +15,6 @@ namespace OpenRedding.Client
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
 
-            var apiUrl = builder.Configuration["apiUrl"];
-
-            // Add authorization services
-            builder.Services.AddOptions();
-
             builder.Services.AddLogging();
             builder.Services.AddTransient(_ => new HttpClient
             {

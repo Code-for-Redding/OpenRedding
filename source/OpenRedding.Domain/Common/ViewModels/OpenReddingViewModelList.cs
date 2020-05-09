@@ -10,7 +10,7 @@ namespace OpenRedding.Domain.Common.ViewModels
             Count = count;
         }
 
-        public int Pages => Count / OpenReddingConstants.MaxPageSizeResult;
+        public int Pages => (Count / OpenReddingConstants.MaxPageSizeResult) + 1;
 
         public int Count { get; }
 

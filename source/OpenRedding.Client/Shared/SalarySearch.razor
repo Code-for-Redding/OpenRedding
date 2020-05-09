@@ -1,4 +1,12 @@
-﻿@* Salary search *@
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@using Fluxor
+@using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries 
+
+@inject IDispatcher Dispatcher
+@inject NavigationManager Navigation
+
+@* Salary search *@
 <div class="form-group row px-2">
 
     @* Name *@
@@ -47,6 +55,21 @@
 
     @* Search button *@
     <div class="pt-4 d-flex flex-row mx-auto">
-        <button class="btn btn-lg btn-info" type="button" data-toggle="tooltip" data-placement="bottom" title="To browse all salary data, leave all fields above blank">Search</button>
+        <button @onclick="OnSearchClicked" class="btn btn-lg btn-info" type="button" data-toggle="tooltip" data-placement="bottom" title="To browse all salary data, leave all fields above blank">Search</button>
     </div>
 </div>
+
+@code {
+
+    private void OnSearchClicked()
+    {
+        Dispatcher.Dispatch(new LoadEmployeeSalariesAction(null));
+        Navigation.NavigateTo("salaries");
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+}

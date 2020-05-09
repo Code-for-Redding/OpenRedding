@@ -4,9 +4,9 @@ namespace OpenRedding.Domain.Salaries.ViewModels
     using Common.ViewModels;
     using Dtos;
 
-    public class EmployeeSearchResultList : OpenReddingViewModelList
+    public class EmployeeSearchResultViewModelList : OpenReddingViewModelList
     {
-        public EmployeeSearchResultList(IEnumerable<EmployeeSalarySearchResultDto> employees, int totalResults)
+        public EmployeeSearchResultViewModelList(IEnumerable<EmployeeSalarySearchResultDto> employees, int totalResults)
             : base(totalResults)
         {
             Employees = employees;

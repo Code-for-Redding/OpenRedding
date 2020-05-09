@@ -1,0 +1,172 @@
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@using Fluxor
+@using OpenRedding.Client.Store.Features.Salaries
+@using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries
+
+@inject IState<SalariesState> State
+@inject IDispatcher Dispatcher
+
+@* Search metadata *@
+<div class="card bg-light my-4">
+
+    @* Card container *@
+    <div class="card-body">
+        @* Psuedo header *@
+        <div class="text-center">
+            <h4 class="card-title text-center">Search Criteria</h4>
+            <h6 class="card-subtitle mb-2 text-muted">Enter values below, then hit the button below to refine your results</h6>
+        </div>
+
+        @* Refined search fields *@
+        <div class="d-flex flex-column align-content-center">
+
+            @* Name, job title, agency, and status *@
+            <div class="d-flex flex-row justify-content-center">
+                @* Name *@
+                <div class="col-md-3">
+                    <div class="d-flex flex-column">
+                        <label class="col-form-label" for="salary-search-name">Name</label>
+                        <input type="text" class="form-control" id="salary-search-name">
+                    </div>
+                </div>
+
+                @* Job title *@
+                <div class="col-md-3">
+                    <div class="d-flex flex-column">
+                        <label class="col-form-label" for="salary-search-job-title">Job Title</label>
+                        <input type="text" class="form-control" id="salary-search-job-title">
+                    </div>
+                </div>
+
+                @* Agency *@
+                <div class="col-md-3">
+                    <div class="d-flex flex-column">
+                        <label class="col-form-label" for="agency-dropdown">Agency</label>
+                        <select id="agency-dropdown" class="form-control">
+                            <option disabled>Select an agency</option>
+                            <option>All Agencies</option>
+                            <option>Redding</option>
+                            <option>Shasta County</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                @* Status *@
+                <div class="col-md-3">
+                    <div class="d-flex flex-column">
+                        <label class="col-form-label" for="agency-dropdown">Status</label>
+                        <select id="status-dropdown" class="form-control">
+                            <option disabled>Select a status</option>
+                            <option>All Statuses</option>
+                            <option>Full-time</option>
+                            <option>Part-time</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            @* Year, base pay range, total pay range *@
+            <div class="d-flex flex-row justify-content-center">
+                @* Name *@
+                <div class="col-md-4">
+                    <div class="d-flex flex-column">
+                        <label class="col-form-label" for="agency-dropdown">Fiscal Year</label>
+                        <select id="agency-dropdown" class="form-control">
+                            <option disabled>Select a year</option>
+                            <option>All fiscal years</option>
+                            @foreach (var year in fiscalYears)
+                            {
+                                <option>@year</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="d-flex flex-column">
+                        <label class="col-form-label" for="agency-dropdown">Base Pay Range</label>
+                        <select id="agency-dropdown" class="form-control">
+                            <option disabled>Select a range</option>
+                            <option>All pay ranges</option>
+                            @foreach (var range in payRanges)
+                            {
+                                <option>@range</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="d-flex flex-column">
+                        <label class="col-form-label" for="agency-dropdown">Total Pay Range</label>
+                        <select id="agency-dropdown" class="form-control">
+                            <option disabled>Select a range</option>
+                            <option>All pay ranges</option>
+                            @foreach (var range in payRanges)
+                            {
+                                <option>@range</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @* Search button *@
+        <div class="mt-3 d-flex flex-row">
+            <div class="mx-auto">
+                <button @onclick="(() => Dispatcher.Dispatch(new LoadEmployeeSalariesAction(null, true)))" class="btn btn btn-outline-info " type="button">Search</button>
+                <span class="px-1"></span>
+                <button class="btn btn btn-outline-success" type="button">Reset</button>
+                <span class="px-1"></span>
+                <button class="btn btn btn-outline-danger" type="button">Download</button>
+            </div>
+        </div>
+
+        @* Page and result count *@
+        <div class="d-flex flex-row justify-content-center mt-3">
+            <span><strong>Results</strong>: @ResultCount</span>
+            <span class="px-2"></span>
+            <span><strong>Pages</strong>: @PageCount</span>
+        </div>
+    </div>
+</div>
+
+@code {     
+
+    private IEnumerable<int> fiscalYears = new List<int>
+    {
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018
+    };
+
+    private IEnumerable<string> payRanges = new List<string>
+    {
+        "$0 - $49,999",
+        "$50,000 - $99,999",
+        "$100,000 - $149,999",
+        "$150,000 - $199,999",
+        "$200,000 - $249,999",
+        "$250,000 - $299,999",
+        "$300,000 and greater"
+    };
+
+    [Parameter]
+    public int ResultCount { get; set; }
+
+    [Parameter]
+    public int PageCount { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+}

@@ -5,7 +5,8 @@ namespace OpenRedding.Domain.Salaries.ViewModels
 
     public class EmployeeSalaryDetailViewModel : OpenReddingViewModel
     {
-        public EmployeeSalaryDetailViewModel(EmployeeSalaryDetailDto employee) => Employee = employee;
+        public EmployeeSalaryDetailViewModel(EmployeeSalaryDetailDto employee) =>
+            Employee = employee;
 
         public EmployeeSalaryDetailDto Employee { get; }
     }
