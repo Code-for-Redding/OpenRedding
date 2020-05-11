@@ -1,0 +1,39 @@
+﻿@using OpenRedding.Client.Validation.Models
+
+<EditForm EditContext="@editContext">
+    <DataAnnotationsValidator />
+
+    <div class="d-flex flex-column">
+        <label class="@LabelCss" for="@InputId">@FieldLabel</label>
+        <InputText 
+            class="@inputCss" 
+            id="@InputId" 
+            @bind-Value="validatedInput.InputValue" />
+        <ValidationMessage For="@(() => validatedInput.InputValue)"/>
+    </div>
+</EditForm>
+
+@code {
+
+    private string inputCss => editContext!.Validate() || string.IsNullOrWhiteSpace(validatedInput.InputValue) ? "form-control" : "form-control is-invalid";
+
+    private AlphabeticalTextInput validatedInput = new AlphabeticalTextInput();
+
+    private EditContext? editContext;
+
+    [Parameter]
+    public string? InputId { get; set; }
+
+    [Parameter]
+    public string? FieldLabel { get; set; }
+
+    [Parameter]
+    public string? LabelCss { get; set; }
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(validatedInput);
+    }
+
+}
+

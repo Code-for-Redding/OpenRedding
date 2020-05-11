@@ -4,7 +4,7 @@
 
     public static class Validate
     {
-        public static void NotNull(object objectToValidate, string messageOnFailedValidation)
+        public static void NotNull(object? objectToValidate, string messageOnFailedValidation)
         {
             if (objectToValidate is null)
             {

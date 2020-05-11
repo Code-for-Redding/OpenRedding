@@ -51,7 +51,7 @@
             @* Salary table data *@
             <table class="table table-hover mt-2">
                 <thead>
-                    <tr>
+                    <tr class="text-center">
                         <th scope="col">Name</th>
                         <th scope="col">Job Title</th>
                         <th scope="col">Agency</th>
@@ -64,7 +64,7 @@
                 <tbody>
                     @foreach (var employeeSalary in State.Value.SalaryResults.Employees)
                     {
-                        <tr>
+                        <tr class="text-center">
                             <td>@employeeSalary.Name</td>
                             <td>@employeeSalary.JobTitle</td>
                             <td>@employeeSalary.Agency</td>
@@ -82,15 +82,16 @@
                     <li class="page-item disabled">
                         <a class="page-link" href="#">&laquo;</a>
                     </li>
-
+                    <li class="page-item active">
+                        <a class="page-link" href="#">1</a>
+                    </li>
                     @* Pagination links *@
-                    @for (var pageNumber = 1; pageNumber <= State.Value.SalaryResults.Pages; pageNumber++)
+                    @for (var pageNumber = 2; pageNumber <= State.Value.SalaryResults.Pages; pageNumber++)
                     {
-                        <li class="page-item active">
+                        <li class="page-item">
                             <a class="page-link" href="#">@pageNumber</a>
                         </li>
                     }
-
                     <li class="page-item">
                         <a class="page-link" href="#">&raquo;</a>
                     </li>

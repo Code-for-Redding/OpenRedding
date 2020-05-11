@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
     using Microsoft.Extensions.Configuration;
@@ -32,9 +33,63 @@
                     new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
                     new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
                     new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "John Smith", "Engineer", "Redding", "Full Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "John Smith", "Engineer", "Redding", "Full Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "John Smith", "Engineer", "Redding", "Full Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "John Smith", "Engineer", "Redding", "Full Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "John Smith", "Engineer", "Redding", "Full Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "John Smith", "Engineer", "Redding", "Full Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
+                    new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m),
                     new EmployeeSalarySearchResultDto(1, "Mary Johnson", "Accountant", "Shasta County", "Part Time", 2019, 100000m, 120000m)
                 };
-            _stubSearchResult = new EmployeeSearchResultViewModelList(mockEmployees, mockEmployees.Count);
+            _stubSearchResult = new EmployeeSearchResultViewModelList(mockEmployees.Take(25), mockEmployees.Count);
         }
 
         public async Task<EmployeeSearchResultViewModelList> GetEmployeesSalariesAsync()

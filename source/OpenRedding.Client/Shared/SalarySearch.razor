@@ -2,6 +2,7 @@
 
 @using Fluxor
 @using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries 
+@using OpenRedding.Client.Components 
 
 @inject IDispatcher Dispatcher
 @inject NavigationManager Navigation
@@ -11,18 +12,12 @@
 
     @* Name *@
     <div class="col-md-3">
-        <div class="d-flex flex-column">
-            <label class="col-form-label text-white-90" for="salary-search-name">Name</label>
-            <input type="text" class="form-control" placeholder="e.g. Richard Hendricks" id="salary-search-name">
-        </div>
+        <ValidatedInput FieldLabel="Name" InputId="salary-search-name" LabelCss="col-form-label text-white" />
     </div>
 
     @* Job title *@
     <div class="col-md-3">
-        <div class="d-flex flex-column">
-            <label class="col-form-label text-white-90" for="salary-search-job-title">Job Title</label>
-            <input type="text" class="form-control" placeholder="e.g. Engineer" id="salary-search-job-title">
-        </div>
+        <ValidatedInput FieldLabel="Job Title" InputId="salary-search-job-title" LabelCss="col-form-label text-white" />
     </div>
 
     @* Agency *@

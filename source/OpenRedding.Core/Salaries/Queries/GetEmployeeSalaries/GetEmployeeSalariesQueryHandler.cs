@@ -1,6 +1,8 @@
 namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading;
@@ -11,17 +13,23 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
     using Extensions;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
+    using OpenRedding.Core.Infrastructure.Services;
+    using OpenRedding.Domain.Common.Aggregates;
     using OpenRedding.Domain.Common.Dto;
+    using OpenRedding.Domain.Common.Miscellaneous;
+    using OpenRedding.Domain.Common.ViewModels;
+    using OpenRedding.Domain.Salaries.Aggregates;
+    using OpenRedding.Domain.Salaries.Dtos;
     using Shared;
 
-    public class GetEmployeeSalariesQueryHandler : IRequestHandler<GetEmployeeSalariesQuery, EmployeeSearchResultViewModelList>
+    public class GetEmployeeSalariesQueryHandler : IRequestHandler<GetEmployeeSalariesQuery, OpenReddingSearchResultAggregate<EmployeeSalarySearchResultDto>>
     {
         private readonly IOpenReddingDbContext _context;
 
         public GetEmployeeSalariesQueryHandler(IOpenReddingDbContext context) =>
             _context = context;
 
-        public async Task<EmployeeSearchResultViewModelList> Handle(GetEmployeeSalariesQuery request, CancellationToken cancellationToken)
+        public async Task<OpenReddingSearchResultAggregate<EmployeeSalarySearchResultDto>> Handle(GetEmployeeSalariesQuery request, CancellationToken cancellationToken)
         {
             ArgumentValidation.CheckNotNull(request, nameof(request));
             ArgumentValidation.CheckNotNull(request.SearchRequest, nameof(request.SearchRequest));
@@ -84,7 +92,8 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
                 .Select(e => e.ToEmployeeSalarySearchResultDto())
                 .ToListAsync(cancellationToken);
 
-            return new EmployeeSearchResultViewModelList(resultingSalaries, totalResults);
+            // return new EmployeeSearchResultViewModelList(resultingSalaries, totalResults);
+            return new OpenReddingSearchResultAggregate<EmployeeSalarySearchResultDto>(resultingSalaries.AsEnumerable(), totalResults);
         }
     }
 }

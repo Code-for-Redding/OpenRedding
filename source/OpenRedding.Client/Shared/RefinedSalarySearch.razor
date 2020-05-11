@@ -1,6 +1,7 @@
 ﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 @using Fluxor
+@using OpenRedding.Client.Components 
 @using OpenRedding.Client.Store.Features.Salaries
 @using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries
 
@@ -8,7 +9,7 @@
 @inject IDispatcher Dispatcher
 
 @* Search metadata *@
-<div class="card bg-light my-4">
+<div class="card bg-light mt-4">
 
     @* Card container *@
     <div class="card-body">
@@ -25,18 +26,12 @@
             <div class="row justify-content-center">
                 @* Name *@
                 <div class="col-md-3">
-                    <div class="d-flex flex-column">
-                        <label class="col-form-label" for="salary-search-name">Name</label>
-                        <input type="text" class="form-control" id="salary-search-name">
-                    </div>
+                    <ValidatedInput FieldLabel="Name" InputId="salary-search-name" LabelCss="col-form-label text-black" />
                 </div>
 
                 @* Job title *@
                 <div class="col-md-3">
-                    <div class="d-flex flex-column">
-                        <label class="col-form-label" for="salary-search-job-title">Job Title</label>
-                        <input type="text" class="form-control" id="salary-search-job-title">
-                    </div>
+                    <ValidatedInput FieldLabel="Job Title" InputId="salary-search-job-title" LabelCss="col-form-label text-black" />
                 </div>
 
                 @* Agency *@
@@ -114,28 +109,6 @@
 
             @* Buttons and metadata *@
             <div class="row justify-content-center">
-                <div class="col-md-4">
-                    <div class="d-flex flex-column mt-4">
-                        @* Search button *@
-                        <div class="mt-3 d-flex flex-row">
-                            <div class="mx-auto">
-                                <button @onclick="(() => Dispatcher.Dispatch(new LoadEmployeeSalariesAction(null, true)))" class="btn btn btn-outline-info " type="button">Search</button>
-                                <span class="px-1"></span>
-                                <button class="btn btn btn-outline-success" type="button">Reset</button>
-                                <span class="px-1"></span>
-                                <button class="btn btn btn-outline-danger" type="button">Download</button>
-                            </div>
-                        </div>
-
-                        @* Page and result count *@
-                        <div class="d-flex flex-row justify-content-center mt-3">
-                            <span><strong>Results</strong>: @ResultCount</span>
-                            <span class="px-2"></span>
-                            <span><strong>Pages</strong>: @PageCount</span>
-                        </div>
-                    </div>
-                </div>
-
                 @* Sort by *@
                 <div class="col-md-4">
                     <div class="d-flex flex-column">
@@ -166,9 +139,34 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
+
+@* Buttons and search metadata *@
+@if (!State.Value.IsTableRefresh)
+{
+    <div class="row justify-content-center py-1">
+        <div class="d-flex flex-column mt-3">
+            @* Search button *@
+            <div class="d-flex flex-row">
+                <div class="mx-auto">
+                    <button @onclick="(() => Dispatcher.Dispatch(new LoadEmployeeSalariesAction(null, true)))" class="btn btn btn-outline-info" type="button">Search</button>
+                    <span class="px-1"></span>
+                    <button class="btn btn btn-outline-success" type="button">Reset</button>
+                    <span class="px-1"></span>
+                    <button class="btn btn btn-outline-danger" type="button">Download</button>
+                </div>
+            </div>
+
+            @* Page and result count *@
+            <div class="d-flex flex-row justify-content-center mt-2">
+                <span><strong>Results</strong>: @ResultCount</span>
+                <span class="px-2"></span>
+                <span><strong>Pages</strong>: @PageCount</span>
+            </div>
+        </div>
+    </div>
+}
 
 @code {     
 
