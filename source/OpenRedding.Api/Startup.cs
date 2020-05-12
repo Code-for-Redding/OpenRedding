@@ -49,6 +49,8 @@ namespace OpenRedding.Api
             services.AddOpenReddingCore();
             services.AddOpenReddingInfrastructure(Configuration);
 
+            services.AddCors();
+
             // Override built in model state validation
             services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
         }
@@ -62,6 +64,9 @@ namespace OpenRedding.Api
             }
 
             app.UseHttpsRedirection();
+
+            // TODO: Update this
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseRouting();
 

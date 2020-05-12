@@ -18,7 +18,6 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
     using OpenRedding.Domain.Common.Dto;
     using OpenRedding.Domain.Common.Miscellaneous;
     using OpenRedding.Domain.Common.ViewModels;
-    using OpenRedding.Domain.Salaries.Aggregates;
     using OpenRedding.Domain.Salaries.Dtos;
     using Shared;
 
@@ -93,7 +92,7 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
                 .ToListAsync(cancellationToken);
 
             // return new EmployeeSearchResultViewModelList(resultingSalaries, totalResults);
-            return new OpenReddingSearchResultAggregate<EmployeeSalarySearchResultDto>(resultingSalaries.AsEnumerable(), totalResults);
+            return new OpenReddingSearchResultAggregate<EmployeeSalarySearchResultDto>(resultingSalaries.AsEnumerable(), totalResults, request.Page);
         }
     }
 }

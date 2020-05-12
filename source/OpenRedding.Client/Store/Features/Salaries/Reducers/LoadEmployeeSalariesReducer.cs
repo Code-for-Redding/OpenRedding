@@ -1,7 +1,8 @@
 ﻿namespace OpenRedding.Client.Store.Features.Salaries.Reducers
 {
-	using Fluxor;
-	using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
+    using Fluxor;
+    using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
+    using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalariesFromLink;
 
     public static class LoadEmployeeSalariesReducer
     {
@@ -10,8 +11,12 @@
             new SalariesState(!action.IsTableRefresh, action.IsTableRefresh, state.SalaryResults, state.SalaryDetail);
 
         [ReducerMethod]
+        public static SalariesState ReduceLoadEmployeeSalariesFromLinkAction(SalariesState state, LoadEmployeeSalariesFromLinkAction action) =>
+            new SalariesState(false, true, state.SalaryResults, state.SalaryDetail);
+
+        [ReducerMethod]
         public static SalariesState ReduceLoadEmployeeSalariesSuccessAction(SalariesState state, LoadEmployeeSalariesSuccessAction action) =>
-            new SalariesState(false, false, action.Salaries, state.SalaryDetail);
+            new SalariesState(false, false, action.Response, state.SalaryDetail);
 
         [ReducerMethod]
         public static SalariesState ReduceLoadEmployeeSalariesFailureAction(SalariesState state, LoadEmployeeSalariesFailureAction action) =>

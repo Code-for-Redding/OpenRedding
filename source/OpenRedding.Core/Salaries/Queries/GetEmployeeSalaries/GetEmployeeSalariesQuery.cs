@@ -3,7 +3,6 @@
     using System.Collections.Generic;
     using OpenRedding.Core.Infrastructure.Requests;
     using OpenRedding.Domain.Common.Aggregates;
-    using OpenRedding.Domain.Salaries.Aggregates;
     using OpenRedding.Domain.Salaries.Dtos;
     using OpenRedding.Domain.Salaries.ViewModels;
 

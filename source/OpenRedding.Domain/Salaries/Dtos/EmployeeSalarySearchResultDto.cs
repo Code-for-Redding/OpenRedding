@@ -2,6 +2,10 @@ namespace OpenRedding.Domain.Salaries.Dtos
 {
     public class EmployeeSalarySearchResultDto
     {
+        public EmployeeSalarySearchResultDto()
+        {
+        }
+
         public EmployeeSalarySearchResultDto(int id, string? name, string? jobTitle, string? agency, string? status, int year, decimal basePay, decimal totalPayWithBenefits)
         {
             Id = id;
@@ -14,20 +18,20 @@ namespace OpenRedding.Domain.Salaries.Dtos
             TotalPayWithBenefits = totalPayWithBenefits;
         }
 
-        public int Id { get; }
+        public int Id { get; set; }
 
-        public string? Name { get; }
+        public string? Name { get; set; }
 
-        public string? JobTitle { get; }
+        public string? JobTitle { get; set; }
 
-        public string? Agency { get; }
+        public string? Agency { get; set; }
 
-        public string? Status { get; }
+        public string? Status { get; set; }
 
         public int Year { get; set; }
 
-        public decimal BasePay { get; }
+        public decimal BasePay { get; set; }
 
-        public decimal TotalPayWithBenefits { get; }
+        public decimal TotalPayWithBenefits { get; set; }
     }
 }
