@@ -6,6 +6,6 @@
     {
         public override string GetName() => "Salaries";
 
-        protected override SalariesState GetInitialState() => new SalariesState(false, false, null, null);
+        protected override SalariesState GetInitialState() => new SalariesState(false, false, null, null, null);
     }
 }

@@ -7,12 +7,18 @@
 
     public class SalariesState
     {
-        public SalariesState(bool isLoading, bool isTableRefresh, OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>? salaryResults, EmployeeSalaryDetailViewModel? salaryDetail)
+        public SalariesState(
+            bool isLoading,
+            bool isTableRefresh,
+            OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>? salaryResults,
+            EmployeeSalaryDetailViewModel? salaryDetail,
+            EmployeeSalarySearchRequestDto? searchRequest)
         {
             IsLoading = isLoading;
             IsTableRefresh = isTableRefresh;
             SalaryResults = salaryResults;
             SalaryDetail = salaryDetail;
+            SearchRequest = searchRequest;
         }
 
         public bool IsLoading { get; }
@@ -22,5 +28,7 @@
         public OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>? SalaryResults { get; }
 
         public EmployeeSalaryDetailViewModel? SalaryDetail { get; }
+
+        public EmployeeSalarySearchRequestDto? SearchRequest { get; }
     }
 }
