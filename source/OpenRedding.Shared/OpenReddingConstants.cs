@@ -6,6 +6,7 @@
         public const string Version = "api/";
         public const int RequestElapsedMillisecondTimeWarningLimit = 500;
         public const int MaxPageSizeResult = 25;
+        public const string PageNumberStringReplacementValue = "{:pageNumber}";
         public static readonly string ApiPath = $"/{Version}/api";
 
         public static readonly string[] Urls =

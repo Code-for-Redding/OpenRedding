@@ -80,7 +80,7 @@ namespace OpenRedding.Api.Controllers
             previousPageQuery.Add("page", previousPage.ToString());
             firstPageQuery.Add("page", "1");
             lastPageQuery.Add("page", response.Pages.ToString());
-            pagedLinkQuery.Add("page", "{:pageNumber}");
+            pagedLinkQuery.Add("page", OpenReddingConstants.PageNumberStringReplacementValue);
 
             var nextPageLink = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{nextPageQuery.ToQueryString()}";
             var previousPageLink = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{previousPageQuery.ToQueryString()}";

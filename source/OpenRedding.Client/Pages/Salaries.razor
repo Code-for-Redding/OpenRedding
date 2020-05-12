@@ -47,24 +47,35 @@
         }
         else
         {
-            <p class="text-center">To view detailed information about a particular record, select from a row in the table below</p>
+            <p class="text-center">To view detailed information about a particular record, select from a row in the table below.</p>
 
             @* Pagination *@
             @if (State.Value.SalaryResults.Links != null)
             {
-                <div class="mt-3 d-flex">
-                    <ul class="pagination mx-auto">
+                <div class="row justify-content-center">
+                    @* First and previous links *@
+                    <ul class="pagination">
                         @* First page*@
-                        @if (State.Value.SalaryResults.Links.Last != null && !string.IsNullOrWhiteSpace(State.Value.SalaryResults.Links.First!.Href))
+                        @if (State.Value.SalaryResults.Links.Last != null && !string.IsNullOrWhiteSpace(State.Value.SalaryResults.Links.First!.Href) && State.Value.SalaryResults.CurrentPage != 1)
                         {
                             <li class="page-item">
-                                <a class="page-link text-white" @onclick="(() => OnNavigateToPageResult(State.Value.SalaryResults.Links.First!.Href!))">first</a>
+                                <a style="cursor: pointer;" class="page-link text-white" @onclick="(() => OnNavigateToPageResult(State.Value.SalaryResults.Links.First!.Href!))">
+                                    <span class="d-flex flex-row">
+                                        <i class="fas fa-angle-double-left mt-1 px-2"></i>
+                                        first
+                                    </span>
+                                </a>
                             </li>
                         }
                         else
                         {
                             <li class="page-item disabled">
-                                <a class="page-link text-white">first</a>
+                                <a style="cursor: not-allowed;" class="page-link text-white">
+                                    <span class="d-flex flex-row">
+                                        <i class="fas fa-angle-double-left mt-1 px-2"></i>
+                                        first
+                                    </span>
+                                </a>
                             </li>
                         }
 
@@ -72,58 +83,91 @@
                         @if (State.Value.SalaryResults.Links.Previous != null && !string.IsNullOrWhiteSpace(State.Value.SalaryResults.Links.Previous!.Href))
                         {
                             <li class="page-item">
-                                <a class="page-link text-white" @onclick="(() => OnNavigateToPageResult(State.Value.SalaryResults.Links.Previous!.Href!))">&laquo;</a>
+                                <a style="cursor: pointer;" class="page-link text-white" @onclick="(() => OnNavigateToPageResult(State.Value.SalaryResults.Links.Previous!.Href!))">
+                                    <span class="d-flex flex-row">
+                                        <i class="fas fa-angle-left mt-1 px-2"></i>
+                                        previous
+                                    </span>
+                                </a>
                             </li>
                         }
                         else
                         {
                             <li class="page-item disabled">
-                                <a class="page-link text-white">&laquo;</a>
+                                <a style="cursor: not-allowed;" class="page-link text-white">
+                                    <span class="d-flex flex-row">
+                                        <i class="fas fa-angle-left mt-1 px-2"></i>
+                                        previous
+                                    </span>
+                                </a>
                             </li>
                         }
+                    </ul>
 
-                        @* Pagination links *@
-                        @for (var pageNumber = paginationRange.Start.Value; pageNumber <= paginationRange.End.Value; pageNumber++)
-                        {
-                            @if (pageNumber == State.Value.SalaryResults.CurrentPage)
+                    @* Page select dropdown *@
+                    <div class="d-flex flex-row justify-content-center px-2">
+                        <select style="cursor: pointer;" @onchange="OnPageDropdownSelect" class="custom-select">
+                            @for (var pageNumber = 1; pageNumber <= State.Value.SalaryResults.Pages; pageNumber++)
                             {
-                                <li class="page-item active">
-                                    <a class="page-link text-white">@pageNumber</a>
-                                </li>
+                                @if (pageNumber == State.Value.SalaryResults.CurrentPage)
+                                {
+                                    <option selected value="@pageNumber">@pageNumber</option>
+                                }
+                                else
+                                {
+                                    <option value="@pageNumber">@pageNumber</option>
+                                }
                             }
-                            else
-                            {
-                                <li class="page-item">
-                                    <a class="page-link text-white">@pageNumber</a>
-                                </li>
-                            }
-                        }
+                        </select>
+                    </div>
 
-                        @* Next page *@
-                        @if (State.Value.SalaryResults.Links.Next != null && !string.IsNullOrWhiteSpace(State.Value.SalaryResults.Links.Next!.Href))
+                    @* Next and last links *@
+                    <ul class="pagination">
+                        @* Next page*@
+                        @if (State.Value.SalaryResults.Links.Last != null && !string.IsNullOrWhiteSpace(State.Value.SalaryResults.Links.Next!.Href))
                         {
                             <li class="page-item">
-                                <a class="page-link text-white" @onclick="(() => OnNavigateToPageResult(State.Value.SalaryResults.Links.Next!.Href!))">&raquo;</a>
+                                <a style="cursor: pointer;" class="page-link text-white" @onclick="(() => OnNavigateToPageResult(State.Value.SalaryResults.Links.Next!.Href!))">
+                                    <span class="d-flex flex-row">
+                                        next
+                                        <i class="fas fa-angle-right mt-1 px-2"></i>
+                                    </span>
+                                </a>
                             </li>
                         }
                         else
                         {
                             <li class="page-item disabled">
-                                <a class="page-link text-white">&raquo;</a>
+                                <a style="cursor: not-allowed;" class="page-link text-white">
+                                    <span class="d-flex flex-row">
+                                        next
+                                        <i class="fas fa-angle-right mt-1 px-2"></i>
+                                    </span>
+                                </a>
                             </li>
                         }
 
                         @* Last page *@
-                        @if (State.Value.SalaryResults.Links.Last != null && !string.IsNullOrWhiteSpace(State.Value.SalaryResults.Links.Last!.Href))
+                        @if (State.Value.SalaryResults.Links.Previous != null && !string.IsNullOrWhiteSpace(State.Value.SalaryResults.Links.Last!.Href) && State.Value.SalaryResults.CurrentPage != State.Value.SalaryResults.Pages)
                         {
                             <li class="page-item">
-                                <a class="page-link text-white" @onclick="(() => OnNavigateToPageResult(State.Value.SalaryResults.Links.Last!.Href!))">last</a>
+                                <a style="cursor: pointer;" class="page-link text-white" @onclick="(() => OnNavigateToPageResult(State.Value.SalaryResults.Links.Last!.Href!))">
+                                    <span class="d-flex flex-row">
+                                        last
+                                        <i class="fas fa-angle-double-right mt-1 px-2"></i>
+                                    </span>
+                                </a>
                             </li>
                         }
                         else
                         {
                             <li class="page-item disabled">
-                                <a class="page-link text-white">&raquo;</a>
+                                <a style="cursor: not-allowed;" class="page-link text-white">
+                                    <span class="d-flex flex-row">
+                                        last
+                                        <i class="fas fa-angle-double-right mt-1 px-2"></i>
+                                    </span>
+                                </a>
                             </li>
                         }
                     </ul>
@@ -152,23 +196,18 @@
                             <td>@employeeSalary.Agency</td>
                             <td>@employeeSalary.Status</td>
                             <td>@employeeSalary.Year</td>
-                            <td>@employeeSalary.BasePay</td>
-                            <td>@employeeSalary.TotalPayWithBenefits</td>
+                            <td>@employeeSalary.BasePay.ToString("C")</td>
+                            <td>@employeeSalary.TotalPayWithBenefits.ToString("C")</td>
                         </tr>
                     }
                 </tbody>
             </table>
-
         }
     }
 
 </section>
 
 @code {
-
-    private const int MaxPaginationLinks = 8;
-
-    private Range paginationRange = new Range(1, MaxPaginationLinks);
 
     protected override void OnInitialized()
     {
@@ -178,6 +217,29 @@
     private void OnNavigateToPageResult(string link)
     {
         Dispatcher.Dispatch(new LoadEmployeeSalariesFromLinkAction(link));
+    }
+
+    private void OnPageDropdownSelect(ChangeEventArgs e)
+    {
+        if (State.Value.SalaryResults?.Links is null)
+        {
+            Console.WriteLine("No links returned to navigate to page");
+            return;
+        }
+
+        if (State.Value.SalaryResults.Links.Paged is null || string.IsNullOrWhiteSpace(State.Value.SalaryResults.Links.Paged!.Href))
+        {
+            Console.WriteLine("Paged link not available to follow");
+            return;
+        }
+
+        var decodedUrl = System.Web.HttpUtility.UrlDecode(State.Value.SalaryResults.Links.Paged!.Href, System.Text.Encoding.UTF8);
+        Console.WriteLine($"Decoded URL: {decodedUrl}");
+
+        var linkToFollow = decodedUrl.Replace(OpenReddingConstants.PageNumberStringReplacementValue, e.Value.ToString());
+        Console.WriteLine($"Link to follow is: {linkToFollow}");
+
+        Dispatcher.Dispatch(new LoadEmployeeSalariesFromLinkAction(linkToFollow));
     }
 
 }
