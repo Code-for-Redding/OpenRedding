@@ -8,8 +8,12 @@
         <InputText 
             class="@inputCss" 
             id="@InputId" 
+            @oninput="OnInputValueChange"
             @bind-Value="validatedInput.InputValue" />
-        <ValidationMessage For="@(() => validatedInput.InputValue)"/>
+        @if (DisplayErrorMessage)
+        {
+            <ValidationMessage For="@(() => validatedInput.InputValue)"/>
+        }
     </div>
 </EditForm>
 
@@ -30,9 +34,40 @@
     [Parameter]
     public string? LabelCss { get; set; }
 
+    [Parameter]
+    public EventCallback<bool> OnValidatedInput { get; set; }
+
+    [Parameter]
+    public EventCallback<string?> OnValueInput { get; set; }
+
+    [Parameter]
+    public bool DisplayErrorMessage { get; set; }
+
+    [Parameter]
+    public string? InitialValue { get; set; }
+
     protected override void OnInitialized()
     {
+        if (!string.IsNullOrWhiteSpace(InitialValue))
+        {
+            validatedInput.InputValue = InitialValue;
+        }
+
         editContext = new EditContext(validatedInput);
+    }
+
+    private async Task OnInputValueChange(ChangeEventArgs e)
+    {
+        // Grab a reference to the current input value and update the validated input
+        var inputValue = e.Value.ToString();
+        validatedInput.InputValue = inputValue;
+
+        // Reference the current validation state, excluding empty strings
+        var isValid = editContext!.Validate() || string.IsNullOrEmpty(inputValue);
+
+        // Broadcase values to parent
+        await OnValidatedInput.InvokeAsync(isValid);
+        await OnValueInput.InvokeAsync(inputValue);
     }
 
 }

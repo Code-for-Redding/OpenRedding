@@ -6,6 +6,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+    using OpenRedding.Domain.Salaries.Enums;
 
     public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
     {

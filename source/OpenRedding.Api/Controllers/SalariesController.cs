@@ -1,14 +1,12 @@
 namespace OpenRedding.Api.Controllers
 {
     using System;
-    using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
     using Domain.Salaries.ViewModels;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Http.Extensions;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.Logging;
     using OpenRedding.Api;
     using OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries;
@@ -21,12 +19,10 @@ namespace OpenRedding.Api.Controllers
     public class SalariesController : OpenReddingBaseController
     {
         private readonly ILogger<SalariesController> _logger;
-        private readonly LinkGenerator _linkGenerator;
 
-        public SalariesController(ILogger<SalariesController> logger, LinkGenerator linkGenerator)
+        public SalariesController(ILogger<SalariesController> logger)
         {
             _logger = logger;
-            _linkGenerator = linkGenerator;
         }
 
         [HttpGet]
@@ -38,10 +34,11 @@ namespace OpenRedding.Api.Controllers
             [FromQuery] string? status,
             [FromQuery] string? sortBy,
             [FromQuery] int? year,
-            [FromQuery] int? page)
+            [FromQuery] int? page,
+            [FromQuery] string? sortField)
         {
             _logger.LogInformation($"Querying salaries: name [{name}], jobTitle [{jobTitle}], agency [{agency}], status [{status}], sortBy [{sortBy}]");
-            var searchRequest = new EmployeeSalarySearchRequestDto(name, jobTitle, agency, status, sortBy, year);
+            var searchRequest = new EmployeeSalarySearchRequestDto(name, jobTitle, agency, status, sortBy, year, sortField);
 
             var response = await Mediator.Send(new GetEmployeeSalariesQuery(searchRequest, page));
 

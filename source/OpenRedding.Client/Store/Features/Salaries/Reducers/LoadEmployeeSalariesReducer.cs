@@ -8,7 +8,7 @@
     {
         [ReducerMethod]
         public static SalariesState ReduceLoadEmployeeSalariesAction(SalariesState state, LoadEmployeeSalariesAction action) =>
-            new SalariesState(!action.IsTableRefresh, action.IsTableRefresh, state.SalaryResults, state.SalaryDetail, state.SearchRequest);
+            new SalariesState(!action.IsTableRefresh, action.IsTableRefresh, state.SalaryResults, state.SalaryDetail, action.SearchRequest);
 
         [ReducerMethod]
         public static SalariesState ReduceLoadEmployeeSalariesFromLinkAction(SalariesState state, LoadEmployeeSalariesFromLinkAction action) =>

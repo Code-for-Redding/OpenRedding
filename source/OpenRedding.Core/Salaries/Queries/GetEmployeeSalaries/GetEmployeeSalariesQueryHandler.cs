@@ -1,24 +1,18 @@
 namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
     using System.Threading;
     using System.Threading.Tasks;
     using Data;
     using Domain.Salaries.Entities;
-    using Domain.Salaries.ViewModels;
     using Extensions;
     using MediatR;
     using Microsoft.EntityFrameworkCore;
-    using OpenRedding.Core.Infrastructure.Services;
     using OpenRedding.Domain.Common.Aggregates;
-    using OpenRedding.Domain.Common.Dto;
-    using OpenRedding.Domain.Common.Miscellaneous;
-    using OpenRedding.Domain.Common.ViewModels;
     using OpenRedding.Domain.Salaries.Dtos;
+    using OpenRedding.Domain.Salaries.Enums;
     using Shared;
 
     public class GetEmployeeSalariesQueryHandler : IRequestHandler<GetEmployeeSalariesQuery, OpenReddingSearchResultAggregate<EmployeeSalarySearchResultDto>>
@@ -59,27 +53,61 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
             // Filter by agency, if available
             if (!string.IsNullOrWhiteSpace(request.SearchRequest.Agency) && Enum.TryParse(request.SearchRequest.Agency, true, out EmployeeAgency employeeAgency))
             {
-                queriedSalaries = queriedSalaries.Where(e => e.EmployeeAgency == employeeAgency);
+                queriedSalaries = employeeAgency switch
+                {
+                    EmployeeAgency.Redding => queriedSalaries.Where(e => e.EmployeeAgency == employeeAgency),
+                    EmployeeAgency.ShastaCounty => queriedSalaries.Where(e => e.EmployeeAgency == employeeAgency),
+                    _ => queriedSalaries
+                };
+            }
+
+            // Filter by year, if available
+            if (request.SearchRequest.Year.HasValue)
+            {
+                queriedSalaries = queriedSalaries.Where(e => e.Year == request.SearchRequest.Year.Value);
             }
 
             // Filter by status, if available
             if (!string.IsNullOrWhiteSpace(request.SearchRequest.Status) && Enum.TryParse(request.SearchRequest.Status, true, out EmployeeStatus employeeStatus))
             {
-                queriedSalaries = queriedSalaries.Where(e => e.EmployeeStatus == employeeStatus);
+                queriedSalaries = employeeStatus switch
+                {
+                    EmployeeStatus.FullTime => queriedSalaries.Where(e => e.EmployeeStatus == employeeStatus),
+                    EmployeeStatus.PartTime => queriedSalaries.Where(e => e.EmployeeStatus == employeeStatus),
+                    _ => queriedSalaries
+                };
             }
 
-            if (!string.IsNullOrWhiteSpace(request.SearchRequest.SortBy) && Enum.TryParse(request.SearchRequest.SortBy, true, out OpenReddingSortOption sortOption))
+            if (!string.IsNullOrWhiteSpace(request.SearchRequest.SortField) && Enum.TryParse(request.SearchRequest.SortField, true, out SalarySortOption sortOption))
             {
-                queriedSalaries = sortOption switch
+                var sortBy = SalarySortByOption.Default;
+
+                // Check for the sort order
+                if (Enum.TryParse(request.SearchRequest.SortBy, true, out SalarySortByOption option))
                 {
-                    OpenReddingSortOption.AscendingBaseSalary => queriedSalaries.OrderBy(e => e.BasePay),
-                    OpenReddingSortOption.DescendingBaseSalary => queriedSalaries.OrderByDescending(e => e.BasePay),
-                    OpenReddingSortOption.AscendingJobTitle => queriedSalaries.OrderBy(e => e.JobTitle),
-                    OpenReddingSortOption.DescendingJobTitle => queriedSalaries.OrderByDescending(e => e.JobTitle),
-                    OpenReddingSortOption.AscendingName => queriedSalaries.OrderBy(e => e.EmployeeName),
-                    OpenReddingSortOption.DescendingName => queriedSalaries.OrderByDescending(e => e.EmployeeName),
-                    OpenReddingSortOption.AscendingTotalSalary => queriedSalaries.OrderBy(e => e.TotalPayWithBenefits),
-                    OpenReddingSortOption.DescendingTotalSalary => queriedSalaries.OrderByDescending(e => e.TotalPayWithBenefits),
+                    sortBy = option;
+                }
+
+                queriedSalaries = sortBy switch
+                {
+                    SalarySortByOption.Ascending => sortOption switch
+                    {
+                        SalarySortOption.BaseSalary => queriedSalaries.OrderBy(e => e.BasePay),
+                        SalarySortOption.JobTitle => queriedSalaries.OrderBy(e => e.JobTitle),
+                        SalarySortOption.Name => queriedSalaries.OrderBy(e => e.EmployeeName),
+                        SalarySortOption.Year => queriedSalaries.OrderBy(e => e.Year),
+                        SalarySortOption.TotalWithBenefitsSalary => queriedSalaries.OrderBy(e => e.TotalPayWithBenefits),
+                        _ => queriedSalaries
+                    },
+                    SalarySortByOption.Descending => sortOption switch
+                    {
+                        SalarySortOption.BaseSalary => queriedSalaries.OrderByDescending(e => e.BasePay),
+                        SalarySortOption.JobTitle => queriedSalaries.OrderByDescending(e => e.JobTitle),
+                        SalarySortOption.Name => queriedSalaries.OrderByDescending(e => e.EmployeeName),
+                        SalarySortOption.Year => queriedSalaries.OrderByDescending(e => e.Year),
+                        SalarySortOption.TotalWithBenefitsSalary => queriedSalaries.OrderByDescending(e => e.TotalPayWithBenefits),
+                        _ => queriedSalaries
+                    },
                     _ => queriedSalaries
                 };
             }
@@ -91,7 +119,6 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
                 .Select(e => e.ToEmployeeSalarySearchResultDto())
                 .ToListAsync(cancellationToken);
 
-            // return new EmployeeSearchResultViewModelList(resultingSalaries, totalResults);
             return new OpenReddingSearchResultAggregate<EmployeeSalarySearchResultDto>(resultingSalaries.AsEnumerable(), totalResults, request.Page);
         }
     }

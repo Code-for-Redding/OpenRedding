@@ -18,7 +18,7 @@
 		{
 			try
 			{
-				var employeeSalaries = await _apiService.GetEmployeesSalariesAsync();
+				var employeeSalaries = await _apiService.GetEmployeesSalariesAsync(action.SearchRequest);
 
 				_logger.LogInformation("Employee salaries load was successful");
 				dispatcher.Dispatch(new LoadEmployeeSalariesSuccessAction(employeeSalaries));

@@ -1,5 +1,7 @@
 namespace OpenRedding.Domain.Salaries.Entities
 {
+	using OpenRedding.Domain.Salaries.Enums;
+
     /// <summary>
     /// Represents a salaried employee based on the CSV data returned from Transparent California.
     /// </summary>
