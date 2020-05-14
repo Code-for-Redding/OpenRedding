@@ -2,6 +2,7 @@
 
 @using Fluxor
 @using OpenRedding.Client.Components
+@using OpenRedding.Client.Components.Dropdowns 
 @using OpenRedding.Client.Store.Features.Salaries
 @using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries 
 @using OpenRedding.Domain.Common.ViewModels
@@ -53,6 +54,11 @@
 
                 @* Agency *@
                 <div class="col-md-3">
+                    <EmployeeAgencyDropdown 
+                            ExistingSelection="employeeAgency"
+                            AgencySelectedCallback="EmployeeAgenyInputHandler" />
+
+                    @*
                     <div class="d-flex flex-column">
                         <label class="col-form-label" for="agency-dropdown">Agency</label>
                         <select @bind="employeeAgency" id="agency-dropdown" class="form-control">
@@ -63,6 +69,7 @@
                             }
                         </select>
                     </div>
+                    *@
                 </div>
 
                 @* Status *@
@@ -283,7 +290,8 @@
         // Set search values from the original query
         employeeName = State.Value.SearchRequest.Name;
         jobTitle = State.Value.SearchRequest.JobTitle;
-        year = State.Value.SearchRequest.Year;
+
+        // year = State.Value.SearchRequest.Year.HasValue;
         employeeAgency = Enum.TryParse<EmployeeAgency>(State.Value.SearchRequest.Agency, out var agency) ? agency : employeeAgency;
         employeeStatus = Enum.TryParse<EmployeeStatus>(State.Value.SearchRequest.Status, out var status) ? status : employeeStatus;
         sortByOption = Enum.TryParse<SalarySortByOption>(State.Value.SearchRequest.Status, out var sortBy) ? sortBy : sortByOption;
@@ -308,6 +316,12 @@
     private void JobTitleInputHandler(string? updatedJobtTileHandler)
     {
         jobTitle = updatedJobtTileHandler;
+    }
+
+    private void EmployeeAgenyInputHandler(EmployeeAgency agency)
+    {
+        Console.WriteLine($"Ageny selected: {agency}");
+        employeeAgency = agency;
     }
 
     private void OnSearchClicked()

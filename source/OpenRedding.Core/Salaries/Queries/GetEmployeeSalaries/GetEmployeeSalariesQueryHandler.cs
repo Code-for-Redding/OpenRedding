@@ -78,6 +78,7 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
                 };
             }
 
+            // Sort by the request field, if available
             if (!string.IsNullOrWhiteSpace(request.SearchRequest.SortField) && Enum.TryParse(request.SearchRequest.SortField, true, out SalarySortOption sortOption))
             {
                 var sortBy = SalarySortByOption.Default;
