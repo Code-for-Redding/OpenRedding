@@ -7,6 +7,7 @@ namespace OpenRedding.Api.Controllers
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Http.Extensions;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using OpenRedding.Api;
     using OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries;
@@ -19,10 +20,12 @@ namespace OpenRedding.Api.Controllers
     public class SalariesController : OpenReddingBaseController
     {
         private readonly ILogger<SalariesController> _logger;
+        private readonly string _gatewayBaseUrl;
 
-        public SalariesController(ILogger<SalariesController> logger)
+        public SalariesController(ILogger<SalariesController> logger, IConfiguration configuration)
         {
             _logger = logger;
+            _gatewayBaseUrl = configuration["GatewayBaseUrl"];
         }
 
         [HttpGet]
