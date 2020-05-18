@@ -1,8 +1,11 @@
-﻿@using OpenRedding.Domain.Common.ViewModels
+﻿@using OpenRedding.Client.Services 
+@using OpenRedding.Domain.Common.ViewModels
 @using OpenRedding.Domain.Salaries.Enums
 
+@inject SalariesStateFacade StateFacade
+
 <div class="d-flex flex-column">
-    <label class="col-form-label" for="agency-dropdown">Agency</label>
+    <label class="@LabelCss" for="agency-dropdown">Agency</label>
     <select @onchange="OnAgencySelected" id="agency-dropdown" class="form-control">
         <option disabled>Select an agency</option>
         @foreach (var agencyOption in employeeAgencySelectOptions.SelectOptions)
@@ -22,10 +25,10 @@
 @code {
 
     [Parameter]
-    public EventCallback<EmployeeAgency> AgencySelectedCallback { get; set; }
+    public EmployeeAgency ExistingSelection { get; set; }
 
     [Parameter]
-    public EmployeeAgency ExistingSelection { get; set; }
+    public string? LabelCss { get; set; }
 
     private OpenReddingEnumSelectViewModel<EmployeeAgency> employeeAgencySelectOptions = new OpenReddingEnumSelectViewModel<EmployeeAgency>();
 
@@ -38,9 +41,9 @@
             .AddOption(EmployeeAgency.Other, "Other");
     }
 
-    private async Task OnAgencySelected(ChangeEventArgs e)
+    private void OnAgencySelected(ChangeEventArgs e)
     {
-        await AgencySelectedCallback.InvokeAsync(Enum.Parse<EmployeeAgency>(e.Value.ToString()));
+        StateFacade.SetEmployeeAgency(Enum.Parse<EmployeeAgency>(e.Value.ToString()));
     }
 
 }

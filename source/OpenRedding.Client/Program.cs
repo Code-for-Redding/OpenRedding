@@ -7,6 +7,7 @@ namespace OpenRedding.Client
     using Fluxor;
     using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
     using Microsoft.Extensions.DependencyInjection;
+    using OpenRedding.Client.Services;
 
     public static class Program
     {
@@ -28,6 +29,7 @@ namespace OpenRedding.Client
             });
 
             builder.Services.AddScoped<OpenReddingApiService>();
+            builder.Services.AddScoped<SalariesStateFacade>();
 
             await builder
                 .Build()

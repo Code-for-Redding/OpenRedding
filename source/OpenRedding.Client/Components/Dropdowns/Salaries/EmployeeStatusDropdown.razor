@@ -1,0 +1,49 @@
+﻿@using OpenRedding.Client.Services
+@using OpenRedding.Domain.Common.ViewModels
+@using OpenRedding.Domain.Salaries.Enums
+
+@inject SalariesStateFacade StateFacade
+
+<div class="d-flex flex-column">
+    <label class="@LabelCss" for="agency-dropdown">Status</label>
+    <select @onchange="OnStatusSelected" id="agency-dropdown" class="form-control">
+        <option disabled>Select an agency</option>
+        @foreach (var statusOption in employeeStatusSelectOptions.SelectOptions)
+        {
+            @if (statusOption.Key == ExistingSelection)
+            {
+                <option selected value="@statusOption.Key">@statusOption.Value</option>
+            }
+            else
+            {
+                <option value="@statusOption.Key">@statusOption.Value</option>
+            }
+        }
+    </select>
+</div>
+
+@code {
+
+    [Parameter]
+    public EmployeeStatus ExistingSelection { get; set; }
+
+    [Parameter]
+    public string? LabelCss { get; set; }
+
+    private OpenReddingEnumSelectViewModel<EmployeeStatus> employeeStatusSelectOptions = new OpenReddingEnumSelectViewModel<EmployeeStatus>();
+
+    protected override void OnInitialized()
+    {
+        employeeStatusSelectOptions
+            .AddOption(EmployeeStatus.AllStatuses, "All Statuses")
+            .AddOption(EmployeeStatus.FullTime, "Full-time")
+            .AddOption(EmployeeStatus.PartTime, "Part-time")
+            .AddOption(EmployeeStatus.Other, "Other");
+    }
+
+    private void OnStatusSelected(ChangeEventArgs e)
+    {
+        StateFacade.SetEmployeeStatus(Enum.Parse<EmployeeStatus>(e.Value.ToString()));
+    }
+
+}

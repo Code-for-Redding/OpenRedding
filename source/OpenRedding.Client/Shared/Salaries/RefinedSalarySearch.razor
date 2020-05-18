@@ -1,8 +1,8 @@
 ﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 @using Fluxor
-@using OpenRedding.Client.Components
-@using OpenRedding.Client.Components.Dropdowns 
+@using OpenRedding.Client.Components.Common
+@using OpenRedding.Client.Components.Dropdowns.Salaries
 @using OpenRedding.Client.Store.Features.Salaries
 @using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries 
 @using OpenRedding.Domain.Common.ViewModels
@@ -12,6 +12,7 @@
 
 @inject IState<SalariesState> State
 @inject IDispatcher Dispatcher
+
 @* Search metadata *@
 <div class="card bg-light mt-4">
 
@@ -55,35 +56,15 @@
                 @* Agency *@
                 <div class="col-md-3">
                     <EmployeeAgencyDropdown 
-                            ExistingSelection="employeeAgency"
-                            AgencySelectedCallback="EmployeeAgenyInputHandler" />
-
-                    @*
-                    <div class="d-flex flex-column">
-                        <label class="col-form-label" for="agency-dropdown">Agency</label>
-                        <select @bind="employeeAgency" id="agency-dropdown" class="form-control">
-                            <option disabled>Select an agency</option>
-                            @foreach (var agencyOption in employeeAgencySelectOptions.SelectOptions)
-                            {
-                                <option value="@agencyOption.Key">@agencyOption.Value</option>
-                            }
-                        </select>
-                    </div>
-                    *@
+                            ExistingSelection="Enum.Parse<EmployeeAgency>(State.Value.SearchRequest?.Agency)"
+                            LabelCss="col-form-label" />
                 </div>
 
                 @* Status *@
                 <div class="col-md-3">
-                    <div class="d-flex flex-column">
-                        <label class="col-form-label" for="agency-dropdown">Status</label>
-                        <select @bind="employeeStatus" id="status-dropdown" class="form-control">
-                            <option disabled>Select a status</option>
-                            @foreach (var statusOption in employeeStatusSelectOptions.SelectOptions)
-                            {
-                                <option value="@statusOption.Key">@statusOption.Value</option>
-                            }
-                        </select>
-                    </div>
+                    <EmployeeStatusDropdown 
+                            ExistingSelection="Enum.Parse<EmployeeStatus>(State.Value.SearchRequest?.Status)"
+                            LabelCss="col-form-label" />
                 </div>
             </div>
 
