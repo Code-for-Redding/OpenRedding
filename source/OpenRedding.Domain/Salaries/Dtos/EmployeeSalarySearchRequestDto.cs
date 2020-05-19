@@ -2,7 +2,16 @@
 {
     public class EmployeeSalarySearchRequestDto
     {
-        public EmployeeSalarySearchRequestDto(string? name, string? jobTitle, string? agency, string? status, string? sortBy, int? year, string? sortField)
+        public EmployeeSalarySearchRequestDto(
+            string? name = null,
+            string? jobTitle = null,
+            string? agency = null,
+            string? status = null,
+            string? sortBy = null,
+            int? year = null,
+            string? sortField = null,
+            int? basePayRange = null,
+            int? totalPayRange = null)
         {
             Name = name;
             JobTitle = jobTitle;
@@ -11,6 +20,8 @@
             SortBy = sortBy;
             Year = year;
             SortField = sortField;
+            BasePayRange = basePayRange;
+            TotalPayRange = totalPayRange;
         }
 
         public string? Name { get; }
@@ -26,5 +37,9 @@
         public int? Year { get; }
 
         public string? SortField { get; }
+
+        public int? BasePayRange { get; }
+
+        public int? TotalPayRange { get; }
     }
 }

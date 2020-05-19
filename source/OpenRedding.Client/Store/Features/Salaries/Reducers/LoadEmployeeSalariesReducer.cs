@@ -21,5 +21,11 @@
         [ReducerMethod]
         public static SalariesState ReduceLoadEmployeeSalariesFailureAction(SalariesState state, LoadEmployeeSalariesFailureAction action) =>
             new SalariesState(false, false, null, state.SalaryDetail, state.SearchRequest);
+
+        /*
+        [ReducerMethod]
+        public static SalariesState ReduceLoadEmployees(SalariesState state, LoadEmployeeSalariesTypedAction action) =>
+            new SalariesState(!action.Payload.IsTableRefresh, action.Payload.IsTableRefresh, state.SalaryResults, state.SalaryDetail, action.Payload.SearchRequest);
+         */
     }
 }

@@ -3,9 +3,9 @@
     using OpenRedding.Client.Store.Common;
     using OpenRedding.Domain.Salaries.Dtos;
 
-    public class LoadEmployeeSalariesAction
+    public class LoadEmployeeSalariesPayload
     {
-        public LoadEmployeeSalariesAction(EmployeeSalarySearchRequestDto? searchRequest, bool isTableRefresh = false) =>
+        public LoadEmployeeSalariesPayload(EmployeeSalarySearchRequestDto? searchRequest, bool isTableRefresh = false) =>
             (SearchRequest, IsTableRefresh) = (searchRequest, isTableRefresh);
 
         public EmployeeSalarySearchRequestDto? SearchRequest { get; }

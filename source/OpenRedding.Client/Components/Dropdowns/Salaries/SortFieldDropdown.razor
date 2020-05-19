@@ -1,0 +1,53 @@
+﻿@using OpenRedding.Client.Services
+@using OpenRedding.Domain.Common.ViewModels
+@using OpenRedding.Domain.Salaries.Enums
+
+@inject SalariesStateFacade StateFacade
+
+<div class="d-flex flex-column">
+    <label class="@LabelCss" for="sort-field-dropdown">Sort Options</label>
+    <select @onchange="OnSortOptionSelected" id="sort-field-dropdown" class="form-control">
+        <option disabled>Select a field</option>
+        @foreach (var fieldOption in rangeSelectOptions.SelectOptions)
+        {
+            @if (fieldOption.Key == ExistingSelection)
+            {
+                <option selected value="@fieldOption.Key">@fieldOption.Value</option>
+            }
+            else
+            {
+                <option value="@fieldOption.Key">@fieldOption.Value</option>
+            }
+        }
+    </select>
+</div>
+
+@code {
+
+    [Parameter]
+    public SalarySearchDropdownContext Context { get; set; }
+
+    [Parameter]
+    public SalarySearchRange ExistingSelection { get; set; }
+
+    [Parameter]
+    public string? LabelCss { get; set; }
+
+    private OpenReddingEnumSelectViewModel<SalarySortField> fieldSelectOptions = new OpenReddingEnumSelectViewModel<SalarySortField>();
+
+    protected override void OnInitialized()
+    {
+        fieldSelectOptions
+            .AddOption(SalarySortField.Default, "Default")
+            .AddOption(SalarySortField.Name, "Name")
+            .AddOption(SalarySortField.JobTitle, "Job Title")
+            .AddOption(SalarySortField.Year, "Year")
+            .AddOption(SalarySortField.BaseSalary, "Base Pay")
+            .AddOption(SalarySortField.TotalWithBenefitsSalary, "Total Pay and Benefits");
+    }
+
+    private void OnSortOptionSelected(ChangeEventArgs e)
+    {
+    }
+
+}

@@ -37,5 +37,14 @@
 
         public void SetEmployeeStatus(EmployeeStatus status) =>
             _dispatcher.Dispatch(new SetEmployeeStatusAction(status));
+
+        public void SetEmploymentYear(EmploymentYear year) =>
+            _dispatcher.Dispatch(new SetEmploymentYearAction(year));
+
+        public void SetSalarySearchBaseRange(SalarySearchRange range) =>
+            _dispatcher.Dispatch(new SetSalarySearchBaseRangeAction(range));
+
+        public void SetSalarySearchTotalRange(SalarySearchRange range) =>
+            _dispatcher.Dispatch(new SetSalarySearchTotalRangeAction(range));
     }
 }

@@ -5,11 +5,11 @@ namespace OpenRedding.Domain.Common.ViewModels
 
     public class OpenReddingErrorViewModel : OpenReddingViewModel
     {
-        public OpenReddingErrorViewModel(string summary, IEnumerable<OpenReddingErrorDto> errors) =>
+        public OpenReddingErrorViewModel(string summary, IEnumerable<OpenReddingError> errors) =>
             (Summary, Errors) = (summary, errors);
 
         public string Summary { get; }
 
-        public IEnumerable<OpenReddingErrorDto> Errors { get; }
+        public IEnumerable<OpenReddingError> Errors { get; }
     }
 }

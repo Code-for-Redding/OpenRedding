@@ -94,3 +94,11 @@
     color: orangered;
     font-size: 0.8rem;
 }
+
+.cursor-not-allowed {
+    cursor: not-allowed;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

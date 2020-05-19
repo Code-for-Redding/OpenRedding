@@ -130,7 +130,7 @@ namespace OpenRedding.Core.Tests.Salaries
         public async Task GivenValidRequest_WhenSearchQueryOrdersByNameAscending_ReturnsOrderedAscendingResultList()
         {
             // Arrange
-            var searchRequest = new EmployeeSalarySearchRequestDto("Joe", default, default, default, nameof(SalarySortOption.AscendingName), null);
+            var searchRequest = new EmployeeSalarySearchRequestDto("Joe", default, default, default, nameof(SalarySortField.AscendingName), null);
             var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
@@ -150,7 +150,7 @@ namespace OpenRedding.Core.Tests.Salaries
         public async Task GivenValidRequest_WhenSearchQueryOrdersByNameDescending_ReturnsOrderedDescendingResultList()
         {
             // Arrange
-            var searchRequest = new EmployeeSalarySearchRequestDto("Joe", default, default, default, nameof(SalarySortOption.DescendingName), null);
+            var searchRequest = new EmployeeSalarySearchRequestDto("Joe", default, default, default, nameof(SalarySortField.DescendingName), null);
             var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
@@ -170,7 +170,7 @@ namespace OpenRedding.Core.Tests.Salaries
         public async Task GivenValidRequest_WhenSearchQueryOrdersByJobTitleAscending_ReturnsOrderedAscendingResultList()
         {
             // Arrange
-            var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, nameof(SalarySortOption.AscendingJobTitle), null);
+            var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, nameof(SalarySortField.AscendingJobTitle), null);
             var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
@@ -191,7 +191,7 @@ namespace OpenRedding.Core.Tests.Salaries
         public async Task GivenValidRequest_WhenSearchQueryOrdersByJobTitleDescending_ReturnsOrderedDescendingResultList()
         {
             // Arrange
-            var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, nameof(SalarySortOption.DescendingJobTitle), null);
+            var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, nameof(SalarySortField.DescendingJobTitle), null);
             var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
@@ -212,7 +212,7 @@ namespace OpenRedding.Core.Tests.Salaries
         public async Task GivenValidRequest_WhenSearchQueryOrdersByBasePayAscending_ReturnsOrderedAscendingResultList()
         {
             // Arrange
-            var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, nameof(SalarySortOption.AscendingBaseSalary), null);
+            var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, nameof(SalarySortField.AscendingBaseSalary), null);
             var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
@@ -233,7 +233,7 @@ namespace OpenRedding.Core.Tests.Salaries
         public async Task GivenValidRequest_WhenSearchQueryOrdersByBasePayDescending_ReturnsOrderedDescendingResultList()
         {
             // Arrange
-            var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, nameof(SalarySortOption.DescendingBaseSalary), null);
+            var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, nameof(SalarySortField.DescendingBaseSalary), null);
             var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
@@ -254,7 +254,7 @@ namespace OpenRedding.Core.Tests.Salaries
         public async Task GivenValidRequest_WhenSearchQueryOrdersByTotalPayAscending_ReturnsOrderedAscendingResultList()
         {
             // Arrange
-            var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, nameof(SalarySortOption.AscendingTotalSalary), null);
+            var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, nameof(SalarySortField.AscendingTotalSalary), null);
             var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 
@@ -275,7 +275,7 @@ namespace OpenRedding.Core.Tests.Salaries
         public async Task GivenValidRequest_WhenSearchQueryOrdersByTotalPayDecending_ReturnsOrderedDescendingResultList()
         {
             // Arrange
-            var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, nameof(SalarySortOption.DescendingTotalSalary), null);
+            var searchRequest = new EmployeeSalarySearchRequestDto(default, "Software", default, default, nameof(SalarySortField.DescendingTotalSalary), null);
             var query = new GetEmployeeSalariesQuery(searchRequest, default);
             var handler = new GetEmployeeSalariesQueryHandler(Context);
 

@@ -64,7 +64,20 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
             // Filter by year, if available
             if (request.SearchRequest.Year.HasValue)
             {
-                queriedSalaries = queriedSalaries.Where(e => e.Year == request.SearchRequest.Year.Value);
+                var parsedEmploymentYear = (EmploymentYear)request.SearchRequest.Year.Value;
+
+                queriedSalaries = parsedEmploymentYear switch
+                {
+                    EmploymentYear._2011 => queriedSalaries.Where(e => e.Year == 2011),
+                    EmploymentYear._2012 => queriedSalaries.Where(e => e.Year == 2012),
+                    EmploymentYear._2013 => queriedSalaries.Where(e => e.Year == 2013),
+                    EmploymentYear._2014 => queriedSalaries.Where(e => e.Year == 2014),
+                    EmploymentYear._2015 => queriedSalaries.Where(e => e.Year == 2015),
+                    EmploymentYear._2016 => queriedSalaries.Where(e => e.Year == 2016),
+                    EmploymentYear._2017 => queriedSalaries.Where(e => e.Year == 2017),
+                    EmploymentYear._2018 => queriedSalaries.Where(e => e.Year == 2018),
+                    _ => queriedSalaries
+                };
             }
 
             // Filter by status, if available
@@ -79,7 +92,7 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
             }
 
             // Sort by the request field, if available
-            if (!string.IsNullOrWhiteSpace(request.SearchRequest.SortField) && Enum.TryParse(request.SearchRequest.SortField, true, out SalarySortOption sortOption))
+            if (!string.IsNullOrWhiteSpace(request.SearchRequest.SortField) && Enum.TryParse(request.SearchRequest.SortField, true, out SalarySortField sortOption))
             {
                 var sortBy = SalarySortByOption.Default;
 
@@ -93,20 +106,20 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
                 {
                     SalarySortByOption.Ascending => sortOption switch
                     {
-                        SalarySortOption.BaseSalary => queriedSalaries.OrderBy(e => e.BasePay),
-                        SalarySortOption.JobTitle => queriedSalaries.OrderBy(e => e.JobTitle),
-                        SalarySortOption.Name => queriedSalaries.OrderBy(e => e.EmployeeName),
-                        SalarySortOption.Year => queriedSalaries.OrderBy(e => e.Year),
-                        SalarySortOption.TotalWithBenefitsSalary => queriedSalaries.OrderBy(e => e.TotalPayWithBenefits),
+                        SalarySortField.BaseSalary => queriedSalaries.OrderBy(e => e.BasePay),
+                        SalarySortField.JobTitle => queriedSalaries.OrderBy(e => e.JobTitle),
+                        SalarySortField.Name => queriedSalaries.OrderBy(e => e.EmployeeName),
+                        SalarySortField.Year => queriedSalaries.OrderBy(e => e.Year),
+                        SalarySortField.TotalWithBenefitsSalary => queriedSalaries.OrderBy(e => e.TotalPayWithBenefits),
                         _ => queriedSalaries
                     },
                     SalarySortByOption.Descending => sortOption switch
                     {
-                        SalarySortOption.BaseSalary => queriedSalaries.OrderByDescending(e => e.BasePay),
-                        SalarySortOption.JobTitle => queriedSalaries.OrderByDescending(e => e.JobTitle),
-                        SalarySortOption.Name => queriedSalaries.OrderByDescending(e => e.EmployeeName),
-                        SalarySortOption.Year => queriedSalaries.OrderByDescending(e => e.Year),
-                        SalarySortOption.TotalWithBenefitsSalary => queriedSalaries.OrderByDescending(e => e.TotalPayWithBenefits),
+                        SalarySortField.BaseSalary => queriedSalaries.OrderByDescending(e => e.BasePay),
+                        SalarySortField.JobTitle => queriedSalaries.OrderByDescending(e => e.JobTitle),
+                        SalarySortField.Name => queriedSalaries.OrderByDescending(e => e.EmployeeName),
+                        SalarySortField.Year => queriedSalaries.OrderByDescending(e => e.Year),
+                        SalarySortField.TotalWithBenefitsSalary => queriedSalaries.OrderByDescending(e => e.TotalPayWithBenefits),
                         _ => queriedSalaries
                     },
                     _ => queriedSalaries

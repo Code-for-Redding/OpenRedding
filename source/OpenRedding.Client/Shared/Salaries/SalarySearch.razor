@@ -5,6 +5,7 @@
 @using OpenRedding.Client.Components.Common
 @using OpenRedding.Client.Services 
 @using OpenRedding.Client.Store.Features.Salaries
+@using OpenRedding.Domain.Salaries.Dtos 
 @using OpenRedding.Domain.Salaries.Enums
 
 
@@ -81,10 +82,22 @@
         base.OnInitialized();
     }
 
+    private void OnBlur()
+    {
+        Console.WriteLine("Blur");
+    }
+
     private void OnSearchClicked()
     {
-        StateFacade.LoadEmployeesFromSearchRequest();
+        var searchRequest = new EmployeeSalarySearchRequestDto(
+            name: employeeName,
+            jobTitle: jobTitle,
+            agency: State.Value.SearchRequest?.Agency,
+            status: State.Value.SearchRequest?.Status);
 
+        // Set the current search request on the state and load employees from the request
+        StateFacade.SetCurrentSearchRequest(searchRequest);
+        StateFacade.LoadEmployeesFromSearchRequest();
         Navigation.NavigateTo("salaries");
     }
 

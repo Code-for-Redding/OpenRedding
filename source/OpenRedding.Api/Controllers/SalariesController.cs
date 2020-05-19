@@ -37,11 +37,12 @@ namespace OpenRedding.Api.Controllers
             [FromQuery] string? status,
             [FromQuery] string? sortBy,
             [FromQuery] int? year,
+            [FromQuery] int? range,
             [FromQuery] int? page,
             [FromQuery] string? sortField)
         {
             _logger.LogInformation($"Querying salaries: name [{name}], jobTitle [{jobTitle}], agency [{agency}], status [{status}], sortBy [{sortBy}]");
-            var searchRequest = new EmployeeSalarySearchRequestDto(name, jobTitle, agency, status, sortBy, year, sortField);
+            var searchRequest = new EmployeeSalarySearchRequestDto(name, jobTitle, agency, status, sortBy, year, sortField, range);
 
             var response = await Mediator.Send(new GetEmployeeSalariesQuery(searchRequest, page));
 

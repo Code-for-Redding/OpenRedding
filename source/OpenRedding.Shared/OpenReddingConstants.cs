@@ -7,6 +7,7 @@
         public const int RequestElapsedMillisecondTimeWarningLimit = 500;
         public const int MaxPageSizeResult = 25;
         public const string PageNumberStringReplacementValue = "{:pageNumber}";
+        public const int UnknownNumericSelection = -1;
         public static readonly string ApiPath = $"/{Version}/api";
 
         public static readonly string[] Urls =

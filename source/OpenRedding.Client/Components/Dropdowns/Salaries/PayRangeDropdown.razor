@@ -1,0 +1,82 @@
+﻿@using OpenRedding.Client.Services
+@using OpenRedding.Domain.Common.ViewModels
+@using OpenRedding.Domain.Salaries.Enums
+
+@inject SalariesStateFacade StateFacade
+
+<div class="d-flex flex-column">
+    <label class="@LabelCss" for="@labelId">@labelValue</label>
+    <select @onchange="OnRangeSelected" id="@labelId" class="form-control">
+        <option disabled>Select a range</option>
+        @foreach (var rangeOption in rangeSelectOptions.SelectOptions)
+        {
+            @if (rangeOption.Key == ExistingSelection)
+            {
+                <option selected value="@rangeOption.Key">@rangeOption.Value</option>
+            }
+            else
+            {
+                <option value="@rangeOption.Key">@rangeOption.Value</option>
+            }
+        }
+    </select>
+</div>
+
+@code {
+
+    private string? labelId;
+
+    private string? labelValue;
+
+    [Parameter]
+    public SalarySearchDropdownContext Context { get; set; }
+
+    [Parameter]
+    public SalarySearchRange ExistingSelection { get; set; }
+
+    [Parameter]
+    public string? LabelCss { get; set; }
+
+    private OpenReddingEnumSelectViewModel<SalarySearchRange> rangeSelectOptions = new OpenReddingEnumSelectViewModel<SalarySearchRange>();
+
+    protected override void OnInitialized()
+    {
+        labelId = Context switch
+        {
+            SalarySearchDropdownContext.BasePayRange => "base-pay-range-dropdown",
+            SalarySearchDropdownContext.TotalPayRange => "total-pay-range-dropdown",
+            _ => string.Empty
+        };
+
+        labelValue = Context switch
+        {
+            SalarySearchDropdownContext.BasePayRange => "Base Pay Range",
+            SalarySearchDropdownContext.TotalPayRange => "Total Pay Range",
+            _ => string.Empty
+        };
+
+        rangeSelectOptions
+            .AddOption(SalarySearchRange.AllSalaries, "All salaries")
+            .AddOption(SalarySearchRange._0To49, "$0 to $49,999")
+            .AddOption(SalarySearchRange._100To149, "$50,000 to $99,999")
+            .AddOption(SalarySearchRange._150To199, "$100,000 to $199,999")
+            .AddOption(SalarySearchRange._200To249, "$200,000 to $249,999")
+            .AddOption(SalarySearchRange._250To299, "$250,000 to $299,999")
+            .AddOption(SalarySearchRange._300AndGreater, "$300,000 and greater");
+    }
+
+    private void OnRangeSelected(ChangeEventArgs e)
+    {
+        var parsedRange = Enum.Parse<SalarySearchRange>(e.Value.ToString());
+
+        if (Context == SalarySearchDropdownContext.BasePayRange)
+        {
+            StateFacade.SetSalarySearchBaseRange(Enum.Parse<SalarySearchRange>(e.Value.ToString()));
+        }
+        else if (Context == SalarySearchDropdownContext.TotalPayRange)
+        {
+            StateFacade.SetSalarySearchTotalRange(Enum.Parse<SalarySearchRange>(e.Value.ToString()));
+        }
+    }
+
+}

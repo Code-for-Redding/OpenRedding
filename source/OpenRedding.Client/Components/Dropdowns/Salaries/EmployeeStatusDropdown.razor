@@ -5,9 +5,9 @@
 @inject SalariesStateFacade StateFacade
 
 <div class="d-flex flex-column">
-    <label class="@LabelCss" for="agency-dropdown">Status</label>
-    <select @onchange="OnStatusSelected" id="agency-dropdown" class="form-control">
-        <option disabled>Select an agency</option>
+    <label class="@LabelCss" for="status-dropdown">Status</label>
+    <select @onchange="OnStatusSelected" id="status-dropdown" class="form-control">
+        <option disabled>Select an status</option>
         @foreach (var statusOption in employeeStatusSelectOptions.SelectOptions)
         {
             @if (statusOption.Key == ExistingSelection)

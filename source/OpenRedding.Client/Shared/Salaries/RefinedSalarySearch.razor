@@ -4,9 +4,7 @@
 @using OpenRedding.Client.Components.Common
 @using OpenRedding.Client.Components.Dropdowns.Salaries
 @using OpenRedding.Client.Store.Features.Salaries
-@using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries 
 @using OpenRedding.Domain.Common.ViewModels
-@using OpenRedding.Domain.Salaries.Dtos 
 @using OpenRedding.Domain.Salaries.Enums
 
 
@@ -56,67 +54,51 @@
                 @* Agency *@
                 <div class="col-md-3">
                     <EmployeeAgencyDropdown 
-                            ExistingSelection="Enum.Parse<EmployeeAgency>(State.Value.SearchRequest?.Agency)"
+                            ExistingSelection="Enum.TryParse<EmployeeAgency>(State.Value.SearchRequest?.Agency, true, out var agency) ? agency : EmployeeAgency.AllAgencies"
                             LabelCss="col-form-label" />
                 </div>
 
                 @* Status *@
                 <div class="col-md-3">
                     <EmployeeStatusDropdown 
-                            ExistingSelection="Enum.Parse<EmployeeStatus>(State.Value.SearchRequest?.Status)"
+                            ExistingSelection="Enum.TryParse<EmployeeStatus>(State.Value.SearchRequest?.Status, true, out var status) ? status : EmployeeStatus.AllStatuses"
                             LabelCss="col-form-label" />
                 </div>
             </div>
 
             @* Year, base pay range, total pay range *@
             <div class="row justify-content-center">
-                @* Name *@
+                @* Year *@
                 <div class="col-md-4">
-                    <div class="d-flex flex-column">
-                        <label class="col-form-label" for="agency-dropdown">Fiscal Year</label>
-                        <select id="agency-dropdown" class="form-control" @bind="year">
-                            <option disabled>Select a year</option>
-                            <option>All years</option>
-                            @foreach (var year in fiscalYears)
-                            {
-                                <option value="@year.ToString()">@year</option>
-                            }
-                        </select>
-                    </div>
+                    <EmploymentYearDropdown 
+                            ExistingSelection="GetExistingEmploymentYear()" 
+                            LabelCss="col-form-label" />
                 </div>
+
+                @* Base pay range *@
                 <div class="col-md-4">
-                    <div class="d-flex flex-column">
-                        <label class="col-form-label" for="agency-dropdown">Base Pay Range</label>
-                        <select id="agency-dropdown" class="form-control">
-                            <option disabled>Select a range</option>
-                            <option>All pay ranges</option>
-                            @foreach (var range in salarySearchRangeSelectOptions.SelectOptions)
-                            {
-                                <option value="@range.Key">@range.Value</option>
-                            }
-                        </select>
-                    </div>
+                    <PayRangeDropdown 
+                            Context="SalarySearchDropdownContext.BasePayRange" 
+                            ExistingSelection="GetExistingPayRangeOption(SalarySearchDropdownContext.BasePayRange)" 
+                            LabelCss="col-form-label" />
                 </div>
+
+                @* Total pay range*@
                 <div class="col-md-4">
-                    <div class="d-flex flex-column">
-                        <label class="col-form-label" for="agency-dropdown">Total Pay Range</label>
-                        <select id="agency-dropdown" class="form-control">
-                            <option disabled>Select a range</option>
-                            <option>All pay ranges</option>
-                            @foreach (var range in salarySearchRangeSelectOptions.SelectOptions)
-                            {
-                                <option value="@range.Key">@range.Value</option>
-                            }
-                        </select>
-                    </div>
+                    <PayRangeDropdown 
+                            Context="SalarySearchDropdownContext.TotalPayRange" 
+                            ExistingSelection="GetExistingPayRangeOption(SalarySearchDropdownContext.TotalPayRange)" 
+                            LabelCss="col-form-label" />
                 </div>
             </div>
 
-            @* Buttons and metadata *@
+            @* Sort options *@
             <div class="row justify-content-center">
+
                 @* Sort by *@
                 <div class="col-md-4">
                     <div class="d-flex flex-column">
+
                         @* Sort options *@
                         <label class="col-form-label" for="agency-dropdown">Sort Options</label>
                         <select @bind="sortField" id="agency-dropdown" class="form-control">
@@ -147,77 +129,61 @@
 </div>
 
 @* Buttons and search metadata *@
-@if (!State.Value.IsTableRefresh)
-{
-    <div class="row justify-content-center py-1">
-        <div class="d-flex flex-column mt-3">
-            @* Search button *@
-            <div class="d-flex flex-row">
-                <div class="mx-auto">
-                    @if (isValidEmployeeName && isValidJobTitle)
-                    {
-                        <button @onclick="OnSearchClicked" class="btn btn-outline-info" type="button" data-toggle="tooltip" data-placement="bottom" title="To browse all salary data, leave all fields above blank.">Search</button>
-                    }
-                    else
-                    {
-                        <button style="cursor: not-allowed" disabled @onclick="OnSearchClicked" class="btn btn-outline-info" type="button" data-toggle="tooltip" data-placement="bottom" title="Please enter valid values in the fields above before attempting to search.">Search</button>
-                    }
+<div class="row justify-content-center py-1">
+    <div class="d-flex flex-column mt-3">
+        @* Search button *@
+        <div class="d-flex flex-row">
+            <div class="mx-auto">
+                @if (isValidEmployeeName && isValidJobTitle && !State.Value.IsTableRefresh)
+                {
+                    <button @onclick="OnSearchClicked" class="btn btn-outline-info" type="button" data-toggle="tooltip" data-placement="bottom" title="To browse all salary data, leave all fields above blank.">Search</button>
+                }
+                else
+                {
+                    <button disabled @onclick="OnSearchClicked" class="btn btn-outline-info" type="button" data-toggle="tooltip" data-placement="bottom" title="Please enter valid values in the fields above before attempting to search.">Search</button>
+                }
+
+                @if (State.Value.IsTableRefresh)
+                {
+                    <span class="px-1"></span>
+                    <button disabled class="btn btn btn-outline-success cursor-not-allowed" type="button">Reset</button>
+                    <span class="px-1"></span>
+                    <button disabled class="btn btn btn-outline-danger cursor-not-allowed" type="button">Download</button>
+                }
+                else
+                {
                     <span class="px-1"></span>
                     <button class="btn btn btn-outline-success" type="button">Reset</button>
                     <span class="px-1"></span>
                     <button class="btn btn btn-outline-danger" type="button">Download</button>
-                </div>
-            </div>
-
-            @* Page and result count *@
-            <div class="d-flex flex-row justify-content-center mt-2">
-                <span><strong>Results</strong>: @ResultCount</span>
-                <span class="px-2"></span>
-                <span><strong>Pages</strong>: @PageCount</span>
+                }
             </div>
         </div>
+
+        @* Page and result count *@
+        <div class="d-flex flex-row justify-content-center mt-2">
+            <span><strong>Results</strong>: @ResultCount</span>
+            <span class="px-2"></span>
+            <span><strong>Pages</strong>: @PageCount</span>
+        </div>
     </div>
-}
+</div>
 
 @code {
-
-    private IEnumerable<int> fiscalYears = new List<int>
-    {
-        2011,
-        2012,
-        2013,
-        2014,
-        2015,
-        2016,
-        2017,
-        2018
-    };
 
     private string? employeeName;
 
     private string? jobTitle;
 
-    private string? year;
-
     private bool isValidEmployeeName = true;
 
     private bool isValidJobTitle = true;
 
-    private EmployeeAgency employeeAgency = EmployeeAgency.AllAgencies;
-
-    private EmployeeStatus employeeStatus = EmployeeStatus.AllStatuses;
-
-    // private SalarySearchRange searchRange = SalarySearchRange.AllSalaries;
-
-    private SalarySortOption sortField = SalarySortOption.Default;
+    private SalarySortField sortField = SalarySortField.Default;
 
     private SalarySortByOption sortByOption = SalarySortByOption.Default;
 
-    private OpenReddingEnumSelectViewModel<EmployeeAgency> employeeAgencySelectOptions = new OpenReddingEnumSelectViewModel<EmployeeAgency>();
-
-    private OpenReddingEnumSelectViewModel<EmployeeStatus> employeeStatusSelectOptions = new OpenReddingEnumSelectViewModel<EmployeeStatus>();
-
-    private OpenReddingEnumSelectViewModel<SalarySortOption> salarySortSelectOptions = new OpenReddingEnumSelectViewModel<SalarySortOption>();
+    private OpenReddingEnumSelectViewModel<SalarySortField> salarySortSelectOptions = new OpenReddingEnumSelectViewModel<SalarySortField>();
 
     private OpenReddingEnumSelectViewModel<SalarySearchRange> salarySearchRangeSelectOptions = new OpenReddingEnumSelectViewModel<SalarySearchRange>();
 
@@ -234,34 +200,13 @@
     {
         base.OnInitialized();
 
-        employeeAgencySelectOptions
-            .AddOption(EmployeeAgency.AllAgencies, "All Agencies")
-            .AddOption(EmployeeAgency.Redding, "Redding")
-            .AddOption(EmployeeAgency.ShastaCounty, "Shasta County")
-            .AddOption(EmployeeAgency.Other, "Other");
-
-        employeeStatusSelectOptions
-            .AddOption(EmployeeStatus.AllStatuses, "All Statuses")
-            .AddOption(EmployeeStatus.FullTime, "Full-time")
-            .AddOption(EmployeeStatus.PartTime, "Part-time")
-            .AddOption(EmployeeStatus.Other, "Other");
-
         salarySortSelectOptions
-            .AddOption(SalarySortOption.Default, "Default")
-            .AddOption(SalarySortOption.Name, "Name")
-            .AddOption(SalarySortOption.JobTitle, "Job title")
-            .AddOption(SalarySortOption.Year, "Year")
-            .AddOption(SalarySortOption.BaseSalary, "Base pay")
-            .AddOption(SalarySortOption.TotalWithBenefitsSalary, "Total pay with benefits");
-
-        salarySearchRangeSelectOptions
-            .AddOption(SalarySearchRange.AllSalaries, "All salaries")
-            .AddOption(SalarySearchRange._0To49, "$0 to $49,999")
-            .AddOption(SalarySearchRange._100To149, "$50,000 to $99,999")
-            .AddOption(SalarySearchRange._150To199, "$100,000 to $199,999")
-            .AddOption(SalarySearchRange._200To249, "$200,000 to $249,999")
-            .AddOption(SalarySearchRange._250To299, "$250,000 to $299,999")
-            .AddOption(SalarySearchRange._300AndGreater, "$300,000 and greater");
+            .AddOption(SalarySortField.Default, "Default")
+            .AddOption(SalarySortField.Name, "Name")
+            .AddOption(SalarySortField.JobTitle, "Job title")
+            .AddOption(SalarySortField.Year, "Year")
+            .AddOption(SalarySortField.BaseSalary, "Base pay")
+            .AddOption(SalarySortField.TotalWithBenefitsSalary, "Total pay with benefits");
 
         if (State.Value.SearchRequest is null)
         {
@@ -271,12 +216,8 @@
         // Set search values from the original query
         employeeName = State.Value.SearchRequest.Name;
         jobTitle = State.Value.SearchRequest.JobTitle;
-
-        // year = State.Value.SearchRequest.Year.HasValue;
-        employeeAgency = Enum.TryParse<EmployeeAgency>(State.Value.SearchRequest.Agency, out var agency) ? agency : employeeAgency;
-        employeeStatus = Enum.TryParse<EmployeeStatus>(State.Value.SearchRequest.Status, out var status) ? status : employeeStatus;
         sortByOption = Enum.TryParse<SalarySortByOption>(State.Value.SearchRequest.Status, out var sortBy) ? sortBy : sortByOption;
-        sortField = Enum.TryParse<SalarySortOption>(State.Value.SearchRequest.Status, out var field) ? field : sortField;
+        sortField = Enum.TryParse<SalarySortField>(State.Value.SearchRequest.Status, out var field) ? field : sortField;
     }
 
     private void IsValidEmployeeNameHandler(bool isValid)
@@ -299,14 +240,9 @@
         jobTitle = updatedJobtTileHandler;
     }
 
-    private void EmployeeAgenyInputHandler(EmployeeAgency agency)
-    {
-        Console.WriteLine($"Ageny selected: {agency}");
-        employeeAgency = agency;
-    }
-
     private void OnSearchClicked()
     {
+        /*
         var searchRequest = new EmployeeSalarySearchRequestDto(
             employeeName,
             jobTitle,
@@ -317,11 +253,41 @@
             sortField.ToString());
 
         Dispatcher.Dispatch(new LoadEmployeeSalariesAction(searchRequest, true));
+         */
     }
 
     private void SetSortByOption(SalarySortByOption option)
     {
         sortByOption = option;
+    }
+
+    private EmploymentYear GetExistingEmploymentYear()
+    {
+        if (State.Value.SearchRequest is null)
+        {
+            return EmploymentYear.AllYears;
+        }
+        else if (State.Value.SearchRequest.Year.HasValue)
+        {
+            return Enum.TryParse<EmploymentYear>(State.Value.SearchRequest.Year.Value.ToString(), true, out var year) ? year : EmploymentYear.AllYears;
+        }
+
+        return EmploymentYear.AllYears;
+    }
+
+    private SalarySearchRange GetExistingPayRangeOption(SalarySearchDropdownContext context)
+    {
+        if (State.Value.SearchRequest is null)
+        {
+            return SalarySearchRange.AllSalaries;
+        }
+
+        return context switch
+        {
+            SalarySearchDropdownContext.BasePayRange => State.Value.SearchRequest.BasePayRange.HasValue ? (SalarySearchRange)State.Value.SearchRequest.BasePayRange.Value : SalarySearchRange.AllSalaries,
+            SalarySearchDropdownContext.TotalPayRange => State.Value.SearchRequest.TotalPayRange.HasValue ? (SalarySearchRange)State.Value.SearchRequest.TotalPayRange.Value : SalarySearchRange.AllSalaries,
+            _ => SalarySearchRange.AllSalaries
+        };
     }
 
 }
