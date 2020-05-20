@@ -1,7 +1,9 @@
 ﻿namespace OpenRedding.Client.Components.Dropdowns.Salaries
 {
-    public enum SalarySearchDropdownContext
+    public enum SalarySearchContext
     {
+        Name,
+        JobTitle,
         Agency,
         Status,
         Year,

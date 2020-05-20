@@ -8,7 +8,6 @@
 @using OpenRedding.Domain.Salaries.Dtos 
 @using OpenRedding.Domain.Salaries.Enums
 
-
 @inject SalariesStateFacade StateFacade
 @inject NavigationManager Navigation
 @inject IState<SalariesState> State 
@@ -42,6 +41,7 @@
     <div class="col-md-3">
         <EmployeeAgencyDropdown 
                 LabelCss="col-form-label text-white-90" 
+                LoadFromApi="false"
                 ExistingSelection="Enum.TryParse<EmployeeAgency>(State.Value.SearchRequest?.Agency, true, out var agency) ? agency : EmployeeAgency.AllAgencies" />
     </div>
 

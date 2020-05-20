@@ -13,11 +13,55 @@
 			new SalariesState(state.IsLoading, state.IsTableRefresh, state.SalaryResults, state.SalaryDetail, action.SearchRequest);
 
 		[ReducerMethod]
+		public static SalariesState SetEmployeeNameActionReducer(SalariesState state, SetEmployeeNameAction action)
+        {
+			if (state.SearchRequest is null)
+			{
+				return InitializeSearchRequest(state, SalarySearchContext.Name, action.Name);
+			}
+
+			var updatedSearchRequest = new EmployeeSalarySearchRequestDto(
+				name: action.Name,
+				jobTitle: state.SearchRequest.JobTitle,
+				agency: state.SearchRequest.Agency,
+				status: state.SearchRequest.Status,
+				sortBy: state.SearchRequest.SortBy,
+				year: state.SearchRequest.Year,
+				sortField: state.SearchRequest.SortField,
+				basePayRange: state.SearchRequest.BasePayRange,
+				totalPayRange: state.SearchRequest.TotalPayRange);
+
+			return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+		}
+
+		[ReducerMethod]
+		public static SalariesState SetEmployeeJobTitleActionReducer(SalariesState state, SetEmployeeJobTitleAction action)
+        {
+			if (state.SearchRequest is null)
+			{
+				return InitializeSearchRequest(state, SalarySearchContext.JobTitle, action.JobTitle);
+			}
+
+			var updatedSearchRequest = new EmployeeSalarySearchRequestDto(
+				name: state.SearchRequest.Name,
+				jobTitle: action.JobTitle,
+				agency: state.SearchRequest.Agency,
+				status: state.SearchRequest.Status,
+				sortBy: state.SearchRequest.SortBy,
+				year: state.SearchRequest.Year,
+				sortField: state.SearchRequest.SortField,
+				basePayRange: state.SearchRequest.BasePayRange,
+				totalPayRange: state.SearchRequest.TotalPayRange);
+
+			return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+		}
+
+		[ReducerMethod]
 		public static SalariesState SetEmployeeAgencyActionReducer(SalariesState state, SetEmployeeAgencyAction action)
 		{
 			if (state.SearchRequest is null)
 			{
-				return InitializeSearchRequest(state, SalarySearchDropdownContext.Agency, action.Agency.ToString());
+				return InitializeSearchRequest(state, SalarySearchContext.Agency, action.Agency.ToString());
 			}
 
 			var updatedSearchRequest = new EmployeeSalarySearchRequestDto(
@@ -31,7 +75,7 @@
 				basePayRange: state.SearchRequest.BasePayRange,
 				totalPayRange: state.SearchRequest.TotalPayRange);
 
-			return new SalariesState(state.IsLoading, state.IsTableRefresh, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+			return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
 		}
 
 		[ReducerMethod]
@@ -39,7 +83,7 @@
 		{
 			if (state.SearchRequest is null)
 			{
-				return InitializeSearchRequest(state, SalarySearchDropdownContext.Status, action.Status.ToString());
+				return InitializeSearchRequest(state, SalarySearchContext.Status, action.Status.ToString());
 			}
 
 			var updatedSearchRequest = new EmployeeSalarySearchRequestDto(
@@ -53,7 +97,7 @@
 				basePayRange: state.SearchRequest.BasePayRange,
 				totalPayRange: state.SearchRequest.TotalPayRange);
 
-			return new SalariesState(state.IsLoading, state.IsTableRefresh, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+			return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
 		}
 
 		[ReducerMethod]
@@ -61,7 +105,7 @@
 		{
 			if (state.SearchRequest is null)
 			{
-				return InitializeSearchRequest(state, SalarySearchDropdownContext.Year, ((int)action.Year).ToString());
+				return InitializeSearchRequest(state, SalarySearchContext.Year, ((int)action.Year).ToString());
 			}
 
 			var updatedSearchRequest = new EmployeeSalarySearchRequestDto(
@@ -75,7 +119,7 @@
 				basePayRange: state.SearchRequest.BasePayRange,
 				totalPayRange: state.SearchRequest.TotalPayRange);
 
-			return new SalariesState(state.IsLoading, state.IsTableRefresh, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+			return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
 		}
 
 		[ReducerMethod]
@@ -83,7 +127,7 @@
 		{
 			if (state.SearchRequest is null)
 			{
-				return InitializeSearchRequest(state, SalarySearchDropdownContext.BasePayRange, ((int)action.Range).ToString());
+				return InitializeSearchRequest(state, SalarySearchContext.BasePayRange, ((int)action.Range).ToString());
 			}
 
 			var updatedSearchRequest = new EmployeeSalarySearchRequestDto(
@@ -97,7 +141,7 @@
 				basePayRange: (int)action.Range,
 				totalPayRange: state.SearchRequest.TotalPayRange);
 
-			return new SalariesState(state.IsLoading, state.IsTableRefresh, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+			return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
 		}
 
 		[ReducerMethod]
@@ -105,7 +149,7 @@
 		{
 			if (state.SearchRequest is null)
 			{
-				return InitializeSearchRequest(state, SalarySearchDropdownContext.TotalPayRange, ((int)action.Range).ToString());
+				return InitializeSearchRequest(state, SalarySearchContext.TotalPayRange, ((int)action.Range).ToString());
 			}
 
 			var updatedSearchRequest = new EmployeeSalarySearchRequestDto(
@@ -119,7 +163,7 @@
 				basePayRange: state.SearchRequest.BasePayRange,
 				totalPayRange: (int)action.Range);
 
-			return new SalariesState(state.IsLoading, state.IsTableRefresh, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+			return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
 		}
 
 		[ReducerMethod]
@@ -129,7 +173,7 @@
 
 			if (state.SearchRequest is null)
 			{
-				return InitializeSearchRequest(state, SalarySearchDropdownContext.SortField, sortField);
+				return InitializeSearchRequest(state, SalarySearchContext.SortField, sortField);
 			}
 
 			var updatedSearchRequest = new EmployeeSalarySearchRequestDto(
@@ -143,23 +187,50 @@
 				basePayRange: state.SearchRequest.BasePayRange,
 				totalPayRange: state.SearchRequest.TotalPayRange);
 
-			return new SalariesState(state.IsLoading, state.IsTableRefresh, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+			return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
 		}
 
-		private static SalariesState InitializeSearchRequest(SalariesState state, SalarySearchDropdownContext context, string? value)
+		[ReducerMethod]
+		public static SalariesState SetSalarySortByActionReducer(SalariesState state, SetSalarySortByAction action)
+		{
+			var sortOption = action.Option.ToString();
+
+			if (state.SearchRequest is null)
+			{
+				return InitializeSearchRequest(state, SalarySearchContext.SortBy, sortOption);
+			}
+
+			var updatedSearchRequest = new EmployeeSalarySearchRequestDto(
+				name: state.SearchRequest.Name,
+				jobTitle: state.SearchRequest.JobTitle,
+				agency: state.SearchRequest.Agency,
+				status: state.SearchRequest.Status,
+				sortBy: sortOption,
+				year: state.SearchRequest.Year,
+				sortField: state.SearchRequest.SortField,
+				basePayRange: state.SearchRequest.BasePayRange,
+				totalPayRange: state.SearchRequest.TotalPayRange);
+
+			return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+		}
+
+		private static SalariesState InitializeSearchRequest(SalariesState state, SalarySearchContext context, string? value)
 		{
 			var searchRequest = context switch
 			{
-				SalarySearchDropdownContext.Agency => new EmployeeSalarySearchRequestDto(agency: value),
-				SalarySearchDropdownContext.Status => new EmployeeSalarySearchRequestDto(status: value),
-				SalarySearchDropdownContext.Year => new EmployeeSalarySearchRequestDto(year: int.TryParse(value, out var parsedValue) ? parsedValue : (int)EmploymentYear.AllYears),
-				SalarySearchDropdownContext.BasePayRange => new EmployeeSalarySearchRequestDto(basePayRange: int.TryParse(value, out var parsedValue) ? parsedValue : (int)SalarySearchRange.AllSalaries),
-				SalarySearchDropdownContext.TotalPayRange => new EmployeeSalarySearchRequestDto(totalPayRange: int.TryParse(value, out var parsedValue) ? parsedValue : (int)SalarySearchRange.AllSalaries),
-				SalarySearchDropdownContext.SortField => new EmployeeSalarySearchRequestDto(sortField: value),
+				SalarySearchContext.Name => new EmployeeSalarySearchRequestDto(name: value),
+				SalarySearchContext.JobTitle => new EmployeeSalarySearchRequestDto(jobTitle: value),
+				SalarySearchContext.Agency => new EmployeeSalarySearchRequestDto(agency: value),
+				SalarySearchContext.Status => new EmployeeSalarySearchRequestDto(status: value),
+				SalarySearchContext.Year => new EmployeeSalarySearchRequestDto(year: int.TryParse(value, out var parsedValue) ? parsedValue : (int)EmploymentYear.AllYears),
+				SalarySearchContext.BasePayRange => new EmployeeSalarySearchRequestDto(basePayRange: int.TryParse(value, out var parsedValue) ? parsedValue : (int)SalarySearchRange.AllSalaries),
+				SalarySearchContext.TotalPayRange => new EmployeeSalarySearchRequestDto(totalPayRange: int.TryParse(value, out var parsedValue) ? parsedValue : (int)SalarySearchRange.AllSalaries),
+				SalarySearchContext.SortField => new EmployeeSalarySearchRequestDto(sortField: value),
+				SalarySearchContext.SortBy => new EmployeeSalarySearchRequestDto(sortBy: value),
 				_ => new EmployeeSalarySearchRequestDto()
 			};
 
-			return new SalariesState(state.IsLoading, state.IsTableRefresh, state.SalaryResults, state.SalaryDetail, searchRequest);
+			return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, searchRequest);
 		}
     }
 }

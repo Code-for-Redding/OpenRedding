@@ -37,12 +37,24 @@ namespace OpenRedding.Api.Controllers
             [FromQuery] string? status,
             [FromQuery] string? sortBy,
             [FromQuery] int? year,
-            [FromQuery] int? range,
+            [FromQuery] int? basePayRange,
+            [FromQuery] int? totalPayRange,
             [FromQuery] int? page,
             [FromQuery] string? sortField)
         {
-            _logger.LogInformation($"Querying salaries: name [{name}], jobTitle [{jobTitle}], agency [{agency}], status [{status}], sortBy [{sortBy}]");
-            var searchRequest = new EmployeeSalarySearchRequestDto(name, jobTitle, agency, status, sortBy, year, sortField, range);
+            _logger.LogInformation($"Querying salaries:\n" +
+                $"name [{name}]\n" +
+                $"jobTitle [{jobTitle}]\n" +
+                $"agency [{agency}]\n" +
+                $"status [{status}]\n" +
+                $"sortBy [{sortBy}]\n" +
+                $"year [{year}]\n" +
+                $"basePayRange [{basePayRange}]\n" +
+                $"totalPayRange [{totalPayRange}]\n" +
+                $"page [{page}]\n" +
+                $"sortField [{sortField}]");
+
+            var searchRequest = new EmployeeSalarySearchRequestDto(name, jobTitle, agency, status, sortBy, year, sortField, basePayRange, totalPayRange);
 
             var response = await Mediator.Send(new GetEmployeeSalariesQuery(searchRequest, page));
 

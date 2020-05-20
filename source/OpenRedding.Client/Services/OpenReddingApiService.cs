@@ -1,9 +1,10 @@
 ﻿namespace OpenRedding.Client
 {
+    using System.Collections.Generic;
     using System.Net.Http;
-    using System.Text;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
+    using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.Configuration;
     using OpenRedding.Domain.Common.ViewModels;
     using OpenRedding.Domain.Salaries.Dtos;
@@ -21,22 +22,64 @@
 
         public async Task<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>> GetEmployeesSalariesAsync(EmployeeSalarySearchRequestDto? searchRequest)
         {
-            var searchRequestUrl = new StringBuilder($"{_apiBaseUrl}/salaries?");
+            var searchRequestUrl = $"{_apiBaseUrl}/salaries";
 
             if (searchRequest != null)
             {
                 var year = searchRequest.Year.HasValue ? searchRequest.Year.Value.ToString() : string.Empty;
+                var basePayRange = searchRequest.BasePayRange.HasValue ? searchRequest.BasePayRange.Value.ToString() : string.Empty;
+                var totalPayRange = searchRequest.TotalPayRange.HasValue ? searchRequest.TotalPayRange.Value.ToString() : string.Empty;
+                var queryParameters = new Dictionary<string, string>();
 
-                searchRequestUrl.Append($"name={searchRequest.Name}&")
-                    .Append($"jobTitle={searchRequest.JobTitle}&")
-                    .Append($"agency={searchRequest.Agency}&")
-                    .Append($"status={searchRequest.Status}&")
-                    .Append($"year={year}&")
-                    .Append($"sortField={searchRequest.SortField}&")
-                    .Append($"sortBy={searchRequest.SortBy}");
+                if (!string.IsNullOrWhiteSpace(searchRequest.Name))
+                {
+                    queryParameters.Add("name", searchRequest.Name);
+                }
+
+                if (!string.IsNullOrWhiteSpace(searchRequest.JobTitle))
+                {
+                    queryParameters.Add("jobTitle", searchRequest.JobTitle);
+                }
+
+                if (!string.IsNullOrWhiteSpace(year))
+                {
+                    queryParameters.Add("year", year);
+                }
+
+                if (!string.IsNullOrWhiteSpace(searchRequest.Agency))
+                {
+                    queryParameters.Add("agency", searchRequest.Agency);
+                }
+
+                if (!string.IsNullOrWhiteSpace(searchRequest.Status))
+                {
+                    queryParameters.Add("status", searchRequest.Status);
+                }
+
+                if (!string.IsNullOrWhiteSpace(basePayRange))
+                {
+                    queryParameters.Add("basePayRange", basePayRange);
+                }
+
+                if (!string.IsNullOrWhiteSpace(totalPayRange))
+                {
+                    queryParameters.Add("totalPayRange", totalPayRange);
+                }
+
+                if (!string.IsNullOrWhiteSpace(searchRequest.SortField))
+                {
+                    queryParameters.Add("sortField", searchRequest.SortField);
+                }
+
+                if (!string.IsNullOrWhiteSpace(searchRequest.SortBy))
+                {
+                    queryParameters.Add("sortBy", searchRequest.SortBy);
+                }
+
+                searchRequestUrl = QueryHelpers.AddQueryString(searchRequestUrl, queryParameters);
             }
 
-            return await _httpClient.GetJsonAsync<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>>(searchRequestUrl.ToString());
+            return await _httpClient.GetJsonAsync<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>>(searchRequestUrl);
         }
 
         public async Task<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>> GetEmployeesSalariesFromLinkAsync(string link)

@@ -30,6 +30,9 @@
     [Parameter]
     public string? LabelCss { get; set; }
 
+    [Parameter]
+    public bool LoadFromApi { get; set; }
+
     private OpenReddingEnumSelectViewModel<EmployeeStatus> employeeStatusSelectOptions = new OpenReddingEnumSelectViewModel<EmployeeStatus>();
 
     protected override void OnInitialized()
@@ -43,7 +46,7 @@
 
     private void OnStatusSelected(ChangeEventArgs e)
     {
-        StateFacade.SetEmployeeStatus(Enum.Parse<EmployeeStatus>(e.Value.ToString()));
+        StateFacade.SetEmployeeStatus(Enum.Parse<EmployeeStatus>(e.Value.ToString()), LoadFromApi);
     }
 
 }

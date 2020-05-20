@@ -23,8 +23,8 @@
         public void LoadAllEmployees() =>
             _dispatcher.Dispatch(new LoadEmployeeSalariesAction(null));
 
-        public void LoadEmployeesFromSearchRequest() =>
-            _dispatcher.Dispatch(new LoadEmployeeSalariesAction(_state.Value.SearchRequest));
+        public void LoadEmployeesFromSearchRequest(bool isTableRefresh = false) =>
+            _dispatcher.Dispatch(new LoadEmployeeSalariesAction(_state.Value.SearchRequest, isTableRefresh));
 
         public void LoadEmployeesFromLink(string link) =>
             _dispatcher.Dispatch(new LoadEmployeeSalariesFromLinkAction(link));
@@ -32,11 +32,17 @@
         public void SetCurrentSearchRequest(EmployeeSalarySearchRequestDto? searchRequest) =>
             _dispatcher.Dispatch(new SetCurrentSearchRequestAction(searchRequest));
 
-        public void SetEmployeeAgency(EmployeeAgency agency) =>
-            _dispatcher.Dispatch(new SetEmployeeAgencyAction(agency));
+        public void SetEmployeeName(string name) =>
+            _dispatcher.Dispatch(new SetEmployeeNameAction(name));
 
-        public void SetEmployeeStatus(EmployeeStatus status) =>
-            _dispatcher.Dispatch(new SetEmployeeStatusAction(status));
+        public void SetEmployeeJobTitle(string title) =>
+            _dispatcher.Dispatch(new SetEmployeeJobTitleAction(title));
+
+        public void SetEmployeeAgency(EmployeeAgency agency, bool loadFromApi = false) =>
+            _dispatcher.Dispatch(new SetEmployeeAgencyAction(agency, loadFromApi));
+
+        public void SetEmployeeStatus(EmployeeStatus status, bool loadFromApi = false) =>
+            _dispatcher.Dispatch(new SetEmployeeStatusAction(status, loadFromApi));
 
         public void SetEmploymentYear(EmploymentYear year) =>
             _dispatcher.Dispatch(new SetEmploymentYearAction(year));
@@ -46,5 +52,11 @@
 
         public void SetSalarySearchTotalRange(SalarySearchRange range) =>
             _dispatcher.Dispatch(new SetSalarySearchTotalRangeAction(range));
+
+        public void SetSalarySortField(SalarySortField field) =>
+            _dispatcher.Dispatch(new SetSalarySortFieldAction(field));
+
+        public void SetSalarySortBy(SalarySortByOption option) =>
+            _dispatcher.Dispatch(new SetSalarySortByAction(option));
     }
 }

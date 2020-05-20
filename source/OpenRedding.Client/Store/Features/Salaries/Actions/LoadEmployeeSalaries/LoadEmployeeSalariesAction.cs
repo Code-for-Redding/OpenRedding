@@ -1,6 +1,5 @@
 ﻿namespace OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries
 {
-    using OpenRedding.Client.Store.Common;
     using OpenRedding.Domain.Salaries.Dtos;
 
     public class LoadEmployeeSalariesAction

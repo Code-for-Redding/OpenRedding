@@ -5,12 +5,13 @@
 @inject SalariesStateFacade StateFacade
 
 <div class="d-flex flex-column">
+    @* Sort field *@
     <label class="@LabelCss" for="sort-field-dropdown">Sort Options</label>
     <select @onchange="OnSortOptionSelected" id="sort-field-dropdown" class="form-control">
         <option disabled>Select a field</option>
-        @foreach (var fieldOption in rangeSelectOptions.SelectOptions)
+        @foreach (var fieldOption in fieldSelectOptions.SelectOptions)
         {
-            @if (fieldOption.Key == ExistingSelection)
+            @if (fieldOption.Key == ExistingFieldSelection)
             {
                 <option selected value="@fieldOption.Key">@fieldOption.Value</option>
             }
@@ -20,15 +21,49 @@
             }
         }
     </select>
+
+    @* Sort by *@
+    <div class="py-2 btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-outline-primary active">
+            @if (ExistingOptionSelection == SalarySortByOption.Default)
+            {
+                <input type="radio" name="options" id="sort-by-default" autocomplete="off" checked="checked" @onclick="(() => OnSortBySelected(SalarySortByOption.Default))" /><span>Default</span>
+            }
+            else
+            {
+                <input type="radio" name="options" id="sort-by-default" autocomplete="off" @onclick="(() => OnSortBySelected(SalarySortByOption.Default))" /><span>Default</span>
+            }
+        </label>
+        <label class="btn btn-outline-primary">
+            @if (ExistingOptionSelection == SalarySortByOption.Ascending)
+            {
+                <input type="radio" name="options" id="sort-by-ascending" autocomplete="off" checked="checked" @onclick="(() => OnSortBySelected(SalarySortByOption.Ascending))" /><span>Ascending</span>
+            }
+            else
+            {
+                <input type="radio" name="options" id="sort-by-ascending" autocomplete="off" @onclick="(() => OnSortBySelected(SalarySortByOption.Ascending))" /><span>Ascending</span>
+            }
+        </label>
+        <label class="btn btn-outline-primary">
+            @if (ExistingOptionSelection == SalarySortByOption.Descending)
+            {
+                <input type="radio" name="options" id="sort-by-descending" autocomplete="off" checked="checked" @onclick="(() => OnSortBySelected(SalarySortByOption.Descending))" /><span>Descending</span>
+            }
+            else
+            {
+                <input type="radio" name="options" id="sort-by-descending" autocomplete="off" @onclick="(() => OnSortBySelected(SalarySortByOption.Descending))" /><span>Descending</span>
+            }
+        </label>
+    </div>
 </div>
 
 @code {
 
     [Parameter]
-    public SalarySearchDropdownContext Context { get; set; }
-
+    public SalarySortField ExistingFieldSelection { get; set; }
+    
     [Parameter]
-    public SalarySearchRange ExistingSelection { get; set; }
+    public SalarySortByOption ExistingOptionSelection { get; set; }
 
     [Parameter]
     public string? LabelCss { get; set; }
@@ -48,6 +83,12 @@
 
     private void OnSortOptionSelected(ChangeEventArgs e)
     {
+        StateFacade.SetSalarySortField(Enum.Parse<SalarySortField>(e.Value.ToString()));
+    }
+
+    private void OnSortBySelected(SalarySortByOption option)
+    {
+        StateFacade.SetSalarySortBy(option);
     }
 
 }

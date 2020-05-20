@@ -151,7 +151,7 @@
                     @if (IsValidLink(State.Value.SalaryResults.Links.Last) && State.Value.SalaryResults.CurrentPage != State.Value.SalaryResults.Pages)
                     {
                         <li class="page-item">
-                            <a class="page-link text-white " @onclick="(() => OnNavigateToPageResult(State.Value.SalaryResults.Links.Last!.Href!))">
+                            <a class="page-link text-white cursor-pointer" @onclick="(() => OnNavigateToPageResult(State.Value.SalaryResults.Links.Last!.Href!))">
                                 <span class="d-flex flex-row">
                                     last
                                     <i class="fas fa-angle-double-right mt-1 px-2"></i>
@@ -243,6 +243,7 @@
         }
 
         var decodedUrl = System.Web.HttpUtility.UrlDecode(State.Value.SalaryResults.Links.Paged!.Href, System.Text.Encoding.UTF8);
+
         Console.WriteLine($"Decoded URL: {decodedUrl}");
 
         var linkToFollow = decodedUrl.Replace(OpenReddingConstants.PageNumberStringReplacementValue, e.Value.ToString());

@@ -53,12 +53,15 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
             // Filter by agency, if available
             if (!string.IsNullOrWhiteSpace(request.SearchRequest.Agency) && Enum.TryParse(request.SearchRequest.Agency, true, out EmployeeAgency employeeAgency))
             {
+                /*
                 queriedSalaries = employeeAgency switch
                 {
                     EmployeeAgency.Redding => queriedSalaries.Where(e => e.EmployeeAgency == employeeAgency),
                     EmployeeAgency.ShastaCounty => queriedSalaries.Where(e => e.EmployeeAgency == employeeAgency),
                     _ => queriedSalaries
                 };
+                 */
+                queriedSalaries = queriedSalaries.Where(e => e.EmployeeAgency == employeeAgency);
             }
 
             // Filter by year, if available
@@ -83,10 +86,49 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
             // Filter by status, if available
             if (!string.IsNullOrWhiteSpace(request.SearchRequest.Status) && Enum.TryParse(request.SearchRequest.Status, true, out EmployeeStatus employeeStatus))
             {
+                /*
                 queriedSalaries = employeeStatus switch
                 {
                     EmployeeStatus.FullTime => queriedSalaries.Where(e => e.EmployeeStatus == employeeStatus),
                     EmployeeStatus.PartTime => queriedSalaries.Where(e => e.EmployeeStatus == employeeStatus),
+                    _ => queriedSalaries
+                };
+                 */
+                queriedSalaries = queriedSalaries.Where(e => e.EmployeeStatus == employeeStatus);
+            }
+
+            // Filter by base pay range, if available
+            if (request.SearchRequest.BasePayRange.HasValue && Enum.IsDefined(typeof(SalarySearchRange), request.SearchRequest.BasePayRange.Value))
+            {
+                var parsedRange = (SalarySearchRange)request.SearchRequest.BasePayRange.Value;
+
+                queriedSalaries = parsedRange switch
+                {
+                    SalarySearchRange._0To49 => queriedSalaries.Where(e => e.BasePay >= 0 && e.BasePay < 50000m),
+                    SalarySearchRange._50To100 => queriedSalaries.Where(e => e.BasePay >= 50000m && e.BasePay < 100000m),
+                    SalarySearchRange._100To149 => queriedSalaries.Where(e => e.BasePay >= 100000m && e.BasePay < 150000m),
+                    SalarySearchRange._150To199 => queriedSalaries.Where(e => e.BasePay >= 150000m && e.BasePay < 200000m),
+                    SalarySearchRange._200To249 => queriedSalaries.Where(e => e.BasePay >= 200000m && e.BasePay < 250000m),
+                    SalarySearchRange._250To299 => queriedSalaries.Where(e => e.BasePay >= 250000m && e.BasePay < 300000m),
+                    SalarySearchRange._300AndGreater => queriedSalaries.Where(e => e.BasePay >= 300000),
+                    _ => queriedSalaries
+                };
+            }
+
+            // Filter by total pay with benefits range, if available
+            if (request.SearchRequest.TotalPayRange.HasValue && Enum.IsDefined(typeof(SalarySearchRange), request.SearchRequest.TotalPayRange.Value))
+            {
+                var parsedRange = (SalarySearchRange)request.SearchRequest.TotalPayRange.Value;
+
+                queriedSalaries = parsedRange switch
+                {
+                    SalarySearchRange._0To49 => queriedSalaries.Where(e => e.TotalPayWithBenefits >= 0 && e.TotalPayWithBenefits < 50000m),
+                    SalarySearchRange._50To100 => queriedSalaries.Where(e => e.TotalPayWithBenefits >= 50000m && e.TotalPayWithBenefits < 100000m),
+                    SalarySearchRange._100To149 => queriedSalaries.Where(e => e.TotalPayWithBenefits >= 100000m && e.TotalPayWithBenefits < 150000m),
+                    SalarySearchRange._150To199 => queriedSalaries.Where(e => e.TotalPayWithBenefits >= 150000m && e.TotalPayWithBenefits < 200000m),
+                    SalarySearchRange._200To249 => queriedSalaries.Where(e => e.TotalPayWithBenefits >= 200000m && e.TotalPayWithBenefits < 250000m),
+                    SalarySearchRange._250To299 => queriedSalaries.Where(e => e.TotalPayWithBenefits >= 250000m && e.TotalPayWithBenefits < 300000m),
+                    SalarySearchRange._300AndGreater => queriedSalaries.Where(e => e.TotalPayWithBenefits >= 300000),
                     _ => queriedSalaries
                 };
             }

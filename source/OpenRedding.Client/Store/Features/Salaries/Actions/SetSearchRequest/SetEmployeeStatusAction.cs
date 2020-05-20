@@ -4,9 +4,11 @@
 
 	public class SetEmployeeStatusAction
     {
-        public SetEmployeeStatusAction(EmployeeStatus status) =>
-            Status = status;
+        public SetEmployeeStatusAction(EmployeeStatus status, bool loadFromApi) =>
+            (Status, LoadFromApi) = (status, loadFromApi);
 
         public EmployeeStatus Status { get; }
+
+        public bool LoadFromApi { get; }
     }
 }
