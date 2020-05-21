@@ -4,6 +4,11 @@ namespace OpenRedding.Domain.Salaries.Dtos
 
     public class EmployeeSalarySearchResultDto
     {
+        // NOTE: Serialization requires a parameterless constructor
+        public EmployeeSalarySearchResultDto()
+        {
+        }
+
         public EmployeeSalarySearchResultDto(
             int id,
             string? name,

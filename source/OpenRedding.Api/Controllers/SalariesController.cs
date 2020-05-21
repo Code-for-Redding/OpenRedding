@@ -101,20 +101,45 @@ namespace OpenRedding.Api.Controllers
             var lastPageLink = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{lastPageQuery.ToQueryString()}";
             var pagedPageLink = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{pagedLinkQuery.ToQueryString()}";
 
-            // Link models
-            var nextLink = new OpenReddingLink(nextPageLink, nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>), HttpMethod.Get.Method);
-            var previousLink = new OpenReddingLink(previousPageLink, nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>), HttpMethod.Get.Method);
-            var firstLink = new OpenReddingLink(firstPageLink, nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>), HttpMethod.Get.Method);
-            var lastLink = new OpenReddingLink(lastPageLink, nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>), HttpMethod.Get.Method);
-            var pagedLink = new OpenReddingLink(pagedPageLink, nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>), HttpMethod.Get.Method);
-
             return new OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>
             {
                 Results = response.Results,
                 Count = response.Count,
                 Pages = response.Pages,
                 CurrentPage = response.CurrentPage,
-                Links = new OpenReddingPagedLinks(nextLink, previousLink, firstLink, lastLink, pagedLink)
+                Links = new OpenReddingPagedLinks
+                {
+                    Next = new OpenReddingLink
+                    {
+                        Href = nextPageLink,
+                        Rel = nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>),
+                        Method = HttpMethod.Get.Method
+                    },
+                    Previous = new OpenReddingLink
+                    {
+                        Href = previousPageLink,
+                        Rel = nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>),
+                        Method = HttpMethod.Get.Method
+                    },
+                    First = new OpenReddingLink
+                    {
+                        Href = firstPageLink,
+                        Rel = nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>),
+                        Method = HttpMethod.Get.Method
+                    },
+                    Last = new OpenReddingLink
+                    {
+                        Href = lastPageLink,
+                        Rel = nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>),
+                        Method = HttpMethod.Get.Method
+                    },
+                    Paged = new OpenReddingLink
+                    {
+                        Href = pagedPageLink,
+                        Rel = nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>),
+                        Method = HttpMethod.Get.Method
+                    }
+                }
             };
         }
 

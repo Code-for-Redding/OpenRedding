@@ -3,14 +3,14 @@
 @page "/salaries"
 
 @using Fluxor
+@using OpenRedding.Client.Services 
 @using OpenRedding.Client.Store.Features.Salaries
 @using OpenRedding.Client.Shared.Salaries
-@using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries
 @using OpenRedding.Domain.Common.Miscellaneous 
 
 @inject NavigationManager Navigation
 @inject IState<SalariesState> State
-@inject IDispatcher Dispatcher
+@inject SalariesStateFacade StateFacade
 
 <section id="open-redding-salaries" class="container mt-4">
     <h2 class="text-center font-weight-bolder mb-1">Salaries</h2>
@@ -29,7 +29,7 @@
             <div class="alert alert-light text-center">
                 <h4 class="alert-heading">Uh oh...</h4>
                 <p class="mb-0">Looks like there was an issue retrieving the data, click the button below to try again.</p>
-                <button @onclick="(() => Dispatcher.Dispatch(new LoadEmployeeSalariesAction(null)))" class="mt-3 btn btn-outline-info">Refresh</button>
+                <button @onclick="(() => StateFacade.LoadAllEmployees())" class="mt-3 btn btn-outline-info">Refresh</button>
             </div>
         </div>
     }
@@ -224,7 +224,7 @@
 
     private void OnNavigateToPageResult(string link)
     {
-        Dispatcher.Dispatch(new LoadEmployeeSalariesFromLinkAction(link));
+        StateFacade.LoadEmployeesFromLink(link);
     }
 
     private void OnPageDropdownSelect(ChangeEventArgs e)
@@ -242,13 +242,8 @@
         }
 
         var decodedUrl = System.Web.HttpUtility.UrlDecode(State.Value.SalaryResults.Links.Paged!.Href, System.Text.Encoding.UTF8);
-
-        Console.WriteLine($"Decoded URL: {decodedUrl}");
-
         var linkToFollow = decodedUrl.Replace(OpenReddingConstants.PageNumberStringReplacementValue, e.Value.ToString());
-        Console.WriteLine($"Link to follow is: {linkToFollow}");
-
-        Dispatcher.Dispatch(new LoadEmployeeSalariesFromLinkAction(linkToFollow));
+        StateFacade.LoadEmployeesFromLink(linkToFollow);
     }
 
     private bool IsValidLink(OpenReddingLink? link)

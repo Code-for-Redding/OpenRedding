@@ -97,8 +97,7 @@
             var result = JsonSerializer.Serialize(errorResponse, new JsonSerializerOptions
             {
                 IgnoreNullValues = true,
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                WriteIndented = true
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             });
 
             await context.Response.WriteAsync(result);

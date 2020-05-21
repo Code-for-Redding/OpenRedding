@@ -101,7 +101,12 @@ namespace OpenRedding.Core.Extensions
 
         private static OpenReddingLink GetSelfLink(int id, Uri gatewayUrl)
         {
-            return new OpenReddingLink($"{gatewayUrl.AbsoluteUri}/salaries/{id}", nameof(EmployeeSalaryDetailViewModel), HttpMethod.Get.Method);
+            return new OpenReddingLink
+            {
+                Href = $"{gatewayUrl.AbsoluteUri}/salaries/{id}",
+                Rel = nameof(EmployeeSalaryDetailViewModel),
+                Method = HttpMethod.Get.Method
+            };
         }
     }
 }

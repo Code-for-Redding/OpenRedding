@@ -1,0 +1,24 @@
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@page "/salaries/detail"
+
+@using Fluxor
+@using OpenRedding.Client.Store.Features.Salaries
+
+@inject NavigationManager Navigation
+@inject IState<SalariesState> State
+@inject IDispatcher Dispatcher
+
+<section id="open-redding-salaries" class="container mt-4">
+    <h2 class="text-center font-weight-bolder mb-1">Detail for: </h2>
+
+</section>
+
+@code {
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+}
