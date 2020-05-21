@@ -9,6 +9,7 @@ namespace OpenRedding.Api
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using OpenRedding.Api.Middleware;
     using OpenRedding.Core.Infrastructure.Services;
     using OpenRedding.Infrastructure.Extensions;
     using OpenRedding.Infrastructure.Services;
@@ -62,6 +63,8 @@ namespace OpenRedding.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseConduitErrorHandlerMiddleware();
 
             app.UseHttpsRedirection();
 

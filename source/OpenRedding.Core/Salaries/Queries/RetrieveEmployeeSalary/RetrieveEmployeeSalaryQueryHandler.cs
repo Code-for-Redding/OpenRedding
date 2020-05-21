@@ -45,6 +45,7 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
                 return new EmployeeSalaryDetailViewModel(employeeDetail.ToEmployeeSalaryDetailDto(request.GatewayUrl));
             }
 
+            // Reference the first and last name, discarding the middle name (if populated)
             var firstName = tokenizedName[0];
             var lastName = tokenizedName.Length > 2 ? tokenizedName[2] : tokenizedName[1];
 
