@@ -6,6 +6,7 @@ namespace OpenRedding.Core.Extensions
     using Domain.Salaries.Entities;
     using OpenRedding.Domain.Common.Miscellaneous;
     using OpenRedding.Domain.Salaries.ViewModels;
+    using OpenRedding.Shared;
 
     public static class EmployeeExtensions
     {
@@ -18,10 +19,7 @@ namespace OpenRedding.Core.Extensions
         /// <exception cref="ArgumentNullException">Throws if entity is null for validation.</exception>
         public static EmployeeSalarySearchResultDto ToEmployeeSalarySearchResultDto(this Employee employee, Uri gatewayUrl)
         {
-            if (employee is null)
-            {
-                throw new ArgumentNullException(nameof(employee), "Employee to map from cannot be null");
-            }
+            ArgumentValidation.CheckNotNull(employee, nameof(employee));
 
             return new EmployeeSalarySearchResultDto(
                 employee.EmployeeId,
@@ -44,10 +42,7 @@ namespace OpenRedding.Core.Extensions
         /// <exception cref="ArgumentNullException">Throws if entity is null for validation.</exception>
         public static EmployeeSalaryDetailDto ToEmployeeSalaryDetailDto(this Employee employee, Uri gatewayUrl)
         {
-            if (employee is null)
-            {
-                throw new ArgumentNullException(nameof(employee), "Employee to map from cannot be null");
-            }
+            ArgumentValidation.CheckNotNull(employee, nameof(employee));
 
             return new EmployeeSalaryDetailDto(
                 employee.EmployeeId,
@@ -73,10 +68,7 @@ namespace OpenRedding.Core.Extensions
         /// <exception cref="ArgumentNullException">Throws if DTO is null for validation.</exception>
         public static Employee ToEmployee(this TransparentCaliforniaCsvReadEmployeeDto employeeDto)
         {
-            if (employeeDto is null)
-            {
-                throw new ArgumentNullException(nameof(employeeDto), "CSV Employee to map from cannot be null");
-            }
+            ArgumentValidation.CheckNotNull(employeeDto, nameof(employeeDto));
 
             return new Employee
             {
@@ -94,6 +86,17 @@ namespace OpenRedding.Core.Extensions
                 Notes = employeeDto.Notes,
                 Year = employeeDto.Year
             };
+        }
+
+        public static RelatedEmployeeDetailDto ToRelatedEmployeeDetailDto(this Employee employee, Uri gatewayUrl)
+        {
+            ArgumentValidation.CheckNotNull(employee, nameof(employee));
+
+            return new RelatedEmployeeDetailDto(
+                string.IsNullOrWhiteSpace(employee.EmployeeName) ? string.Empty : employee.EmployeeName,
+                string.IsNullOrWhiteSpace(employee.JobTitle) ? string.Empty : employee.JobTitle,
+                employee.Year,
+                GetSelfLink(employee.EmployeeId, gatewayUrl));
         }
 
         private static OpenReddingLink GetSelfLink(int id, Uri gatewayUrl)
