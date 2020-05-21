@@ -1,14 +1,13 @@
 ﻿namespace OpenRedding.Client.Store.Features.Salaries.Effects.LoadEmployeeSalaries
 {
-	using System;
-	using System.Threading.Tasks;
-	using Fluxor;
-	using Microsoft.Extensions.Logging;
-	using OpenRedding.Client;
-	using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
-	using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalariesFromLink;
+    using System;
+    using System.Threading.Tasks;
+    using Fluxor;
+    using Microsoft.Extensions.Logging;
+    using OpenRedding.Client;
+    using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
 
-	public class LoadEmployeeSalariesFromLinkEffect : Effect<LoadEmployeeSalariesFromLinkAction>
+    public class LoadEmployeeSalariesFromLinkEffect : Effect<LoadEmployeeSalariesFromLinkAction>
 	{
 		private readonly OpenReddingApiService _apiService;
 		private readonly ILogger<LoadEmployeeSalariesFromLinkEffect> _logger;

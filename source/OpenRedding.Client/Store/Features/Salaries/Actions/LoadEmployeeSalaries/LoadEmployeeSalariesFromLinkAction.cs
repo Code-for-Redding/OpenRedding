@@ -1,4 +1,4 @@
-﻿namespace OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalariesFromLink
+﻿namespace OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries
 {
     public class LoadEmployeeSalariesFromLinkAction
     {

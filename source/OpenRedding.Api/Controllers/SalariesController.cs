@@ -56,7 +56,7 @@ namespace OpenRedding.Api.Controllers
 
             var searchRequest = new EmployeeSalarySearchRequestDto(name, jobTitle, agency, status, sortBy, year, sortField, basePayRange, totalPayRange);
 
-            var response = await Mediator.Send(new GetEmployeeSalariesQuery(searchRequest, page));
+            var response = await Mediator.Send(new GetEmployeeSalariesQuery(searchRequest, new Uri(_gatewayBaseUrl), page));
 
             int nextPage;
             int previousPage;
@@ -101,45 +101,20 @@ namespace OpenRedding.Api.Controllers
             var lastPageLink = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{lastPageQuery.ToQueryString()}";
             var pagedPageLink = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{pagedLinkQuery.ToQueryString()}";
 
+            // Link models
+            var nextLink = new OpenReddingLink(nextPageLink, nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>), HttpMethod.Get.Method);
+            var previousLink = new OpenReddingLink(previousPageLink, nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>), HttpMethod.Get.Method);
+            var firstLink = new OpenReddingLink(firstPageLink, nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>), HttpMethod.Get.Method);
+            var lastLink = new OpenReddingLink(lastPageLink, nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>), HttpMethod.Get.Method);
+            var pagedLink = new OpenReddingLink(pagedPageLink, nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>), HttpMethod.Get.Method);
+
             return new OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>
             {
                 Results = response.Results,
                 Count = response.Count,
                 Pages = response.Pages,
                 CurrentPage = response.CurrentPage,
-                Links = new OpenReddingPagedLinks
-                {
-                    Next = new OpenReddingLink
-                    {
-                        Href = nextPageLink,
-                        Rel = nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>),
-                        Method = HttpMethod.Get.Method,
-                    },
-                    Previous = new OpenReddingLink
-                    {
-                        Href = previousPageLink,
-                        Rel = nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>),
-                        Method = HttpMethod.Get.Method,
-                    },
-                    First = new OpenReddingLink
-                    {
-                        Href = firstPageLink,
-                        Rel = nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>),
-                        Method = HttpMethod.Get.Method,
-                    },
-                    Last = new OpenReddingLink
-                    {
-                        Href = lastPageLink,
-                        Rel = nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>),
-                        Method = HttpMethod.Get.Method,
-                    },
-                    Paged = new OpenReddingLink
-                    {
-                        Href = pagedPageLink,
-                        Rel = nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>),
-                        Method = HttpMethod.Get.Method,
-                    }
-                }
+                Links = new OpenReddingPagedLinks(nextLink, previousLink, firstLink, lastLink, pagedLink)
             };
         }
 
@@ -148,7 +123,7 @@ namespace OpenRedding.Api.Controllers
         public async Task<EmployeeSalaryDetailViewModel> GetEmployeeSalary([FromRoute] int id)
         {
             _logger.LogInformation($"Retrieving employee salary detail for employeeId [{id}]");
-            return await Mediator.Send(new RetrieveEmployeeSalaryQuery(id));
+            return await Mediator.Send(new RetrieveEmployeeSalaryQuery(id, new Uri(_gatewayBaseUrl)));
         }
     }
 }

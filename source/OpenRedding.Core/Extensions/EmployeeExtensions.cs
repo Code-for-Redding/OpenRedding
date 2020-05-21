@@ -1,8 +1,11 @@
 namespace OpenRedding.Core.Extensions
 {
     using System;
+    using System.Net.Http;
     using Domain.Salaries.Dtos;
     using Domain.Salaries.Entities;
+    using OpenRedding.Domain.Common.Miscellaneous;
+    using OpenRedding.Domain.Salaries.ViewModels;
 
     public static class EmployeeExtensions
     {
@@ -10,9 +13,10 @@ namespace OpenRedding.Core.Extensions
         /// Maps an employee database model to a view model search DTO.
         /// </summary>
         /// <param name="employee">Employee database model.</param>
+        /// <param name="gatewayUrl">Base URL for the API gateway to attach the self link for each record.</param>
         /// <returns>Mapped employee search DTO.</returns>
         /// <exception cref="ArgumentNullException">Throws if entity is null for validation.</exception>
-        public static EmployeeSalarySearchResultDto ToEmployeeSalarySearchResultDto(this Employee employee)
+        public static EmployeeSalarySearchResultDto ToEmployeeSalarySearchResultDto(this Employee employee, Uri gatewayUrl)
         {
             if (employee is null)
             {
@@ -27,38 +31,38 @@ namespace OpenRedding.Core.Extensions
                 employee.EmployeeStatus.ToString(),
                 employee.Year,
                 employee.BasePay,
-                employee.TotalPayWithBenefits);
+                employee.TotalPayWithBenefits,
+                GetSelfLink(employee.EmployeeId, gatewayUrl));
         }
 
         /// <summary>
         /// Maps an employee database model to a view model detail DTO.
         /// </summary>
         /// <param name="employee">Employee database model.</param>
+        /// <param name="gatewayUrl">Base URL for the API gateway to attach the self link for each record.</param>
         /// <returns>Mapped employee detail DTO.</returns>
         /// <exception cref="ArgumentNullException">Throws if entity is null for validation.</exception>
-        public static EmployeeSalaryDetailDto ToEmployeeSalaryDetailDto(this Employee employee)
+        public static EmployeeSalaryDetailDto ToEmployeeSalaryDetailDto(this Employee employee, Uri gatewayUrl)
         {
             if (employee is null)
             {
                 throw new ArgumentNullException(nameof(employee), "Employee to map from cannot be null");
             }
 
-            return new EmployeeSalaryDetailDto
-            {
-                Id = employee.EmployeeId,
-                Name = employee.EmployeeName,
-                JobTitle = employee.JobTitle,
-                BasePay = employee.BasePay,
-                Benefits = employee.Benefits,
-                OtherPay = employee.OtherPay,
-                OvertimePay = employee.OvertimePay,
-                TotalPay = employee.TotalPay,
-                TotalPayWithBenefits = employee.TotalPayWithBenefits,
-                Year = employee.Year,
-                Agency = nameof(employee.EmployeeAgency),
-                Notes = employee.Notes,
-                Status = nameof(employee.EmployeeStatus)
-            };
+            return new EmployeeSalaryDetailDto(
+                employee.EmployeeId,
+                string.IsNullOrWhiteSpace(employee.EmployeeName) ? string.Empty : employee.EmployeeName,
+                string.IsNullOrWhiteSpace(employee.JobTitle) ? string.Empty : employee.JobTitle,
+                employee.BasePay,
+                employee.Benefits,
+                employee.OtherPay,
+                employee.OvertimePay,
+                employee.TotalPay,
+                employee.TotalPayWithBenefits,
+                employee.Year,
+                employee.EmployeeAgency.ToString(),
+                employee.EmployeeStatus.ToString(),
+                GetSelfLink(employee.EmployeeId, gatewayUrl));
         }
 
         /// <summary>
@@ -90,6 +94,11 @@ namespace OpenRedding.Core.Extensions
                 Notes = employeeDto.Notes,
                 Year = employeeDto.Year
             };
+        }
+
+        private static OpenReddingLink GetSelfLink(int id, Uri gatewayUrl)
+        {
+            return new OpenReddingLink($"{gatewayUrl.AbsoluteUri}/salaries/{id}", nameof(EmployeeSalaryDetailViewModel), HttpMethod.Get.Method);
         }
     }
 }

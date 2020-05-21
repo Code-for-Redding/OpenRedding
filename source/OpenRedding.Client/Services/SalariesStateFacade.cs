@@ -3,7 +3,6 @@
     using Fluxor;
     using OpenRedding.Client.Store.Features.Salaries;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
-    using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalariesFromLink;
     using OpenRedding.Client.Store.Features.Salaries.Actions.SetSearchRequest;
     using OpenRedding.Domain.Salaries.Dtos;
     using OpenRedding.Domain.Salaries.Enums;

@@ -53,14 +53,6 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
             // Filter by agency, if available
             if (!string.IsNullOrWhiteSpace(request.SearchRequest.Agency) && Enum.TryParse(request.SearchRequest.Agency, true, out EmployeeAgency employeeAgency))
             {
-                /*
-                queriedSalaries = employeeAgency switch
-                {
-                    EmployeeAgency.Redding => queriedSalaries.Where(e => e.EmployeeAgency == employeeAgency),
-                    EmployeeAgency.ShastaCounty => queriedSalaries.Where(e => e.EmployeeAgency == employeeAgency),
-                    _ => queriedSalaries
-                };
-                 */
                 queriedSalaries = queriedSalaries.Where(e => e.EmployeeAgency == employeeAgency);
             }
 
@@ -86,14 +78,6 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
             // Filter by status, if available
             if (!string.IsNullOrWhiteSpace(request.SearchRequest.Status) && Enum.TryParse(request.SearchRequest.Status, true, out EmployeeStatus employeeStatus))
             {
-                /*
-                queriedSalaries = employeeStatus switch
-                {
-                    EmployeeStatus.FullTime => queriedSalaries.Where(e => e.EmployeeStatus == employeeStatus),
-                    EmployeeStatus.PartTime => queriedSalaries.Where(e => e.EmployeeStatus == employeeStatus),
-                    _ => queriedSalaries
-                };
-                 */
                 queriedSalaries = queriedSalaries.Where(e => e.EmployeeStatus == employeeStatus);
             }
 
@@ -172,7 +156,7 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
             var totalResults = queriedSalaries.Count();
             var resultingSalaries = await queriedSalaries
                 .SkipAndTakeDefault(request.Page)
-                .Select(e => e.ToEmployeeSalarySearchResultDto())
+                .Select(e => e.ToEmployeeSalarySearchResultDto(request.GatewayBaseUrl))
                 .ToListAsync(cancellationToken);
 
             return new OpenReddingSearchResultAggregate<EmployeeSalarySearchResultDto>(resultingSalaries.AsEnumerable(), totalResults, request.Page);

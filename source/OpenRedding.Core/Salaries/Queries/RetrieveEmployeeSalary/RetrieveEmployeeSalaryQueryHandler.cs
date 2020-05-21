@@ -31,7 +31,7 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
                 throw new OpenReddingApiException($"Employee with ID {request?.Id} was not found", HttpStatusCode.NotFound);
             }
 
-            return new EmployeeSalaryDetailViewModel(employeeSalary.ToEmployeeSalaryDetailDto());
+            return new EmployeeSalaryDetailViewModel(employeeSalary.ToEmployeeSalaryDetailDto(request.GatewayUrl));
         }
     }
 }

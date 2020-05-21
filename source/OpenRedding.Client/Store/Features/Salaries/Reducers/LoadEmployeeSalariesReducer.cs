@@ -2,7 +2,6 @@
 {
     using Fluxor;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
-    using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalariesFromLink;
 
     public static class LoadEmployeeSalariesReducer
     {

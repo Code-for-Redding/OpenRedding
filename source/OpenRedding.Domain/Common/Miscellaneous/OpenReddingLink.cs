@@ -2,10 +2,13 @@
 {
     public class OpenReddingLink
     {
-        public string? Href { get; set; }
+        public OpenReddingLink(string href, string rel, string method) =>
+            (Href, Rel, Method) = (href, rel, method);
 
-        public string? Rel { get; set; }
+        public string Href { get; }
 
-        public string? Method { get; set; }
+        public string Rel { get; }
+
+        public string Method { get; }
     }
 }

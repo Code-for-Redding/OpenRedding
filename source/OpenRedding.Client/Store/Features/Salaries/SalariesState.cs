@@ -23,7 +23,7 @@
 
         public bool IsLoading { get; }
 
-        public bool IsTableRefresh { get; set; }
+        public bool IsTableRefresh { get; }
 
         public OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>? SalaryResults { get; }
 
