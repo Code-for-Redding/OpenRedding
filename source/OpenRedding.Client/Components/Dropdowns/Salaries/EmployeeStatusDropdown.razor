@@ -48,6 +48,14 @@
             .AddOption(EmployeeStatus.Other, "Other");
     }
 
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            base.Dispose(disposing);
+        }
+    }
+
     private void OnStatusSelected(ChangeEventArgs e)
     {
         StateFacade.SetEmployeeStatus(Enum.Parse<EmployeeStatus>(e.Value.ToString()), LoadFromApi);

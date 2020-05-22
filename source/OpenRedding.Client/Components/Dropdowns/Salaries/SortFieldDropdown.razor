@@ -40,7 +40,7 @@
             </label>
         }
 
-        @* Asceding order *@
+        @* Ascending order *@
         @if (ExistingOptionSelection == SalarySortByOption.Ascending)
         {
             <label class="btn btn-outline-primary active">
@@ -74,7 +74,7 @@
 
     [Parameter]
     public SalarySortField ExistingFieldSelection { get; set; }
-    
+
     [Parameter]
     public SalarySortByOption ExistingOptionSelection { get; set; }
 
@@ -94,6 +94,14 @@
             .AddOption(SalarySortField.Year, "Year")
             .AddOption(SalarySortField.BaseSalary, "Base Pay")
             .AddOption(SalarySortField.TotalWithBenefitsSalary, "Total Pay and Benefits");
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            base.Dispose(disposing);
+        }
     }
 
     private void OnSortOptionSelected(ChangeEventArgs e)

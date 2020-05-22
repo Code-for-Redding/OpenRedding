@@ -70,6 +70,14 @@
             .AddOption(SalarySearchRange._300AndGreater, "$300,000 and greater");
     }
 
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            base.Dispose(disposing);
+        }
+    }
+
     private void OnRangeSelected(ChangeEventArgs e)
     {
         var parsedRange = Enum.Parse<SalarySearchRange>(e.Value.ToString());

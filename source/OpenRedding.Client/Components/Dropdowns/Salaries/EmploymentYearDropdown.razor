@@ -50,6 +50,14 @@
             .AddOption(EmploymentYear._2018, "2018");
     }
 
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            base.Dispose(disposing);
+        }
+    }
+
     private void OnYearSelected(ChangeEventArgs e)
     {
         StateFacade.SetEmploymentYear(Enum.Parse<EmploymentYear>(e.Value.ToString()));

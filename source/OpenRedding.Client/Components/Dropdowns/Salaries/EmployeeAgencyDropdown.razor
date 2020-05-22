@@ -48,6 +48,14 @@
             .AddOption(EmployeeAgency.Other, "Other");
     }
 
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            base.Dispose(disposing);
+        }
+    }
+
     private void OnAgencySelected(ChangeEventArgs e)
     {
         StateFacade.SetEmployeeAgency(Enum.Parse<EmployeeAgency>(e.Value.ToString()), LoadFromApi);
