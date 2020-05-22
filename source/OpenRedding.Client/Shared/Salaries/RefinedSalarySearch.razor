@@ -174,9 +174,9 @@
     [Parameter]
     public int CurrentPage { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        await Task.Run(() => base.OnInitialized());
 
         salarySortSelectOptions
             .AddOption(SalarySortField.Default, "Default")
@@ -196,6 +196,14 @@
         jobTitle = State.Value.SearchRequest.JobTitle;
         sortByOption = Enum.TryParse<SalarySortByOption>(State.Value.SearchRequest.Status, out var sortBy) ? sortBy : sortByOption;
         sortField = Enum.TryParse<SalarySortField>(State.Value.SearchRequest.Status, out var field) ? field : sortField;
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            base.Dispose(disposing);
+        }
     }
 
     private void IsValidEmployeeNameHandler(bool isValid)

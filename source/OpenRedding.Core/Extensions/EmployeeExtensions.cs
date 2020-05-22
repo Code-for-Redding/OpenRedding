@@ -44,20 +44,22 @@ namespace OpenRedding.Core.Extensions
         {
             ArgumentValidation.CheckNotNull(employee, nameof(employee));
 
-            return new EmployeeSalaryDetailDto(
-                employee.EmployeeId,
-                string.IsNullOrWhiteSpace(employee.EmployeeName) ? string.Empty : employee.EmployeeName,
-                string.IsNullOrWhiteSpace(employee.JobTitle) ? string.Empty : employee.JobTitle,
-                employee.BasePay,
-                employee.Benefits,
-                employee.OtherPay,
-                employee.OvertimePay,
-                employee.TotalPay,
-                employee.TotalPayWithBenefits,
-                employee.Year,
-                employee.EmployeeAgency.ToString(),
-                employee.EmployeeStatus.ToString(),
-                GetSelfLink(employee.EmployeeId, gatewayUrl));
+            return new EmployeeSalaryDetailDto
+            {
+                Id = employee.EmployeeId,
+                Name = string.IsNullOrWhiteSpace(employee.EmployeeName) ? string.Empty : employee.EmployeeName,
+                JobTitle = string.IsNullOrWhiteSpace(employee.JobTitle) ? string.Empty : employee.JobTitle,
+                BasePay = employee.BasePay,
+                Benefits = employee.Benefits,
+                OtherPay = employee.OtherPay,
+                OvertimePay = employee.OvertimePay,
+                TotalPay = employee.TotalPay,
+                TotalPayWithBenefits = employee.TotalPayWithBenefits,
+                Year = employee.Year,
+                Agency = employee.EmployeeAgency.ToString(),
+                Status = employee.EmployeeStatus.ToString(),
+                Self = GetSelfLink(employee.EmployeeId, gatewayUrl)
+            };
         }
 
         /// <summary>
@@ -92,11 +94,13 @@ namespace OpenRedding.Core.Extensions
         {
             ArgumentValidation.CheckNotNull(employee, nameof(employee));
 
-            return new RelatedEmployeeDetailDto(
-                string.IsNullOrWhiteSpace(employee.EmployeeName) ? string.Empty : employee.EmployeeName,
-                string.IsNullOrWhiteSpace(employee.JobTitle) ? string.Empty : employee.JobTitle,
-                employee.Year,
-                GetSelfLink(employee.EmployeeId, gatewayUrl));
+            return new RelatedEmployeeDetailDto
+            {
+                Name = string.IsNullOrWhiteSpace(employee.EmployeeName) ? string.Empty : employee.EmployeeName,
+                JobTitle = string.IsNullOrWhiteSpace(employee.JobTitle) ? string.Empty : employee.JobTitle,
+                Year = employee.Year,
+                Self = GetSelfLink(employee.EmployeeId, gatewayUrl)
+            };
         }
 
         private static OpenReddingLink GetSelfLink(int id, Uri gatewayUrl)

@@ -77,14 +77,26 @@
 
     private bool isValidJobTitle = true;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        await Task.Run(() => base.OnInitialized());
+
+        if (State.Value.SearchRequest is null)
+        {
+            return;
+        }
+
+        // Set search values from the original query
+        employeeName = State.Value.SearchRequest.Name;
+        jobTitle = State.Value.SearchRequest.JobTitle;
     }
 
-    private void OnBlur()
+    protected override void Dispose(bool disposing)
     {
-        Console.WriteLine("Blur");
+        if (disposing)
+        {
+            base.Dispose(disposing);
+        }
     }
 
     private void OnSearchClicked()
@@ -98,7 +110,7 @@
         // Set the current search request on the state and load employees from the request
         StateFacade.SetCurrentSearchRequest(searchRequest);
         StateFacade.LoadEmployeesFromSearchRequest();
-        Navigation.NavigateTo("salaries");
+        StateFacade.NavigateTo("salaries", true);
     }
 
     private void IsValidEmployeeNameHandler(bool isValid)

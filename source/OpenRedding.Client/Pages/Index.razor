@@ -1,4 +1,6 @@
-﻿@page "/"
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@page "/"
 
 @using OpenRedding.Client.Components.Common
 @using OpenRedding.Client.Shared.Salaries
@@ -80,7 +82,20 @@
 
 </div>
 
-@code {
+@code {        
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Run(() => base.OnInitialized());
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            base.Dispose(disposing);
+        }
+    }
 
     private enum SearchOption
     {

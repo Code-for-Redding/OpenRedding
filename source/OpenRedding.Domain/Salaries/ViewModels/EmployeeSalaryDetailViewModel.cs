@@ -5,11 +5,13 @@ namespace OpenRedding.Domain.Salaries.ViewModels
 
     public class EmployeeSalaryDetailViewModel
     {
+        /*
         public EmployeeSalaryDetailViewModel(EmployeeSalaryDetailDto employee, IEnumerable<RelatedEmployeeDetailDto>? relatedRecords = null) =>
             (Employee, RelatedRecords) = (employee, relatedRecords);
+        */
 
-        public EmployeeSalaryDetailDto Employee { get; }
+        public EmployeeSalaryDetailDto? Employee { get; set; }
 
-        public IEnumerable<RelatedEmployeeDetailDto>? RelatedRecords { get; }
+        public IEnumerable<RelatedEmployeeDetailDto>? RelatedRecords { get; set; }
     }
 }

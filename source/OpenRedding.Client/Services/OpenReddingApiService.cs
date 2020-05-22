@@ -8,6 +8,7 @@
     using Microsoft.Extensions.Configuration;
     using OpenRedding.Domain.Common.ViewModels;
     using OpenRedding.Domain.Salaries.Dtos;
+    using OpenRedding.Domain.Salaries.ViewModels;
 
     public class OpenReddingApiService
     {
@@ -85,6 +86,11 @@
         public async Task<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>> GetEmployeesSalariesFromLinkAsync(string link)
         {
             return await _httpClient.GetJsonAsync<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>>(link);
+        }
+
+        public async Task<EmployeeSalaryDetailViewModel> GetEmployeeSalaryDetailFromLink(string link)
+        {
+            return await _httpClient.GetJsonAsync<EmployeeSalaryDetailViewModel>(link);
         }
     }
 }

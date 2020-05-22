@@ -3,22 +3,61 @@
 @page "/salaries/detail"
 
 @using Fluxor
+@using OpenRedding.Client.Services 
 @using OpenRedding.Client.Store.Features.Salaries
 
 @inject NavigationManager Navigation
+@inject SalariesStateFacade StateFacade
 @inject IState<SalariesState> State
-@inject IDispatcher Dispatcher
 
-<section id="open-redding-salaries" class="container mt-4">
-    <h2 class="text-center font-weight-bolder mb-1">Detail for: </h2>
+<section id="open-redding-salary-detail" class="container mt-4">
+    @if (State.Value.IsLoading)
+    {
+        <div class="d-flex flex-row justify-content-center mt-5">
+            <div class="spinner-border text-info" role="status">
+                <span class="sr-only">Loading salary detail...</span>
+            </div>
+        </div>
+    }
+    else if (State.Value.SalaryDetail is null)
+    {
+        <div class="d-flex flex-column justify-content-center">
+            <div class="alert alert-light text-center">
+                <h4 class="alert-heading">Uh oh...</h4>
+                <p class="mb-0">Looks like there was an issue retrieving the data, click the button below to go back to the previous search table.</p>
+                <button @onclick="OnNavigateToSalaries" class="mt-3 btn btn-outline-info">Return to Search</button>
+            </div>
+        </div>
+    }
+    else
+    {
+        <h2 class="text-center font-weight-bolder mb-1">Detail for: @State.Value.SalaryDetail.Employee?.Name</h2>
+
+        <div class="py-2 row justify-content-center">
+            <button @onclick="OnNavigateToSalaries" class="btn btn-outline-info">Return to Search</button>
+        </div>
+    }
 
 </section>
 
 @code {
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        await Task.Run(() => base.OnInitialized());
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            base.Dispose(disposing);
+        }
+    }
+
+    private void OnNavigateToSalaries()
+    {
+        StateFacade.NavigateTo("salaries", true);
     }
 
 }

@@ -1,7 +1,10 @@
-﻿@inject NavigationManager Navigation
+﻿@using OpenRedding.Client.Services
+
+@inject NavigationManager Navigation
+@inject SalariesStateFacade StateFacade
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div style="cursor: pointer;" @onclick="NavigateToHome" class="d-flex flex-row">
+    <div style="cursor: pointer;" @onclick="(() => NavigateTo(NavigationContext.Home))" class="d-flex flex-row">
         <img style="max-width: 60px; max-height: 37px;" src="/img/favicon.png" class="rounded" />
         <span class="navbar-brand font-weight-bold ml-2">Open Redding</span>
     </div>
@@ -12,7 +15,7 @@
     <div class="collapse navbar-collapse" id="open-redding-navbar">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <NavLink class="nav-link" href="/salaries">
+                <NavLink class="nav-link" href="/salaries" @onclick="(() => NavigateTo(NavigationContext.Salaries))">
                     <i class="fas fa-money-bill mt-1"></i>
                     <span class="ml-2">Salaries</span>
                 </NavLink>
@@ -45,11 +48,26 @@
 
 @code {
 
+    private enum NavigationContext
+    {
+        Home,
+        Salaries
+    };
+
     const string DisabledNavItem = "This feature is currently under development and will be available at a later date";
 
-    private void NavigateToHome()
+    private void NavigateTo(NavigationContext context)
     {
-        Navigation.NavigateTo("/");
+        switch (context)
+        {
+            case NavigationContext.Salaries:
+                StateFacade.NavigateTo(page: "salaries", true);
+                break;
+            default:
+                StateFacade.NavigateTo(page: "/");
+                break;
+        }
+
     }
 
 }

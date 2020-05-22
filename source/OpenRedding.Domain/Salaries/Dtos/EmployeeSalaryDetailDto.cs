@@ -7,36 +7,6 @@ namespace OpenRedding.Domain.Salaries.Dtos
     /// </summary>
     public class EmployeeSalaryDetailDto
     {
-        public EmployeeSalaryDetailDto(
-            int id,
-            string name,
-            string jobTitle,
-            decimal basePay,
-            decimal overtimePay,
-            decimal otherPay,
-            decimal benefits,
-            decimal totalPay,
-            decimal totalPayWithBenefits,
-            int year,
-            string agency,
-            string status,
-            OpenReddingLink self)
-        {
-            Id = id;
-            Name = name;
-            JobTitle = jobTitle;
-            BasePay = basePay;
-            OvertimePay = overtimePay;
-            OtherPay = otherPay;
-            Benefits = benefits;
-            TotalPay = totalPay;
-            TotalPayWithBenefits = totalPayWithBenefits;
-            Year = year;
-            Agency = agency;
-            Status = status;
-            Self = self;
-        }
-
         /// <summary>
         /// Gets or sets the employee ID from the database.
         /// </summary>
@@ -45,12 +15,12 @@ namespace OpenRedding.Domain.Salaries.Dtos
         /// <summary>
         /// Gets or sets the employee name, both first and last.
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// Gets or sets the employee job title.
         /// </summary>
-		public string JobTitle { get; set; }
+		public string? JobTitle { get; set; }
 
         /// <summary>
         /// Gets or sets the employee base pay.
@@ -90,16 +60,16 @@ namespace OpenRedding.Domain.Salaries.Dtos
         /// <summary>
         /// Gets or sets the employee agency.
         /// </summary>
-		public string Agency { get; set; }
+		public string? Agency { get; set; }
 
         /// <summary>
         /// Gets or sets the employee employment status.
         /// </summary>
-		public string Status { get; set; }
+		public string? Status { get; set; }
 
         /// <summary>
         /// Gets or sets the employee self link.
         /// </summary>
-        public OpenReddingLink Self { get; set; }
+        public OpenReddingLink? Self { get; set; }
     }
 }

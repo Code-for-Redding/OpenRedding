@@ -1,8 +1,8 @@
 ﻿namespace OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaryDetail
 {
-    public class LoadEmployeeSalaryDetailFromLink
+    public class LoadEmployeeSalaryDetailFromLinkAction
     {
-        public LoadEmployeeSalaryDetailFromLink(string link) =>
+        public LoadEmployeeSalaryDetailFromLinkAction(string link) =>
             Link = link;
 
         public string Link { get; }

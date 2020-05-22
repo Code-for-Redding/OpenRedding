@@ -3,6 +3,8 @@
     using Fluxor;
     using OpenRedding.Client.Store.Features.Salaries;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
+    using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaryDetail;
+    using OpenRedding.Client.Store.Features.Salaries.Actions.Navigation;
     using OpenRedding.Client.Store.Features.Salaries.Actions.SetSearchRequest;
     using OpenRedding.Domain.Salaries.Dtos;
     using OpenRedding.Domain.Salaries.Enums;
@@ -19,15 +21,24 @@
         public SalariesStateFacade(IDispatcher dispatcher, IState<SalariesState> state) =>
             (_dispatcher, _state) = (dispatcher, state);
 
+        /*
+         * Employee table and detail interactions
+         */
         public void LoadAllEmployees() =>
             _dispatcher.Dispatch(new LoadEmployeeSalariesAction(null));
 
         public void LoadEmployeesFromSearchRequest(bool isTableRefresh = false) =>
             _dispatcher.Dispatch(new LoadEmployeeSalariesAction(_state.Value.SearchRequest, isTableRefresh));
 
+        public void LoadEmployeeDetailFromLink(string link) =>
+            _dispatcher.Dispatch(new LoadEmployeeSalaryDetailFromLinkAction(link));
+
         public void LoadEmployeesFromLink(string link) =>
             _dispatcher.Dispatch(new LoadEmployeeSalariesFromLinkAction(link));
 
+        /*
+         * Search Request Interactions
+         */
         public void SetCurrentSearchRequest(EmployeeSalarySearchRequestDto? searchRequest) =>
             _dispatcher.Dispatch(new SetCurrentSearchRequestAction(searchRequest));
 
@@ -57,5 +68,14 @@
 
         public void SetSalarySortBy(SalarySortByOption option) =>
             _dispatcher.Dispatch(new SetSalarySortByAction(option));
+
+        /*
+         * Page navigation interactions
+         */
+        public void NavigateTo(string page, bool isLoading = false, bool dispatchSucces = false) =>
+            _dispatcher.Dispatch(new NavigateToPageAction(page, isLoading, dispatchSucces));
+
+        public void CompletePageNavigation() =>
+            _dispatcher.Dispatch(new NavigateToPageSuccessAction());
     }
 }

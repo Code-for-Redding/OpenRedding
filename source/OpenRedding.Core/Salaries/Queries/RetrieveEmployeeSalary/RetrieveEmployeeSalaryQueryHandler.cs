@@ -42,7 +42,10 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
             // Name was null or not complete, return the current state
             if (tokenizedName is null || tokenizedName.Length is 1)
             {
-                return new EmployeeSalaryDetailViewModel(employeeDetail.ToEmployeeSalaryDetailDto(request.GatewayUrl));
+                return new EmployeeSalaryDetailViewModel
+                {
+                    Employee = employeeDetail.ToEmployeeSalaryDetailDto(request.GatewayUrl)
+                };
             }
 
             // Reference the first and last name, discarding the middle name (if populated)
@@ -60,7 +63,11 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
                 .Select(e => e.ToRelatedEmployeeDetailDto(request.GatewayUrl))
                 .ToListAsync(cancellationToken);
 
-            return new EmployeeSalaryDetailViewModel(employeeDetail.ToEmployeeSalaryDetailDto(request.GatewayUrl), relatedRecords);
+            return new EmployeeSalaryDetailViewModel
+            {
+                Employee = employeeDetail.ToEmployeeSalaryDetailDto(request.GatewayUrl),
+                RelatedRecords = relatedRecords
+            };
         }
     }
 }
