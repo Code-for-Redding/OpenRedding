@@ -1,7 +1,6 @@
-﻿@using OpenRedding.Client.Services
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 @inject NavigationManager Navigation
-@inject SalariesStateFacade StateFacade
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div style="cursor: pointer;" @onclick="(() => NavigateTo(NavigationContext.Home))" class="d-flex flex-row">
@@ -54,6 +53,19 @@
         Salaries
     };
 
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Run(() => base.OnInitialized());
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            base.Dispose(disposing);
+        }
+    }
+
     const string DisabledNavItem = "This feature is currently under development and will be available at a later date";
 
     private void NavigateTo(NavigationContext context)
@@ -65,11 +77,11 @@
                 {
                     Navigation.NavigateTo("salaries");
                 }
-            break;
-        default:
-            Navigation.NavigateTo("/");
-            break;
+                break;
+            default:
+                Navigation.NavigateTo("/");
+                break;
+        }
     }
-}
 
 }

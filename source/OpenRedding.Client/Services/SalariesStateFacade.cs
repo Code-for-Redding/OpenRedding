@@ -4,7 +4,6 @@
     using OpenRedding.Client.Store.Features.Salaries;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaryDetail;
-    using OpenRedding.Client.Store.Features.Salaries.Actions.Navigation;
     using OpenRedding.Client.Store.Features.Salaries.Actions.SetSearchRequest;
     using OpenRedding.Domain.Salaries.Dtos;
     using OpenRedding.Domain.Salaries.Enums;
@@ -68,14 +67,5 @@
 
         public void SetSalarySortBy(SalarySortByOption option) =>
             _dispatcher.Dispatch(new SetSalarySortByAction(option));
-
-        /*
-         * Page navigation interactions
-         */
-        public void NavigateTo(string page, bool dispatchSucces = false) =>
-            _dispatcher.Dispatch(new NavigateToPageAction(page, dispatchSucces));
-
-        public void CompletePageNavigation() =>
-            _dispatcher.Dispatch(new NavigateToPageSuccessAction());
     }
 }

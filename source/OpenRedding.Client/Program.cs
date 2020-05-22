@@ -26,6 +26,7 @@ namespace OpenRedding.Client
             {
                 options.ScanAssemblies(Assembly.GetExecutingAssembly());
                 options.UseReduxDevTools();
+                options.UseRouting();
             });
 
             builder.Services.AddScoped<OpenReddingApiService>();

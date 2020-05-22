@@ -1,50 +1,28 @@
-﻿@inherits LayoutComponentBase
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorLayout
 
 @inject NavigationManager NavigationManager
 
 <NavMenu />
 
-@Body
+<section id="open-redding-body-container">
+    @Body
+</section>
 
 <Footer />
 
-@code {
+@code {        
 
-    const string DisabledNavItemTooltip = "This feature is currently under development and will be released at a later date";
-
-    private bool isOpen = false;
-
-    private enum NavigationContext
+    protected override async Task OnInitializedAsync()
     {
-        Home,
-        About,
-        GitHub,
-        Salaries,
-        Budget,
-        Zoning
+        await Task.Run(() => base.OnInitialized());
     }
 
-    private void OnMenuButtonClick()
+    protected override void Dispose(bool disposing)
     {
-        isOpen = !isOpen;
-    }
-
-    private void NavigateToPage(NavigationContext context)
-    {
-        switch (context)
+        if (disposing)
         {
-            case NavigationContext.Salaries:
-                NavigationManager.NavigateTo("salaries");
-                break;
-            case NavigationContext.About:
-                NavigationManager.NavigateTo("about");
-                break;
-            case NavigationContext.GitHub:
-                NavigationManager.NavigateTo("https://github.com/joey32793/OpenRedding");
-                break;
-            default:
-                NavigationManager.NavigateTo("/");
-                break;
+            base.Dispose(disposing);
         }
     }
+
 }

@@ -97,8 +97,8 @@
             @* Sort options *@
             <div class="row justify-content-center">
                 <SortFieldDropdown 
-                            ExistingFieldSelection="GetExistingSortField()"
-                            ExistingOptionSelection="GetExistingSortByOption()"
+                            ExistingFieldSelection="sortField"
+                            ExistingOptionSelection="sortByOption"
                             LabelCss="col-form-label" />
             </div>
         </div>
@@ -171,8 +171,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Task.Run(() => base.OnInitialized());
-
         if (State.Value.SearchRequest is null)
         {
             return;
@@ -181,8 +179,10 @@
         // Set search values from the original query
         employeeName = State.Value.SearchRequest.Name;
         jobTitle = State.Value.SearchRequest.JobTitle;
-        sortByOption = Enum.TryParse<SalarySortByOption>(State.Value.SearchRequest.Status, out var sortBy) ? sortBy : sortByOption;
-        sortField = Enum.TryParse<SalarySortField>(State.Value.SearchRequest.Status, out var field) ? field : sortField;
+        sortByOption = Enum.TryParse<SalarySortByOption>(State.Value.SearchRequest.SortBy, out var sortBy) ? sortBy : sortByOption;
+        sortField = Enum.TryParse<SalarySortField>(State.Value.SearchRequest.SortField, out var field) ? field : sortField;
+
+        await Task.Run(() => base.OnInitialized());
     }
 
     protected override void Dispose(bool disposing)

@@ -79,8 +79,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Task.Run(() => base.OnInitialized());
-
         if (State.Value.SearchRequest is null)
         {
             return;
@@ -89,6 +87,8 @@
         // Set search values from the original query
         employeeName = State.Value.SearchRequest.Name;
         jobTitle = State.Value.SearchRequest.JobTitle;
+
+        await Task.Run(() => base.OnInitialized());
     }
 
     protected override void Dispose(bool disposing)

@@ -26,36 +26,47 @@
 
     @* Sort by *@
     <div class="py-2 btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-        <label class="btn btn-outline-primary active">
-            @if (ExistingOptionSelection == SalarySortByOption.Default)
-            {
-                <input type="radio" name="options" id="sort-by-default" autocomplete="off" checked="checked" @onclick="(() => OnSortBySelected(SalarySortByOption.Default))" /><span>Default</span>
-            }
-            else
-            {
+        @* Default order *@
+        @if (ExistingOptionSelection == SalarySortByOption.Default)
+        {
+            <label class="btn btn-outline-primary active">
+                <input type="radio" name="options" id="sort-by-default" autocomplete="off" checked @onclick="(() => OnSortBySelected(SalarySortByOption.Default))" /><span>Default</span>
+            </label>
+        }
+        else
+        {
+            <label class="btn btn-outline-primary">
                 <input type="radio" name="options" id="sort-by-default" autocomplete="off" @onclick="(() => OnSortBySelected(SalarySortByOption.Default))" /><span>Default</span>
-            }
-        </label>
-        <label class="btn btn-outline-primary">
-            @if (ExistingOptionSelection == SalarySortByOption.Ascending)
-            {
-                <input type="radio" name="options" id="sort-by-ascending" autocomplete="off" checked="checked" @onclick="(() => OnSortBySelected(SalarySortByOption.Ascending))" /><span>Ascending</span>
-            }
-            else
-            {
+            </label>
+        }
+
+        @* Asceding order *@
+        @if (ExistingOptionSelection == SalarySortByOption.Ascending)
+        {
+            <label class="btn btn-outline-primary active">
+                <input type="radio" name="options" id="sort-by-ascending" autocomplete="off" checked @onclick="(() => OnSortBySelected(SalarySortByOption.Ascending))" /><span>Ascending</span>
+            </label>
+        }
+        else
+        {
+            <label class="btn btn-outline-primary">
                 <input type="radio" name="options" id="sort-by-ascending" autocomplete="off" @onclick="(() => OnSortBySelected(SalarySortByOption.Ascending))" /><span>Ascending</span>
-            }
-        </label>
-        <label class="btn btn-outline-primary">
-            @if (ExistingOptionSelection == SalarySortByOption.Descending)
-            {
-                <input type="radio" name="options" id="sort-by-descending" autocomplete="off" checked="checked" @onclick="(() => OnSortBySelected(SalarySortByOption.Descending))" /><span>Descending</span>
-            }
-            else
-            {
+            </label>
+        }
+
+        @* Descending order *@ 
+        @if (ExistingOptionSelection == SalarySortByOption.Descending)
+        {
+            <label class="btn btn-outline-primary active">
+                <input type="radio" name="options" id="sort-by-descending" autocomplete="off" checked @onclick="(() => OnSortBySelected(SalarySortByOption.Descending))" /><span>Descending</span>
+            </label>
+        }
+        else
+        {
+            <label class="btn btn-outline-primary">
                 <input type="radio" name="options" id="sort-by-descending" autocomplete="off" @onclick="(() => OnSortBySelected(SalarySortByOption.Descending))" /><span>Descending</span>
-            }
-        </label>
+            </label>
+        }
     </div>
 </div>
 

@@ -15,7 +15,8 @@
 <section id="open-redding-salaries" class="container mt-4">
     <h2 class="text-center font-weight-bolder mb-1">Salaries</h2>
 
-    @if (State.Value.IsLoading)
+    @* Workaround for now, using local isLoading flag to reduce page load transition times  *@
+    @if (State.Value.IsLoading || isLoading)
     {
         <div class="d-flex flex-row justify-content-center mt-5">
             <div class="spinner-border text-info" role="status">
@@ -217,6 +218,8 @@
 
 @code {
 
+    private bool isLoading = true;
+
     protected override async Task OnInitializedAsync()
     {
         await Task.Run(() => base.OnInitialized());
@@ -227,6 +230,14 @@
         if (disposing)
         {
             base.Dispose(disposing);
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            isLoading = false;
         }
     }
 
