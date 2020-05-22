@@ -5,7 +5,6 @@
 @using OpenRedding.Client.Components.Dropdowns.Salaries
 @using OpenRedding.Client.Services 
 @using OpenRedding.Client.Store.Features.Salaries 
-@using OpenRedding.Domain.Common.ViewModels
 @using OpenRedding.Domain.Salaries.Enums
 
 
@@ -157,13 +156,9 @@
 
     private bool isValidJobTitle = true;
 
-    private SalarySortField sortField = SalarySortField.Default;
-
     private SalarySortByOption sortByOption = SalarySortByOption.Default;
 
-    private OpenReddingEnumSelectViewModel<SalarySortField> salarySortSelectOptions = new OpenReddingEnumSelectViewModel<SalarySortField>();
-
-    private OpenReddingEnumSelectViewModel<SalarySearchRange> salarySearchRangeSelectOptions = new OpenReddingEnumSelectViewModel<SalarySearchRange>();
+    private SalarySortField sortField = SalarySortField.Default;
 
     [Parameter]
     public int ResultCount { get; set; }
@@ -177,14 +172,6 @@
     protected override async Task OnInitializedAsync()
     {
         await Task.Run(() => base.OnInitialized());
-
-        salarySortSelectOptions
-            .AddOption(SalarySortField.Default, "Default")
-            .AddOption(SalarySortField.Name, "Name")
-            .AddOption(SalarySortField.JobTitle, "Job title")
-            .AddOption(SalarySortField.Year, "Year")
-            .AddOption(SalarySortField.BaseSalary, "Base pay")
-            .AddOption(SalarySortField.TotalWithBenefitsSalary, "Total pay with benefits");
 
         if (State.Value.SearchRequest is null)
         {
@@ -231,11 +218,6 @@
         StateFacade.SetEmployeeName(string.IsNullOrWhiteSpace(employeeName) ? string.Empty : employeeName);
         StateFacade.SetEmployeeJobTitle(string.IsNullOrWhiteSpace(jobTitle) ? string.Empty : jobTitle);
         StateFacade.LoadEmployeesFromSearchRequest(true);
-    }
-
-    private void SetSortByOption(SalarySortByOption option)
-    {
-        sortByOption = option;
     }
 
     private EmploymentYear GetExistingEmploymentYear()

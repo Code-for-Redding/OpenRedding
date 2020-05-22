@@ -3,6 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using Fluxor;
+    using Microsoft.AspNetCore.Components;
     using Microsoft.Extensions.Logging;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaryDetail;
 
@@ -10,14 +11,18 @@
     {
 		private readonly OpenReddingApiService _apiService;
 		private readonly ILogger<LoadEmployeeSalaryDetailFromLinkEffect> _logger;
+		private readonly NavigationManager _navigation;
 
-		public LoadEmployeeSalaryDetailFromLinkEffect(OpenReddingApiService apiService, ILogger<LoadEmployeeSalaryDetailFromLinkEffect> logger) =>
-			(_apiService, _logger) = (apiService, logger);
+		public LoadEmployeeSalaryDetailFromLinkEffect(OpenReddingApiService apiService, ILogger<LoadEmployeeSalaryDetailFromLinkEffect> logger, NavigationManager navigation) =>
+			(_apiService, _navigation, _logger) = (apiService, navigation, logger);
 
 		protected override async Task HandleAsync(LoadEmployeeSalaryDetailFromLinkAction action, IDispatcher dispatcher)
 		{
 			try
 			{
+				_navigation.NavigateTo("salaries/detail");
+
+				_logger.LogInformation("Loading employee detail...");
 				var employeeSalaries = await _apiService.GetEmployeeSalaryDetailFromLink(action.Link);
 
 				_logger.LogInformation("Employee salaries load was successful");

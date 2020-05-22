@@ -217,11 +217,9 @@
 
 @code {
 
-
     protected override async Task OnInitializedAsync()
     {
         await Task.Run(() => base.OnInitialized());
-        StateFacade.CompletePageNavigation();
     }
 
     protected override void Dispose(bool disposing)
@@ -269,7 +267,6 @@
         }
 
         StateFacade.LoadEmployeeDetailFromLink(link.Href);
-        Navigation.NavigateTo("salaries/detail");
     }
 
 }

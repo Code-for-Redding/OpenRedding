@@ -72,8 +72,8 @@
         /*
          * Page navigation interactions
          */
-        public void NavigateTo(string page, bool isLoading = false, bool dispatchSucces = false) =>
-            _dispatcher.Dispatch(new NavigateToPageAction(page, isLoading, dispatchSucces));
+        public void NavigateTo(string page, bool dispatchSucces = false) =>
+            _dispatcher.Dispatch(new NavigateToPageAction(page, dispatchSucces));
 
         public void CompletePageNavigation() =>
             _dispatcher.Dispatch(new NavigateToPageSuccessAction());

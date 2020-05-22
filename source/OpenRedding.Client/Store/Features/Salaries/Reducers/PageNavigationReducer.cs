@@ -7,7 +7,7 @@
     {
         [ReducerMethod]
         public static SalariesState ReduceNavigateToPageAction(SalariesState state, NavigateToPageAction action) =>
-            new SalariesState(action.IsLoading, false, state.SalaryResults, state.SalaryDetail, state.SearchRequest);
+            new SalariesState(true, false, state.SalaryResults, state.SalaryDetail, state.SearchRequest);
 
         [ReducerMethod]
         public static SalariesState ReduceNavigateToPageSuccessAction(SalariesState state, NavigateToPageSuccessAction action) =>

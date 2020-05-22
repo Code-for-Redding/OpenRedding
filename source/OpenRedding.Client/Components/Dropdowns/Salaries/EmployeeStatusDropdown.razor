@@ -1,4 +1,6 @@
-﻿@using OpenRedding.Client.Services
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@using OpenRedding.Client.Services
 @using OpenRedding.Domain.Common.ViewModels
 @using OpenRedding.Domain.Salaries.Enums
 
@@ -35,8 +37,10 @@
 
     private OpenReddingEnumSelectViewModel<EmployeeStatus> employeeStatusSelectOptions = new OpenReddingEnumSelectViewModel<EmployeeStatus>();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        await Task.Run(() => base.OnInitialized());
+
         employeeStatusSelectOptions
             .AddOption(EmployeeStatus.AllStatuses, "All Statuses")
             .AddOption(EmployeeStatus.FullTime, "Full-time")

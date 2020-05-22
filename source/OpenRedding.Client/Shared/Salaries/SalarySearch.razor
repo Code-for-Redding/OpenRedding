@@ -110,7 +110,6 @@
         // Set the current search request on the state and load employees from the request
         StateFacade.SetCurrentSearchRequest(searchRequest);
         StateFacade.LoadEmployeesFromSearchRequest();
-        StateFacade.NavigateTo("salaries", true);
     }
 
     private void IsValidEmployeeNameHandler(bool isValid)

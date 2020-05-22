@@ -61,13 +61,15 @@
         switch (context)
         {
             case NavigationContext.Salaries:
-                StateFacade.NavigateTo(page: "salaries", true);
-                break;
-            default:
-                StateFacade.NavigateTo(page: "/");
-                break;
-        }
-
+                if (!Navigation.Uri.EndsWith("salaries"))
+                {
+                    Navigation.NavigateTo("salaries");
+                }
+            break;
+        default:
+            Navigation.NavigateTo("/");
+            break;
     }
+}
 
 }

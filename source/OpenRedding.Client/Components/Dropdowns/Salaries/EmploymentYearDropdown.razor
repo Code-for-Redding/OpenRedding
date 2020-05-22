@@ -1,4 +1,6 @@
-﻿@using OpenRedding.Client.Services
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@using OpenRedding.Client.Services
 @using OpenRedding.Domain.Common.ViewModels
 @using OpenRedding.Domain.Salaries.Enums
 
@@ -32,8 +34,10 @@
 
     private OpenReddingEnumSelectViewModel<EmploymentYear> employmentYearSelectOptions = new OpenReddingEnumSelectViewModel<EmploymentYear>();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        await Task.Run(() => base.OnInitialized());
+
         employmentYearSelectOptions
             .AddOption(EmploymentYear.AllYears, "All Years")
             .AddOption(EmploymentYear._2011, "2011")

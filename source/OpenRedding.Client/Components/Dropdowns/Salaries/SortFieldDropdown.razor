@@ -1,4 +1,6 @@
-﻿@using OpenRedding.Client.Services
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@using OpenRedding.Client.Services
 @using OpenRedding.Domain.Common.ViewModels
 @using OpenRedding.Domain.Salaries.Enums
 
@@ -70,8 +72,10 @@
 
     private OpenReddingEnumSelectViewModel<SalarySortField> fieldSelectOptions = new OpenReddingEnumSelectViewModel<SalarySortField>();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        await Task.Run(() => base.OnInitialized());
+
         fieldSelectOptions
             .AddOption(SalarySortField.Default, "Default")
             .AddOption(SalarySortField.Name, "Name")

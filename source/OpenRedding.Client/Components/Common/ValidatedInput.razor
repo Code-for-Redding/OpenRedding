@@ -1,6 +1,8 @@
-﻿@using OpenRedding.Client.Validation.Models
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-<EditForm EditContext="@editContext">
+@using OpenRedding.Client.Validation.Models
+
+<EditForm Model="@validatedInput">
     <DataAnnotationsValidator />
 
     <div class="d-flex flex-column">
@@ -23,7 +25,7 @@
 
     private AlphabeticalTextInput validatedInput = new AlphabeticalTextInput();
 
-    private EditContext? editContext;
+    @*private EditContext? editContext;*@
 
     [Parameter]
     public string? InputId { get; set; }
@@ -46,8 +48,10 @@
     [Parameter]
     public string? InitialValue { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        await Task.Run(() => base.OnInitialized());
+
         if (!string.IsNullOrWhiteSpace(InitialValue))
         {
             validatedInput.InputValue = InitialValue;
