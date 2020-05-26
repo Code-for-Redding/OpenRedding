@@ -103,6 +103,25 @@ namespace OpenRedding.Core.Extensions
             };
         }
 
+        public static EmployeeSalaryExportDto ToSalaryExportDto(this Employee employee)
+        {
+            ArgumentValidation.CheckNotNull(employee, nameof(employee));
+
+            return new EmployeeSalaryExportDto(
+                string.IsNullOrWhiteSpace(employee.EmployeeName) ? string.Empty : employee.EmployeeName,
+                string.IsNullOrWhiteSpace(employee.JobTitle) ? string.Empty : employee.JobTitle,
+                employee.BasePay,
+                employee.OvertimePay,
+                employee.OtherPay,
+                employee.Benefits,
+                employee.TotalPay,
+                employee.PensionDebt ?? 0m,
+                employee.TotalPayWithBenefits,
+                employee.Year,
+                employee.EmployeeAgency,
+                employee.EmployeeStatus);
+        }
+
         private static OpenReddingLink GetSelfLink(int id, Uri gatewayUrl)
         {
             return new OpenReddingLink

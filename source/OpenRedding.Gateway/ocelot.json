@@ -13,7 +13,7 @@
       "UpstreamHttpMethod": [ "Get" ]
     },
     {
-      "DownstreamPathTemplate": "/api/salaries?name={name}&jobTitle={jobTitle}&agency={agency}&status={status}&sortBy={sortBy}",
+      "DownstreamPathTemplate": "/api/salaries?name={name}&jobTitle={jobTitle}&agency={agency}&status={status}&sortBy={sortBy}&sortField={sortField}&page={page}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -21,7 +21,7 @@
           "Port": 5003
         }
       ],
-      "UpstreamPathTemplate": "/api/v1/salaries?name={name}&jobTitle={jobTitle}&agency={agency}&status={status}&sortBy={sortBy}",
+      "UpstreamPathTemplate": "/api/v1/salaries?name={name}&jobTitle={jobTitle}&agency={agency}&status={status}&sortBy={sortBy}&sortField={sortField}&page={page}",
       "UpstreamHttpMethod": [ "Get" ]
     },
     {
@@ -34,6 +34,18 @@
         }
       ],
       "UpstreamPathTemplate": "/api/v1/salaries/{id}",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/salaries/download?name={name}&jobTitle={jobTitle}&agency={agency}&status={status}&sortBy={sortBy}&sortField={sortField}&page={page}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/salaries/downloads?name={name}&jobTitle={jobTitle}&agency={agency}&status={status}&sortBy={sortBy}&sortField={sortField}&page={page}",
       "UpstreamHttpMethod": [ "Get" ]
     }
   ],

@@ -3,14 +3,14 @@
 @using Fluxor
 @using OpenRedding.Client.Components.Common
 @using OpenRedding.Client.Components.Dropdowns.Salaries
-@using OpenRedding.Client.Services 
-@using OpenRedding.Client.Store.Features.Salaries 
+@using OpenRedding.Client.Services
+@using OpenRedding.Client.Store.Features.Salaries
 @using OpenRedding.Domain.Salaries.Enums
 
 
 @inject IState<SalariesState> State
 @inject SalariesStateFacade StateFacade
-
+@inject IJSRuntime JSRuntime
 @* Search metadata *@
 <div class="card bg-light mt-4">
 
@@ -29,42 +29,38 @@
             <div class="row justify-content-center">
                 @* Name *@
                 <div class="col-md-3">
-                    <ValidatedInput 
-                            InitialValue="@employeeName"
-                            OnValidatedInput="IsValidEmployeeNameHandler"
-                            OnValueInput="EmployeeNameInputHandler"
-                            DisplayErrorMessage="true"
-                            FieldLabel="Name"
-                            InputId="salary-search-name"
-                            LabelCss="col-form-label text-black" />
+                    <ValidatedInput InitialValue="@employeeName"
+                                    OnValidatedInput="IsValidEmployeeNameHandler"
+                                    OnValueInput="EmployeeNameInputHandler"
+                                    DisplayErrorMessage="true"
+                                    FieldLabel="Name"
+                                    InputId="salary-search-name"
+                                    LabelCss="col-form-label text-black" />
                 </div>
 
                 @* Job title *@
                 <div class="col-md-3">
-                    <ValidatedInput 
-                            InitialValue="@jobTitle"
-                            OnValidatedInput="IsValidEmployeeNameHandler"
-                            OnValueInput="JobTitleInputHandler"
-                            DisplayErrorMessage="true"
-                            FieldLabel="Job Title"
-                            InputId="salary-search-job-title"
-                            LabelCss="col-form-label text-black" />
+                    <ValidatedInput InitialValue="@jobTitle"
+                                    OnValidatedInput="IsValidEmployeeNameHandler"
+                                    OnValueInput="JobTitleInputHandler"
+                                    DisplayErrorMessage="true"
+                                    FieldLabel="Job Title"
+                                    InputId="salary-search-job-title"
+                                    LabelCss="col-form-label text-black" />
                 </div>
 
                 @* Agency *@
                 <div class="col-md-3">
-                    <EmployeeAgencyDropdown 
-                            ExistingSelection="Enum.TryParse<EmployeeAgency>(State.Value.SearchRequest?.Agency, true, out var agency) ? agency : EmployeeAgency.AllAgencies"
-                            LoadFromApi="true"
-                            LabelCss="col-form-label" />
+                    <EmployeeAgencyDropdown ExistingSelection="Enum.TryParse<EmployeeAgency>(State.Value.SearchRequest?.Agency, true, out var agency) ? agency : EmployeeAgency.AllAgencies"
+                                            LoadFromApi="true"
+                                            LabelCss="col-form-label" />
                 </div>
 
                 @* Status *@
                 <div class="col-md-3">
-                    <EmployeeStatusDropdown 
-                            ExistingSelection="Enum.TryParse<EmployeeStatus>(State.Value.SearchRequest?.Status, true, out var status) ? status : EmployeeStatus.AllStatuses"
-                            LoadFromApi="true"
-                            LabelCss="col-form-label" />
+                    <EmployeeStatusDropdown ExistingSelection="Enum.TryParse<EmployeeStatus>(State.Value.SearchRequest?.Status, true, out var status) ? status : EmployeeStatus.AllStatuses"
+                                            LoadFromApi="true"
+                                            LabelCss="col-form-label" />
                 </div>
             </div>
 
@@ -72,34 +68,30 @@
             <div class="row justify-content-center">
                 @* Year *@
                 <div class="col-md-4">
-                    <EmploymentYearDropdown 
-                            ExistingSelection="GetExistingEmploymentYear()" 
-                            LabelCss="col-form-label" />
+                    <EmploymentYearDropdown ExistingSelection="GetExistingEmploymentYear()"
+                                            LabelCss="col-form-label" />
                 </div>
 
                 @* Base pay range *@
                 <div class="col-md-4">
-                    <PayRangeDropdown 
-                            Context="SalarySearchContext.BasePayRange" 
-                            ExistingSelection="GetExistingPayRangeOption(SalarySearchContext.BasePayRange)" 
-                            LabelCss="col-form-label" />
+                    <PayRangeDropdown Context="SalarySearchContext.BasePayRange"
+                                      ExistingSelection="GetExistingPayRangeOption(SalarySearchContext.BasePayRange)"
+                                      LabelCss="col-form-label" />
                 </div>
 
                 @* Total pay range*@
                 <div class="col-md-4">
-                    <PayRangeDropdown 
-                            Context="SalarySearchContext.TotalPayRange" 
-                            ExistingSelection="GetExistingPayRangeOption(SalarySearchContext.TotalPayRange)" 
-                            LabelCss="col-form-label" />
+                    <PayRangeDropdown Context="SalarySearchContext.TotalPayRange"
+                                      ExistingSelection="GetExistingPayRangeOption(SalarySearchContext.TotalPayRange)"
+                                      LabelCss="col-form-label" />
                 </div>
             </div>
 
             @* Sort options *@
             <div class="row justify-content-center">
-                <SortFieldDropdown 
-                            ExistingFieldSelection="sortField"
-                            ExistingOptionSelection="sortByOption"
-                            LabelCss="col-form-label" />
+                <SortFieldDropdown ExistingFieldSelection="sortField"
+                                   ExistingOptionSelection="sortByOption"
+                                   LabelCss="col-form-label" />
             </div>
         </div>
     </div>
@@ -132,7 +124,7 @@
                     <span class="px-1"></span>
                     <button class="btn btn btn-outline-success" type="button">Reset</button>
                     <span class="px-1"></span>
-                    <button class="btn btn btn-outline-danger" type="button">Download</button>
+                    <button class="btn btn btn-outline-danger" type="button" @onclick="OnDownloadClicked"  data-toggle="modal" data-target="#loading-modal">Download</button>
                 }
             </div>
         </div>
@@ -142,6 +134,22 @@
             <span><strong>Results</strong>: @ResultCount</span>
             <span class="px-2"></span>
             <span><strong>Pages</strong>: @PageCount</span>
+        </div>
+    </div>
+</div>
+
+@* Download modal *@
+<!-- Modal -->
+<div class="modal fade" id="loading-modal" tabindex="-1" role="dialog" aria-labelledby="loading-modal-label" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content text-center">
+            <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+                <h4 class="py-2">Loading report...</h4>
+                <div class="spinner-border text-info" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <span class="py-2">This window will automatically close when you're report is ready for download.</span>
+            </div>
         </div>
     </div>
 </div>
@@ -268,5 +276,16 @@
 
         return Enum.TryParse<SalarySortByOption>(State.Value.SearchRequest.SortBy, true, out var option) ? option : SalarySortByOption.Default;
     }
+
+    private async Task OnDownloadClicked()
+    {
+        await JSRuntime.InvokeVoidAsync("interactWithModal", "#loading-modal", "show");
+
+        // Simulate the download processing
+        await Task.Delay(TimeSpan.FromMilliseconds(1500));
+
+        await JSRuntime.InvokeVoidAsync("interactWithModal", "#loading-modal", "hide");
+    }
+
 
 }

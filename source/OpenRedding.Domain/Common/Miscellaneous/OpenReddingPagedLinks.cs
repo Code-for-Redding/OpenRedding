@@ -11,5 +11,7 @@
         public OpenReddingLink? Last { get; set; }
 
         public OpenReddingLink? Paged { get; set; }
+
+        public OpenReddingLink? Download { get; set; }
     }
 }

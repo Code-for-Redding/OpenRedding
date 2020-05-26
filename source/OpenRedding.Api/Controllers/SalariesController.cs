@@ -1,7 +1,10 @@
 namespace OpenRedding.Api.Controllers
 {
     using System;
+    using System.IO;
+    using System.Net;
     using System.Net.Http;
+    using System.Net.Mime;
     using System.Threading.Tasks;
     using Domain.Salaries.ViewModels;
     using Microsoft.AspNetCore.Http;
@@ -10,6 +13,8 @@ namespace OpenRedding.Api.Controllers
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using OpenRedding.Api;
+    using OpenRedding.Core.Exception;
+    using OpenRedding.Core.Salaries.Commands.DownloadSalaries;
     using OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries;
     using OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary;
     using OpenRedding.Domain.Common.Miscellaneous;
@@ -76,6 +81,7 @@ namespace OpenRedding.Api.Controllers
             var firstPageQuery = new QueryBuilder();
             var lastPageQuery = new QueryBuilder();
             var pagedLinkQuery = new QueryBuilder();
+            var downloadLinkQuery = new QueryBuilder();
 
             foreach (var queryParam in HttpContext.Request.Query)
             {
@@ -86,6 +92,7 @@ namespace OpenRedding.Api.Controllers
                     firstPageQuery.Add(queryParam.Key, queryParam.Value.ToString());
                     lastPageQuery.Add(queryParam.Key, queryParam.Value.ToString());
                     pagedLinkQuery.Add(queryParam.Key, queryParam.Value.ToString());
+                    downloadLinkQuery.Add(queryParam.Key, queryParam.Value.ToString());
                 }
             }
 
@@ -95,11 +102,12 @@ namespace OpenRedding.Api.Controllers
             lastPageQuery.Add("page", response.Pages.ToString());
             pagedLinkQuery.Add("page", OpenReddingConstants.PageNumberStringReplacementValue);
 
-            var nextPageLink = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{nextPageQuery.ToQueryString()}";
-            var previousPageLink = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{previousPageQuery.ToQueryString()}";
-            var firstPageLink = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{firstPageQuery.ToQueryString()}";
-            var lastPageLink = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{lastPageQuery.ToQueryString()}";
-            var pagedPageLink = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}{HttpContext.Request.Path}{pagedLinkQuery.ToQueryString()}";
+            var nextPageLink = $"{_gatewayBaseUrl}/salaries{nextPageQuery.ToQueryString()}";
+            var previousPageLink = $"{_gatewayBaseUrl}/salaries{previousPageQuery.ToQueryString()}";
+            var firstPageLink = $"{_gatewayBaseUrl}/salaries{firstPageQuery.ToQueryString()}";
+            var lastPageLink = $"{_gatewayBaseUrl}/salaries{lastPageQuery.ToQueryString()}";
+            var pagedPageLink = $"{_gatewayBaseUrl}/salaries{pagedLinkQuery.ToQueryString()}";
+            var downloadRequestLink = $"{_gatewayBaseUrl}/salaries/download{downloadLinkQuery.ToQueryString()}";
 
             return new OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>
             {
@@ -138,6 +146,11 @@ namespace OpenRedding.Api.Controllers
                         Href = pagedPageLink,
                         Rel = nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>),
                         Method = HttpMethod.Get.Method
+                    },
+                    Download = new OpenReddingLink
+                    {
+                        Href = downloadRequestLink,
+                        Method = HttpMethod.Get.Method
                     }
                 }
             };
@@ -149,6 +162,57 @@ namespace OpenRedding.Api.Controllers
         {
             _logger.LogInformation($"Retrieving employee salary detail for employeeId [{id}]");
             return await Mediator.Send(new RetrieveEmployeeSalaryQuery(id, new Uri(_gatewayBaseUrl)));
+        }
+
+        [HttpGet("download")]
+        public async Task<IActionResult> DownloadSalaries(
+            [FromQuery] string? name,
+            [FromQuery] string? jobTitle,
+            [FromQuery] string? agency,
+            [FromQuery] string? status,
+            [FromQuery] string? sortBy,
+            [FromQuery] int? year,
+            [FromQuery] int? basePayRange,
+            [FromQuery] int? totalPayRange,
+            [FromQuery] string? sortField)
+        {
+            _logger.LogInformation($"Download salaries from query:\n" +
+                $"name [{name}]\n" +
+                $"jobTitle [{jobTitle}]\n" +
+                $"agency [{agency}]\n" +
+                $"status [{status}]\n" +
+                $"sortBy [{sortBy}]\n" +
+                $"year [{year}]\n" +
+                $"basePayRange [{basePayRange}]\n" +
+                $"totalPayRange [{totalPayRange}]\n" +
+                $"sortField [{sortField}]");
+
+            var searchRequest = new EmployeeSalarySearchRequestDto(name, jobTitle, agency, status, sortBy, year, sortField, basePayRange, totalPayRange);
+
+            // Retrieve the CSV file info
+            var csvFile = await Mediator.Send(new CreateSalarySearchCsvCommand(searchRequest));
+            if (csvFile is null)
+            {
+                throw new OpenReddingApiException("The CSV download file was not created properly", HttpStatusCode.InternalServerError);
+            }
+
+            // Grab a reference to the stream and return the file to the client
+            var fileStream = csvFile.OpenRead();
+            if (fileStream is null)
+            {
+                throw new OpenReddingApiException("The CSV stream could not be opened", HttpStatusCode.InternalServerError);
+            }
+
+            // Reference the file contents
+            using var content = new StreamContent(fileStream);
+            var contentBytes = await content.ReadAsByteArrayAsync();
+
+            // Delete the temporary resources
+            await fileStream.DisposeAsync();
+            content.Dispose();
+            await Mediator.Send(new DeleteTemporaryCsvDownloadCommand(csvFile.FullName));
+
+            return File(contentBytes, MediaTypeNames.Application.Octet);
         }
     }
 }

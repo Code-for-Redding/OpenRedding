@@ -30,4 +30,16 @@ window.initParticlesJs = () => {
     };
 
     Particles.init(config);
+};
+
+window.interactWithModal = (elementId, status) => {
+    $(elementId).modal(status)
+};
+
+window.openLoadingModal = () => {
+    $('loading-modal').modal('show');
+};
+
+window.closeLoadingModal = () => {
+    $('loading-modal').modal('hide');
 }
