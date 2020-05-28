@@ -11,6 +11,8 @@
 @inject IState<SalariesState> State
 @inject SalariesStateFacade StateFacade
 @inject IJSRuntime JSRuntime
+@inject OpenReddingApiService ApiService
+
 @* Search metadata *@
 <div class="card bg-light mt-4">
 
@@ -124,7 +126,7 @@
                     <span class="px-1"></span>
                     <button class="btn btn btn-outline-success" type="button">Reset</button>
                     <span class="px-1"></span>
-                    <button class="btn btn btn-outline-danger" type="button" @onclick="OnDownloadClicked"  data-toggle="modal" data-target="#loading-modal">Download</button>
+                    <button class="btn btn btn-outline-danger" type="button" @onclick="(() => StateFacade.DownloadSalaryCsv())"  data-toggle="modal" data-target="#loading-modal">Download</button>
                 }
             </div>
         </div>
@@ -276,16 +278,5 @@
 
         return Enum.TryParse<SalarySortByOption>(State.Value.SearchRequest.SortBy, true, out var option) ? option : SalarySortByOption.Default;
     }
-
-    private async Task OnDownloadClicked()
-    {
-        await JSRuntime.InvokeVoidAsync("interactWithModal", "#loading-modal", "show");
-
-        // Simulate the download processing
-        await Task.Delay(TimeSpan.FromMilliseconds(1500));
-
-        await JSRuntime.InvokeVoidAsync("interactWithModal", "#loading-modal", "hide");
-    }
-
 
 }

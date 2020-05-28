@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.Net.Http;
+    using System.Text.Json;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.WebUtilities;
@@ -91,6 +92,11 @@
         public async Task<EmployeeSalaryDetailViewModel> GetEmployeeSalaryDetailFromLink(string link)
         {
             return await _httpClient.GetJsonAsync<EmployeeSalaryDetailViewModel>(link);
+        }
+
+        public async Task DownloadSalaryReport(EmployeeSalarySearchRequestDto? searchRequest)
+        {
+            await _httpClient.PostJsonAsync($"{_apiBaseUrl}/salaries/download", searchRequest ?? new EmployeeSalarySearchRequestDto());
         }
     }
 }

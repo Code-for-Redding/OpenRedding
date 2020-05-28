@@ -1,6 +1,7 @@
 ﻿namespace OpenRedding.Infrastructure.Extensions
 {
     using System;
+    using System.Collections.Generic;
     using System.Reflection;
     using Core.Data;
     using Microsoft.EntityFrameworkCore;
@@ -8,8 +9,10 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
+    using OpenRedding.Core.Infrastructure.Services;
     using OpenRedding.Infrastructure.Persistence.Data;
     using OpenRedding.Infrastructure.Persistence.Repositories;
+    using OpenRedding.Infrastructure.Services;
     using OpenRedding.Shared.Validation;
 
     public static class StartupExtensions
@@ -33,6 +36,9 @@
 
             // Add Dapper dependencies
             services.TryAddScoped<IUnitOfWork>(_ => new UnitOfWork(connectionString));
+
+            // Add Azure services
+            services.TryAddScoped<IAzureBlobService, SalaryCsvBlobService>();
         }
     }
 }

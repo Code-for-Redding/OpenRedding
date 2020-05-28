@@ -12,6 +12,7 @@ namespace OpenRedding.Api.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
+    using Microsoft.Net.Http.Headers;
     using OpenRedding.Api;
     using OpenRedding.Core.Exception;
     using OpenRedding.Core.Salaries.Commands.DownloadSalaries;
@@ -164,55 +165,11 @@ namespace OpenRedding.Api.Controllers
             return await Mediator.Send(new RetrieveEmployeeSalaryQuery(id, new Uri(_gatewayBaseUrl)));
         }
 
-        [HttpGet("download")]
-        public async Task<IActionResult> DownloadSalaries(
-            [FromQuery] string? name,
-            [FromQuery] string? jobTitle,
-            [FromQuery] string? agency,
-            [FromQuery] string? status,
-            [FromQuery] string? sortBy,
-            [FromQuery] int? year,
-            [FromQuery] int? basePayRange,
-            [FromQuery] int? totalPayRange,
-            [FromQuery] string? sortField)
+        [HttpPost("download")]
+        public async Task<OpenReddingLink> DownloadSalaries([FromBody] EmployeeSalarySearchRequestDto? searchRequest)
         {
-            _logger.LogInformation($"Download salaries from query:\n" +
-                $"name [{name}]\n" +
-                $"jobTitle [{jobTitle}]\n" +
-                $"agency [{agency}]\n" +
-                $"status [{status}]\n" +
-                $"sortBy [{sortBy}]\n" +
-                $"year [{year}]\n" +
-                $"basePayRange [{basePayRange}]\n" +
-                $"totalPayRange [{totalPayRange}]\n" +
-                $"sortField [{sortField}]");
-
-            var searchRequest = new EmployeeSalarySearchRequestDto(name, jobTitle, agency, status, sortBy, year, sortField, basePayRange, totalPayRange);
-
-            // Retrieve the CSV file info
-            var csvFile = await Mediator.Send(new CreateSalarySearchCsvCommand(searchRequest));
-            if (csvFile is null)
-            {
-                throw new OpenReddingApiException("The CSV download file was not created properly", HttpStatusCode.InternalServerError);
-            }
-
-            // Grab a reference to the stream and return the file to the client
-            var fileStream = csvFile.OpenRead();
-            if (fileStream is null)
-            {
-                throw new OpenReddingApiException("The CSV stream could not be opened", HttpStatusCode.InternalServerError);
-            }
-
-            // Reference the file contents
-            using var content = new StreamContent(fileStream);
-            var contentBytes = await content.ReadAsByteArrayAsync();
-
-            // Delete the temporary resources
-            await fileStream.DisposeAsync();
-            content.Dispose();
-            await Mediator.Send(new DeleteTemporaryCsvDownloadCommand(csvFile.FullName));
-
-            return File(contentBytes, MediaTypeNames.Application.Octet);
+            _logger.LogInformation("Download salary CSV file...");
+            return await Mediator.Send(new DownloadSalariesCommand(searchRequest ?? new EmployeeSalarySearchRequestDto()));
         }
     }
 }

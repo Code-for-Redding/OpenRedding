@@ -71,6 +71,7 @@
                     EmploymentYear._2016 => queriedSalaries.Where(e => e.Year == 2016),
                     EmploymentYear._2017 => queriedSalaries.Where(e => e.Year == 2017),
                     EmploymentYear._2018 => queriedSalaries.Where(e => e.Year == 2018),
+                    EmploymentYear._2019 => queriedSalaries.Where(e => e.Year == 2019),
                     _ => queriedSalaries
                 };
             }

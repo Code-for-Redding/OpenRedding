@@ -2,6 +2,10 @@
 {
     public class EmployeeSalarySearchRequestDto
     {
+        public EmployeeSalarySearchRequestDto()
+        {
+        }
+
         public EmployeeSalarySearchRequestDto(
             string? name = null,
             string? jobTitle = null,

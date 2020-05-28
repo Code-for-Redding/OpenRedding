@@ -7,7 +7,7 @@
 @inject SalariesStateFacade StateFacade
 
 <div class="d-flex flex-column">
-    <label class="@LabelCss" for="year-dropdown">Employment Year</label>
+    <label class="@LabelCss" for="year-dropdown">Fiscal Year</label>
     <select @onchange="OnYearSelected" id="year-dropdown" class="form-control">
         <option disabled>Select an year</option>
         @foreach (var yearOption in employmentYearSelectOptions.SelectOptions)
@@ -47,7 +47,8 @@
             .AddOption(EmploymentYear._2015, "2015")
             .AddOption(EmploymentYear._2016, "2016")
             .AddOption(EmploymentYear._2017, "2017")
-            .AddOption(EmploymentYear._2018, "2018");
+            .AddOption(EmploymentYear._2018, "2018")
+            .AddOption(EmploymentYear._2019, "2019");
     }
 
     protected override void Dispose(bool disposing)

@@ -24,7 +24,7 @@
         /// Kicks off he request pipeline while catching any exceptions thrown in the application layer.
         /// </summary>
         /// <param name="context">HTTP context from the request pipeline.</param>
-        /// <returns>Hand off to next request delegate in the pipelin.e</returns>
+        /// <returns>Hand off to next request delegate in the pipeline.</returns>
         public async Task Invoke(HttpContext context)
         {
             try

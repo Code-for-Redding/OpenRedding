@@ -31,7 +31,7 @@ namespace OpenRedding.Api
 
             if (string.IsNullOrWhiteSpace(connectionString))
             {
-                throw new ArgumentException("Connection string was null or empty");
+                throw new ArgumentException("Database connection string is null");
             }
 
             // Adding API layer dependencies

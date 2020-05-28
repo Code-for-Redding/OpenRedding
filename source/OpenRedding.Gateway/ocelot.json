@@ -37,7 +37,7 @@
       "UpstreamHttpMethod": [ "Get" ]
     },
     {
-      "DownstreamPathTemplate": "/api/salaries/download?name={name}&jobTitle={jobTitle}&agency={agency}&status={status}&sortBy={sortBy}&sortField={sortField}&page={page}",
+      "DownstreamPathTemplate": "/api/salaries/download",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -45,8 +45,8 @@
           "Port": 5003
         }
       ],
-      "UpstreamPathTemplate": "/api/v1/salaries/downloads?name={name}&jobTitle={jobTitle}&agency={agency}&status={status}&sortBy={sortBy}&sortField={sortField}&page={page}",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamPathTemplate": "/api/v1/salaries/download",
+      "UpstreamHttpMethod": [ "Post" ]
     }
   ],
   "GlobalConfiguration": {

@@ -12,6 +12,7 @@
 
         public static readonly string[] Urls =
         {
+            "https://transcal.s3.amazonaws.com/public/export/redding-2019.csv",
             "https://transcal.s3.amazonaws.com/public/export/redding-2018.csv",
             "https://transcal.s3.amazonaws.com/public/export/redding-2017.csv",
             "https://transcal.s3.amazonaws.com/public/export/redding-2016.csv",
@@ -19,6 +20,7 @@
             "https://transcal.s3.amazonaws.com/public/export/redding-2014.csv",
             "https://transcal.s3.amazonaws.com/public/export/redding-2013.csv",
             "https://transcal.s3.amazonaws.com/public/export/redding-2012.csv",
+            "https://transcal.s3.amazonaws.com/public/export/shasta-county-2019.csv",
             "https://transcal.s3.amazonaws.com/public/export/shasta-county-2018.csv",
             "https://transcal.s3.amazonaws.com/public/export/shasta-county-2017.csv",
             "https://transcal.s3.amazonaws.com/public/export/shasta-county-2016.csv",

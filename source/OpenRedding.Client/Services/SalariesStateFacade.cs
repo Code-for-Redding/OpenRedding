@@ -2,6 +2,7 @@
 {
     using Fluxor;
     using OpenRedding.Client.Store.Features.Salaries;
+    using OpenRedding.Client.Store.Features.Salaries.Actions.DownloadSalaryCsv;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaryDetail;
     using OpenRedding.Client.Store.Features.Salaries.Actions.SetSearchRequest;
@@ -67,5 +68,11 @@
 
         public void SetSalarySortBy(SalarySortByOption option) =>
             _dispatcher.Dispatch(new SetSalarySortByAction(option));
+
+        /*
+         * Download Salary CSV Interactions
+         */
+        public void DownloadSalaryCsv() =>
+            _dispatcher.Dispatch(new DownloadSalaryCsvAction());
     }
 }
