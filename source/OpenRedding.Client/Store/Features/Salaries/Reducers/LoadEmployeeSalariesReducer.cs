@@ -1,7 +1,9 @@
 ﻿namespace OpenRedding.Client.Store.Features.Salaries.Reducers
 {
+    using System.Net.Sockets;
     using Fluxor;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
+    using OpenRedding.Domain.Salaries.Dtos;
 
     public static class LoadEmployeeSalariesReducer
     {
@@ -20,5 +22,27 @@
         [ReducerMethod]
         public static SalariesState ReduceLoadEmployeeSalariesFailureAction(SalariesState state, LoadEmployeeSalariesFailureAction action) =>
             new SalariesState(false, false, null, state.SalaryDetail, state.SearchRequest);
+
+        [ReducerMethod]
+        public static SalariesState ReduceLoadEmployeeSalariesOnSearchClickedAction(SalariesState state, LoadEmployeesOnSearchClickedAction action)
+        {
+            if (state.SearchRequest is null)
+            {
+                return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, new EmployeeSalarySearchRequestDto(name: action.Name, jobTitle: action.JobTitle));
+            }
+
+            var updatedSearchRequest = new EmployeeSalarySearchRequestDto(
+                name: action.Name,
+                jobTitle: action.JobTitle,
+                agency: state.SearchRequest.Agency,
+                status: state.SearchRequest.Status,
+                sortBy: state.SearchRequest.SortBy,
+                year: state.SearchRequest.Year,
+                sortField: state.SearchRequest.SortField,
+                basePayRange: state.SearchRequest.BasePayRange,
+                totalPayRange: state.SearchRequest.TotalPayRange);
+
+            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+        }
     }
 }

@@ -48,6 +48,8 @@
 
     protected override void OnInitialized()
     {
+        // await Task.Run(() => base.OnInitialized());
+
         if (!string.IsNullOrWhiteSpace(InitialValue))
         {
             validatedInput.InputValue = InitialValue;
@@ -55,6 +57,16 @@
 
         editContext = new EditContext(validatedInput);
     }
+
+    @*
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            base.Dispose(disposing);
+        }
+    }
+    *@
 
     private async Task OnInputValueChange(ChangeEventArgs e)
     {

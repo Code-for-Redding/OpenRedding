@@ -107,7 +107,12 @@
             <div class="mx-auto">
                 @if (isValidEmployeeName && isValidJobTitle && !State.Value.IsTableRefresh)
                 {
-                    <button @onclick="OnSearchClicked" class="btn btn-outline-info" type="button" data-toggle="tooltip" data-placement="bottom" title="To browse all salary data, leave all fields above blank.">Search</button>
+                    <button @onclick="(() => StateFacade.LoadEmployeesOnSearchClicked(string.IsNullOrWhiteSpace(employeeName) ? string.Empty : employeeName, string.IsNullOrWhiteSpace(jobTitle) ? string.Empty : jobTitle))" 
+                            class="btn btn-outline-info" 
+                            type="button" 
+                            data-toggle="tooltip"
+                            data-placement="bottom" 
+                            title="To browse all salary data, leave all fields above blank.">Search</button>
                 }
                 else
                 {
@@ -192,7 +197,7 @@
         sortByOption = Enum.TryParse<SalarySortByOption>(State.Value.SearchRequest.SortBy, out var sortBy) ? sortBy : sortByOption;
         sortField = Enum.TryParse<SalarySortField>(State.Value.SearchRequest.SortField, out var field) ? field : sortField;
 
-        await Task.Run(() => base.OnInitialized());
+        await base.OnInitializedAsync();
     }
 
     protected override void Dispose(bool disposing)
@@ -221,13 +226,6 @@
     private void JobTitleInputHandler(string? updatedJobtTileHandler)
     {
         jobTitle = updatedJobtTileHandler;
-    }
-
-    private void OnSearchClicked()
-    {
-        StateFacade.SetEmployeeName(string.IsNullOrWhiteSpace(employeeName) ? string.Empty : employeeName);
-        StateFacade.SetEmployeeJobTitle(string.IsNullOrWhiteSpace(jobTitle) ? string.Empty : jobTitle);
-        StateFacade.LoadEmployeesFromSearchRequest(true);
     }
 
     private EmploymentYear GetExistingEmploymentYear()

@@ -39,6 +39,9 @@
         /*
          * Search Request Interactions
          */
+        public void LoadEmployeesOnSearchClicked(string name, string jobTitle) =>
+            _dispatcher.Dispatch(new LoadEmployeesOnSearchClickedAction(name, jobTitle));
+
         public void SetCurrentSearchRequest(EmployeeSalarySearchRequestDto? searchRequest) =>
             _dispatcher.Dispatch(new SetCurrentSearchRequestAction(searchRequest));
 

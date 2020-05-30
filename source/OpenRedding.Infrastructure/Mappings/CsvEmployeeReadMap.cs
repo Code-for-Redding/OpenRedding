@@ -22,6 +22,9 @@ namespace OpenRedding.Infrastructure.Mappings
             Map(e => e.JobTitle)
                 .Name("Job Title");
 
+            Map(e => e.Benefits)
+                .Name("Benefits");
+
             Map(e => e.OtherPay)
                 .Name("Other Pay");
 

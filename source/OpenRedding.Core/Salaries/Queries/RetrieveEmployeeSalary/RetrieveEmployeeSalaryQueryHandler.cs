@@ -48,7 +48,7 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
                 };
             }
 
-            // Reference the first and last name, discarding the middle name (if populated)
+            // Grab a reference to the first and last name, discarding the middle name (if populated)
             var firstName = tokenizedName[0];
             var lastName = tokenizedName.Length > 2 ? tokenizedName[2] : tokenizedName[1];
 
@@ -58,15 +58,32 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
                     e.EmployeeName.Contains(firstName) && e.EmployeeName.Contains(lastName) && // Match on the first and last name
                     e.Year != employeeDetail.Year; // Exclude the current retrieval year in the result set
 
+            // Retrieve the related records
             var relatedRecords = await _context.Employees
                 .Where(matchingEmployeeNamePredicate)
                 .Select(e => e.ToRelatedEmployeeDetailDto(request.GatewayUrl))
                 .ToListAsync(cancellationToken);
 
+            // Compute base pay and total pay percentiles for job and agency
+            Expression<Func<Employee, bool>> matchingJobTitleForFiscalYear = e =>
+                    !string.IsNullOrWhiteSpace(e.JobTitle) &&
+                    e.JobTitle.Equals(employeeDetail.JobTitle) &&
+                    e.Year == employeeDetail.Year;
+
+            var basePayAverage = await _context.Employees
+                .Where(matchingJobTitleForFiscalYear)
+                .AverageAsync(e => e.BasePay, cancellationToken);
+
+            var totalPayAverage = await _context.Employees
+                .Where(matchingJobTitleForFiscalYear)
+                .AverageAsync(e => e.TotalPayWithBenefits, cancellationToken);
+
             return new EmployeeSalaryDetailViewModel
             {
                 Employee = employeeDetail.ToEmployeeSalaryDetailDto(request.GatewayUrl),
-                RelatedRecords = relatedRecords
+                RelatedRecords = relatedRecords,
+                OccupationalBasePayAverage = basePayAverage,
+                OccupationalTotalPayAverage = totalPayAverage
             };
         }
     }

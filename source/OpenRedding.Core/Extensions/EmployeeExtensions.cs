@@ -5,6 +5,7 @@ namespace OpenRedding.Core.Extensions
     using Domain.Salaries.Dtos;
     using Domain.Salaries.Entities;
     using OpenRedding.Domain.Common.Miscellaneous;
+    using OpenRedding.Domain.Salaries.Enums;
     using OpenRedding.Domain.Salaries.ViewModels;
     using OpenRedding.Shared;
 
@@ -25,8 +26,8 @@ namespace OpenRedding.Core.Extensions
                 employee.EmployeeId,
                 employee.EmployeeName,
                 employee.JobTitle,
-                employee.EmployeeAgency.ToString(),
-                employee.EmployeeStatus.ToString(),
+                employee.EmployeeAgency.ToFriendlyString(),
+                employee.EmployeeStatus.ToFriendlyString(),
                 employee.Year,
                 employee.BasePay,
                 employee.TotalPayWithBenefits,
@@ -120,6 +121,25 @@ namespace OpenRedding.Core.Extensions
                 employee.Year,
                 employee.EmployeeAgency,
                 employee.EmployeeStatus);
+        }
+
+        private static string ToFriendlyString(this EmployeeAgency agency)
+        {
+            return agency switch
+            {
+                EmployeeAgency.ShastaCounty => "Shasta County",
+                _ => agency.ToString()
+            };
+        }
+
+        private static string ToFriendlyString(this EmployeeStatus status)
+        {
+            return status switch
+            {
+                EmployeeStatus.FullTime => "Full-time",
+                EmployeeStatus.PartTime => "Part-time",
+                _ => status.ToString()
+            };
         }
 
         private static OpenReddingLink GetSelfLink(int id, Uri gatewayUrl)

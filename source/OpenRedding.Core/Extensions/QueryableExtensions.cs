@@ -50,12 +50,6 @@
                 queriedSalaries = queriedSalaries.Where(canFilterByEmployeeName);
             }
 
-            // Filter by agency, if available
-            if (!string.IsNullOrWhiteSpace(searchRequest.Agency) && Enum.TryParse(searchRequest.Agency, true, out EmployeeAgency employeeAgency))
-            {
-                queriedSalaries = queriedSalaries.Where(e => e.EmployeeAgency == employeeAgency);
-            }
-
             // Filter by year, if available
             if (searchRequest.Year.HasValue)
             {
@@ -79,7 +73,23 @@
             // Filter by status, if available
             if (!string.IsNullOrWhiteSpace(searchRequest.Status) && Enum.TryParse(searchRequest.Status, true, out EmployeeStatus employeeStatus))
             {
-                queriedSalaries = queriedSalaries.Where(e => e.EmployeeStatus == employeeStatus);
+                queriedSalaries = employeeStatus switch
+                {
+                    EmployeeStatus.FullTime => queriedSalaries.Where(e => e.EmployeeStatus == employeeStatus),
+                    EmployeeStatus.PartTime => queriedSalaries.Where(e => e.EmployeeStatus == employeeStatus),
+                    _ => queriedSalaries
+                };
+            }
+
+            // Filter by agency, if available
+            if (!string.IsNullOrWhiteSpace(searchRequest.Agency) && Enum.TryParse(searchRequest.Agency, true, out EmployeeAgency employeeAgency))
+            {
+                queriedSalaries = employeeAgency switch
+                {
+                    EmployeeAgency.Redding => queriedSalaries.Where(e => e.EmployeeAgency == employeeAgency),
+                    EmployeeAgency.ShastaCounty => queriedSalaries.Where(e => e.EmployeeAgency == employeeAgency),
+                    _ => queriedSalaries
+                };
             }
 
             // Filter by base pay range, if available
