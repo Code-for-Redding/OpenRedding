@@ -1,8 +1,6 @@
 namespace OpenRedding.Api.Controllers
 {
     using System;
-    using System.IO;
-    using System.Net;
     using System.Net.Http;
     using System.Net.Mime;
     using System.Threading.Tasks;
@@ -168,7 +166,7 @@ namespace OpenRedding.Api.Controllers
         [HttpPost("download")]
         public async Task<OpenReddingLink> DownloadSalaries([FromBody] EmployeeSalarySearchRequestDto? searchRequest)
         {
-            _logger.LogInformation("Download salary CSV file...");
+            _logger.LogInformation($"Download salary CSV file...");
             return await Mediator.Send(new DownloadSalariesCommand(searchRequest ?? new EmployeeSalarySearchRequestDto()));
         }
     }

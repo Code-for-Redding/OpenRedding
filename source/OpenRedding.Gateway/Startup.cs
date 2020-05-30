@@ -15,6 +15,8 @@ namespace OpenRedding.Gateway
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOcelot();
+
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -26,6 +28,7 @@ namespace OpenRedding.Gateway
             }
 
             app.UseRouting();
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseOcelot().Wait();
 
             app.UseEndpoints(endpoints =>

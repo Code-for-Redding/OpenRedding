@@ -222,6 +222,11 @@
 
     protected override async Task OnInitializedAsync()
     {
+        if (State.Value.SalaryResults is null || State.Value.SalaryResults.Count is 0)
+        {
+            StateFacade.LoadAllEmployees();
+        }
+
         await Task.Run(() => base.OnInitialized());
     }
 

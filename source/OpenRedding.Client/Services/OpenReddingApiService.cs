@@ -7,6 +7,7 @@
     using Microsoft.AspNetCore.Components;
     using Microsoft.AspNetCore.WebUtilities;
     using Microsoft.Extensions.Configuration;
+    using OpenRedding.Domain.Common.Miscellaneous;
     using OpenRedding.Domain.Common.ViewModels;
     using OpenRedding.Domain.Salaries.Dtos;
     using OpenRedding.Domain.Salaries.ViewModels;
@@ -94,9 +95,9 @@
             return await _httpClient.GetJsonAsync<EmployeeSalaryDetailViewModel>(link);
         }
 
-        public async Task DownloadSalaryReport(EmployeeSalarySearchRequestDto? searchRequest)
+        public async Task<OpenReddingLink> GetDownloadCsvLink(EmployeeSalarySearchRequestDto? searchRequest)
         {
-            await _httpClient.PostJsonAsync($"{_apiBaseUrl}/salaries/download", searchRequest ?? new EmployeeSalarySearchRequestDto());
+            return await _httpClient.PostJsonAsync<OpenReddingLink>($"{_apiBaseUrl}/salaries/download", searchRequest ?? new EmployeeSalarySearchRequestDto());
         }
     }
 }

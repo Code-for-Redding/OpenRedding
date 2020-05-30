@@ -1,4 +1,4 @@
-﻿namespace OpenRedding.Client.Store.Features.Salaries.Effects.DownloadSalaryCSv
+﻿namespace OpenRedding.Client.Store.Features.Salaries.Effects.DownloadSalaryCsv
 {
     using System;
     using System.Threading.Tasks;
@@ -14,20 +14,17 @@
         private readonly OpenReddingApiService _apiService;
         private readonly IState<SalariesState> _state;
         private readonly IJSRuntime _jsRuntime;
-        private readonly NavigationManager _navigation;
 
         public DownloadSalaryCsvEffect(
             ILogger<DownloadSalaryCsvAction> logger,
             OpenReddingApiService apiService,
             IState<SalariesState> state,
-            IJSRuntime jsRuntime,
-            NavigationManager navigation)
+            IJSRuntime jsRuntime)
         {
             _logger = logger;
             _apiService = apiService;
             _state = state;
             _jsRuntime = jsRuntime;
-            _navigation = navigation;
         }
 
         protected override async Task HandleAsync(DownloadSalaryCsvAction action, IDispatcher dispatcher)
@@ -38,13 +35,15 @@
                 await _jsRuntime.InvokeVoidAsync("interactWithModal", "#loading-modal", "show");
 
                 // Should return a FileContentResult to the browser for download
-                await _apiService.DownloadSalaryReport(_state.Value.SearchRequest);
+                var link = await _apiService.GetDownloadCsvLink(_state.Value.SearchRequest);
 
-                // Shut down the loading modal
-                await _jsRuntime.InvokeVoidAsync("interactWithModal", "#loading-modal", "hide");
+                // Issue the link in the success action for the client to follow
+                dispatcher.Dispatch(new DownloadSalaryCsvSuccessAction(link.Href!));
             }
             catch (Exception e)
             {
+                // Shut down the loading modal on error
+                await _jsRuntime.InvokeVoidAsync("interactWithModal", "#loading-modal", "hide");
                 _logger.LogError($"Could not download the CSV report, reason: {e.Message}");
                 dispatcher.Dispatch(new DownloadSalaryCsvActionFailure());
             }
