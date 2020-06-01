@@ -5,6 +5,7 @@
 @using OpenRedding.Client.Components.Dropdowns.Salaries
 @using OpenRedding.Client.Services
 @using OpenRedding.Client.Store.Features.Salaries
+@using OpenRedding.Domain.Salaries.Dtos 
 @using OpenRedding.Domain.Salaries.Enums
 
 
@@ -91,8 +92,8 @@
 
             @* Sort options *@
             <div class="row justify-content-center">
-                <SortFieldDropdown ExistingFieldSelection="sortField"
-                                   ExistingOptionSelection="sortByOption"
+                <SortFieldDropdown ExistingFieldSelection="Enum.TryParse<SalarySortField>(State.Value.SearchRequest?.SortField, out var sortField) ? sortField : SalarySortField.Default"
+                                   ExistingOptionSelection="Enum.TryParse<SalarySortByOption>(State.Value.SearchRequest?.SortBy, out var sortBy) ? sortBy : SalarySortByOption.Default"
                                    LabelCss="col-form-label" />
             </div>
         </div>
@@ -129,7 +130,7 @@
                 else
                 {
                     <span class="px-1"></span>
-                    <button class="btn btn btn-outline-success" type="button">Reset</button>
+                    <button class="btn btn btn-outline-success" type="button" @onclick="OnResetClicked">Reset</button>
                     <span class="px-1"></span>
                     <button class="btn btn btn-outline-danger" type="button" @onclick="(() => StateFacade.DownloadSalaryCsv())"  data-toggle="modal" data-target="#loading-modal">Download</button>
                 }
@@ -171,10 +172,6 @@
 
     private bool isValidJobTitle = true;
 
-    private SalarySortByOption sortByOption = SalarySortByOption.Default;
-
-    private SalarySortField sortField = SalarySortField.Default;
-
     [Parameter]
     public int ResultCount { get; set; }
 
@@ -196,11 +193,6 @@
         // Set search values from the original query
         employeeName = State.Value.SearchRequest.Name;
         jobTitle = State.Value.SearchRequest.JobTitle;
-        sortByOption = Enum.TryParse<SalarySortByOption>(State.Value.SearchRequest.SortBy, out var sortBy) ? sortBy : sortByOption;
-        sortField = Enum.TryParse<SalarySortField>(State.Value.SearchRequest.SortField, out var field) ? field : sortField;
-
-        // Notify to re-render the page with current state values
-        // await Task.Run(() => StateHasChanged());
     }
 
     protected override void Dispose(bool disposing)
@@ -260,24 +252,12 @@
         };
     }
 
-    private SalarySortField GetExistingSortField()
+    private void OnResetClicked()
     {
-        if (State.Value.SearchRequest is null || string.IsNullOrWhiteSpace(State.Value.SearchRequest.SortField))
-        {
-            return SalarySortField.Default;
-        }
+        employeeName = string.Empty;
+        jobTitle = string.Empty;
 
-        return Enum.TryParse<SalarySortField>(State.Value.SearchRequest.SortField, true, out var field) ? field : SalarySortField.Default;
-    }
-
-    private SalarySortByOption GetExistingSortByOption()
-    {
-        if (State.Value.SearchRequest is null || string.IsNullOrWhiteSpace(State.Value.SearchRequest.SortBy))
-        {
-            return SalarySortByOption.Default;
-        }
-
-        return Enum.TryParse<SalarySortByOption>(State.Value.SearchRequest.SortBy, true, out var option) ? option : SalarySortByOption.Default;
+        StateFacade.SetCurrentSearchRequest(new EmployeeSalarySearchRequestDto(), true);
     }
 
 }

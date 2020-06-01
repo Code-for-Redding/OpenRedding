@@ -4,9 +4,11 @@
 
     public class SetCurrentSearchRequestAction
     {
-        public SetCurrentSearchRequestAction(EmployeeSalarySearchRequestDto? searchRequest) =>
-            SearchRequest = searchRequest;
+        public SetCurrentSearchRequestAction(EmployeeSalarySearchRequestDto? searchRequest, bool isRefreshTable) =>
+            (SearchRequest, IsRefreshTable) = (searchRequest, isRefreshTable);
 
         public EmployeeSalarySearchRequestDto? SearchRequest { get; }
+
+        public bool IsRefreshTable { get; }
     }
 }

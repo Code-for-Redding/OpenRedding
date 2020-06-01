@@ -9,7 +9,7 @@
 <div class="d-flex flex-column">
     <label class="@LabelCss" for="year-dropdown">Fiscal Year</label>
     <select @onchange="OnYearSelected" id="year-dropdown" class="form-control">
-        <option disabled>Select an year</option>
+        <option disabled>Select a year</option>
         @foreach (var yearOption in employmentYearSelectOptions.SelectOptions)
         {
             @if (yearOption.Key == ExistingSelection)

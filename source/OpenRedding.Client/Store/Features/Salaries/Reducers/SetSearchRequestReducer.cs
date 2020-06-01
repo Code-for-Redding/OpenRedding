@@ -10,7 +10,7 @@
     {
 		[ReducerMethod]
 		public static SalariesState SetCurrentSearchRequestActionReducer(SalariesState state, SetCurrentSearchRequestAction action) =>
-			new SalariesState(state.IsLoading, state.IsTableRefresh, state.SalaryResults, state.SalaryDetail, action.SearchRequest);
+			new SalariesState(state.IsLoading, action.IsRefreshTable, state.SalaryResults, state.SalaryDetail, action.SearchRequest);
 
 		[ReducerMethod]
 		public static SalariesState SetEmployeeNameActionReducer(SalariesState state, SetEmployeeNameAction action)
