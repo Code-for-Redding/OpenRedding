@@ -31,7 +31,7 @@
             <div class="row justify-content-center">
                 @* Name *@
                 <div class="col-md-3">
-                    <ValidatedInput InitialValue="@employeeName"
+                    <ValidatedInput InputValue="@employeeName"
                                     OnValidatedInput="IsValidEmployeeNameHandler"
                                     OnValueInput="EmployeeNameInputHandler"
                                     DisplayErrorMessage="true"
@@ -42,7 +42,7 @@
 
                 @* Job title *@
                 <div class="col-md-3">
-                    <ValidatedInput InitialValue="@jobTitle"
+                    <ValidatedInput InputValue="@jobTitle"
                                     OnValidatedInput="IsValidEmployeeNameHandler"
                                     OnValueInput="JobTitleInputHandler"
                                     DisplayErrorMessage="true"
@@ -116,7 +116,7 @@
                 }
                 else
                 {
-                    <button disabled class="btn btn-outline-info" type="button" data-toggle="tooltip" data-placement="bottom" title="Please enter valid values in the fields above before attempting to search.">Search</button>
+                    <button disabled class="btn btn-outline-info cursor-not-allowed" type="button" data-toggle="tooltip" data-placement="bottom" title="Please enter valid values in the fields above before attempting to search.">Search</button>
                 }
 
                 @if (State.Value.IsTableRefresh)
@@ -186,6 +186,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+
         if (State.Value.SearchRequest is null)
         {
             return;
@@ -197,7 +199,8 @@
         sortByOption = Enum.TryParse<SalarySortByOption>(State.Value.SearchRequest.SortBy, out var sortBy) ? sortBy : sortByOption;
         sortField = Enum.TryParse<SalarySortField>(State.Value.SearchRequest.SortField, out var field) ? field : sortField;
 
-        await base.OnInitializedAsync();
+        // Notify to re-render the page with current state values
+        // await Task.Run(() => StateHasChanged());
     }
 
     protected override void Dispose(bool disposing)

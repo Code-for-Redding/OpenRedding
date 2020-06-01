@@ -1,29 +1,23 @@
-﻿@using OpenRedding.Client.Validation.Models
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-<EditForm EditContext="@editContext">
-    <DataAnnotationsValidator />
+@using System.Text.RegularExpressions
 
-    <div class="d-flex flex-column">
-        <label class="@LabelCss" for="@InputId">@FieldLabel</label>
-        <InputText 
-            class="@inputCss" 
-            id="@InputId" 
-            @oninput="OnInputValueChange"
-            @bind-Value="validatedInput.InputValue" />
-        @if (DisplayErrorMessage)
-        {
-            <ValidationMessage For="@(() => validatedInput.InputValue)"/>
-        }
-    </div>
-</EditForm>
+<div class="d-flex flex-column">
+    <label class="@LabelCss" for="@InputId">@FieldLabel</label>
+    <input class="@inputCss" id="@InputId" @oninput="OnInputValueChange" @bind-value="InputValue" />
+    @if (DisplayErrorMessage && !isValid)
+    {
+        <span style="font-size: 11px;" class="text-danger mt-1">Please enter a valid alphabetical value</span>
+    }
+</div>
 
 @code {
 
-    private string inputCss => editContext!.Validate() || string.IsNullOrWhiteSpace(validatedInput.InputValue) ? "form-control" : "form-control is-invalid";
+    private Regex alphaOnlyWithSpaceAndApostrophePatter = new Regex("^[a-zA-Z \\-']*$");
 
-    private AlphabeticalTextInput validatedInput = new AlphabeticalTextInput();
+    private string inputCss = "form-control";
 
-    private EditContext? editContext;
+    private bool isValid = true;
 
     [Parameter]
     public string? InputId { get; set; }
@@ -44,21 +38,18 @@
     public bool DisplayErrorMessage { get; set; }
 
     [Parameter]
-    public string? InitialValue { get; set; }
+    public string? InputValue { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        // await Task.Run(() => base.OnInitialized());
-
-        if (!string.IsNullOrWhiteSpace(InitialValue))
+        if (!string.IsNullOrWhiteSpace(InputValue))
         {
-            validatedInput.InputValue = InitialValue;
+            ValidateInput(InputValue);
         }
 
-        editContext = new EditContext(validatedInput);
+        await base.OnInitializedAsync();
     }
 
-    @*
     protected override void Dispose(bool disposing)
     {
         if (disposing)
@@ -66,20 +57,32 @@
             base.Dispose(disposing);
         }
     }
-    *@
 
     private async Task OnInputValueChange(ChangeEventArgs e)
     {
         // Grab a reference to the current input value and update the validated input
         var inputValue = e.Value.ToString();
-        validatedInput.InputValue = inputValue;
 
         // Reference the current validation state, excluding empty strings
-        var isValid = editContext!.Validate() || string.IsNullOrWhiteSpace(validatedInput.InputValue);
+        ValidateInput(inputValue);
 
         // Broadcase values to parent
         await OnValidatedInput.InvokeAsync(isValid);
-        await OnValueInput.InvokeAsync(validatedInput.InputValue);
+        await OnValueInput.InvokeAsync(inputValue);
+    }
+
+    private void ValidateInput(string value)
+    {
+        if (alphaOnlyWithSpaceAndApostrophePatter.IsMatch(value))
+        {
+            inputCss = "form-control";
+            isValid = true;
+        }
+        else
+        {
+            inputCss = "form-control is-invalid";
+            isValid = false;
+        }
     }
 
 }

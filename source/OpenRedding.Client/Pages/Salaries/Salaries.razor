@@ -222,12 +222,12 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+
         if (State.Value.SalaryResults is null || State.Value.SalaryResults.Count is 0)
         {
             StateFacade.LoadAllEmployees();
         }
-
-        await Task.Run(() => base.OnInitialized());
     }
 
     protected override void Dispose(bool disposing)
@@ -238,11 +238,12 @@
         }
     }
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             isLoading = false;
+            await Task.Run(() => StateHasChanged());
         }
     }
 

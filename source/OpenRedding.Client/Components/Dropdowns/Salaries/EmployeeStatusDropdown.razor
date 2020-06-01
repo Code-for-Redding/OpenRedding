@@ -39,7 +39,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Task.Run(() => base.OnInitialized());
+        await base.OnInitializedAsync();
 
         employeeStatusSelectOptions
             .AddOption(EmployeeStatus.AllStatuses, "All Statuses")

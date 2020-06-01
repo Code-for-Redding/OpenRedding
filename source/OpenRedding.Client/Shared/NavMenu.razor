@@ -55,7 +55,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Task.Run(() => base.OnInitialized());
+        await base.OnInitializedAsync();
     }
 
     protected override void Dispose(bool disposing)

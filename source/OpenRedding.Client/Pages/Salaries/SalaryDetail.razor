@@ -99,7 +99,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Task.Run(() => base.OnInitialized());
+        await base.OnInitializedAsync();
 
         State.StateChanged += BootstrapDoughnutChart;
     }

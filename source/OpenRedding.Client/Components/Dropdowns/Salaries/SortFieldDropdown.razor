@@ -85,7 +85,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await Task.Run(() => base.OnInitialized());
+        await base.OnInitializedAsync();
 
         fieldSelectOptions
             .AddOption(SalarySortField.Default, "Default")

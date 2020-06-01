@@ -89,7 +89,7 @@
         employeeName = State.Value.SearchRequest.Name;
         jobTitle = State.Value.SearchRequest.JobTitle;
 
-        await Task.Run(() => base.OnInitialized());
+        await base.OnInitializedAsync();
     }
 
     protected override void Dispose(bool disposing)
