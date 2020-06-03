@@ -7,6 +7,7 @@
 @using OpenRedding.Client.Services
 @using OpenRedding.Client.Store.Features.Salaries
 @using OpenRedding.Domain.Salaries.Dtos
+@using OpenRedding.Domain.Salaries.ViewModels
 
 @inject NavigationManager Navigation
 @inject SalariesStateFacade StateFacade
@@ -65,9 +66,9 @@
                                   PayAmount="@State.Value.SalaryDetail.Employee.TotalPayWithBenefits" />
             </div>
 
-            @if (State.Value.SalaryDetail.OccupationalBasePayAverage.HasValue && State.Value.SalaryDetail.OccupationalTotalPayAverage.HasValue)
+            @if (HasOccupationalPayAverages(State.Value.SalaryDetail))
             {
-                <h6 class="text-center mt-2">Occupational Pay Averages for <strong>@State.Value.SalaryDetail.Employee.JobTitle</strong> during <strong>@State.Value.SalaryDetail.Employee.Year</strong></h6>
+                <h6 class="text-center mt-4">Occupational Pay Averages for <strong>@State.Value.SalaryDetail.Employee.JobTitle</strong> during <strong>@State.Value.SalaryDetail.Employee.Year</strong></h6>
                 <hr />
 
                 <div class="row justify-content-around py-2">
@@ -87,11 +88,14 @@
 
             @if (!(State.Value.SalaryDetail.RelatedRecords is null))
             {
-                <h6 class="text-center mt-2">Related records <strong>@State.Value.SalaryDetail.Employee.JobTitle</strong> during <strong>@State.Value.SalaryDetail.Employee.Year</strong></h6>
+                <div class="d-flex flex-column align-items-center justify-content-center mt-2">
+                    <h6 class="text-center mt-4">Related employee records for <strong>@State.Value.SalaryDetail.Employee.Name</strong></h6>
+                    <p>Click on a table row below to view the salary detail breakdown for that employee's employment year.</p>
+                </div> 
                 <hr />
 
                 @* Salary table data *@
-                <table class="table table-hover mt-2">
+                <table class="table table-hover">
                     <thead>
                         <tr class="text-center">
                             <th scope="col">Name</th>
@@ -153,6 +157,18 @@
         }
 
         StateFacade.LoadEmployeeDetailFromLink(employeeRecord.Self.Href);
+    }
+
+    private bool HasOccupationalPayAverages(EmployeeSalaryDetailViewModel? employeeDetail)
+    {
+        if (employeeDetail is null)
+        {
+            return false;
+        }
+
+        return employeeDetail.OccupationalBasePayAverage.HasValue &&
+            employeeDetail.OccupationalBenefitsAverage.HasValue &&
+            employeeDetail.OccupationalTotalPayAverage.HasValue;
     }
 
 }
