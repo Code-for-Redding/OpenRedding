@@ -5,9 +5,9 @@
     using OpenRedding.Domain.Salaries.Dtos;
     using OpenRedding.Domain.Salaries.ViewModels;
 
-    public class SalariesState
+    public class OpenReddingAppState
     {
-        public SalariesState(
+        public OpenReddingAppState(
             bool isLoading,
             bool isTableRefresh,
             OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>? salaryResults,

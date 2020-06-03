@@ -6,11 +6,11 @@
     public static class DownloadEmployeeCsvReducer
     {
 		[ReducerMethod]
-		public static SalariesState ReduceDownloadSalaryCsvAction(SalariesState state, DownloadSalaryCsvAction action) =>
-			new SalariesState(state.IsLoading, state.IsTableRefresh, state.SalaryResults, state.SalaryDetail, state.SearchRequest);
+		public static OpenReddingAppState ReduceDownloadSalaryCsvAction(OpenReddingAppState state, DownloadSalaryCsvAction action) =>
+			new OpenReddingAppState(state.IsLoading, state.IsTableRefresh, state.SalaryResults, state.SalaryDetail, state.SearchRequest);
 
 		[ReducerMethod]
-		public static SalariesState ReduceDownloadSalaryCsvSuccessAction(SalariesState state, DownloadSalaryCsvSuccessAction action) =>
-			new SalariesState(state.IsLoading, state.IsTableRefresh, state.SalaryResults, state.SalaryDetail, state.SearchRequest);
+		public static OpenReddingAppState ReduceDownloadSalaryCsvSuccessAction(OpenReddingAppState state, DownloadSalaryCsvSuccessAction action) =>
+			new OpenReddingAppState(state.IsLoading, state.IsTableRefresh, state.SalaryResults, state.SalaryDetail, state.SearchRequest);
     }
 }

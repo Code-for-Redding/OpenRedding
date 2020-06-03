@@ -11,9 +11,9 @@
     {
 		private readonly OpenReddingApiService _apiService;
 		private readonly ILogger<SetSalarySearchTotalPayRangeEffect> _logger;
-		private readonly IState<SalariesState> _state;
+		private readonly IState<OpenReddingAppState> _state;
 
-		public SetSalarySearchTotalPayRangeEffect(OpenReddingApiService apiService, ILogger<SetSalarySearchTotalPayRangeEffect> logger, IState<SalariesState> state) =>
+		public SetSalarySearchTotalPayRangeEffect(OpenReddingApiService apiService, ILogger<SetSalarySearchTotalPayRangeEffect> logger, IState<OpenReddingAppState> state) =>
 			(_apiService, _logger, _state) = (apiService, logger, state);
 
 		protected override async Task HandleAsync(SetSalarySearchTotalRangeAction action, IDispatcher dispatcher)

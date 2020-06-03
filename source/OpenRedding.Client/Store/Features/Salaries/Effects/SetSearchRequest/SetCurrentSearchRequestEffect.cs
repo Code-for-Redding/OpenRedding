@@ -11,9 +11,9 @@
     {
 		private readonly OpenReddingApiService _apiService;
 		private readonly ILogger<SetCurrentSearchRequestEffect> _logger;
-		private readonly IState<SalariesState> _state;
+		private readonly IState<OpenReddingAppState> _state;
 
-		public SetCurrentSearchRequestEffect(OpenReddingApiService apiService, ILogger<SetCurrentSearchRequestEffect> logger, IState<SalariesState> state) =>
+		public SetCurrentSearchRequestEffect(OpenReddingApiService apiService, ILogger<SetCurrentSearchRequestEffect> logger, IState<OpenReddingAppState> state) =>
 			(_apiService, _logger, _state) = (apiService, logger, state);
 
 		protected override async Task HandleAsync(SetCurrentSearchRequestAction action, IDispatcher dispatcher)

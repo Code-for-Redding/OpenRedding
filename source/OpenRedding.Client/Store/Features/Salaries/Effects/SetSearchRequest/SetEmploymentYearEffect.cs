@@ -11,9 +11,9 @@
     {
 		private readonly OpenReddingApiService _apiService;
 		private readonly ILogger<SetEmploymentYearEffect> _logger;
-		private readonly IState<SalariesState> _state;
+		private readonly IState<OpenReddingAppState> _state;
 
-		public SetEmploymentYearEffect(OpenReddingApiService apiService, ILogger<SetEmploymentYearEffect> logger, IState<SalariesState> state) =>
+		public SetEmploymentYearEffect(OpenReddingApiService apiService, ILogger<SetEmploymentYearEffect> logger, IState<OpenReddingAppState> state) =>
 			(_apiService, _logger, _state) = (apiService, logger, state);
 
 		protected override async Task HandleAsync(SetEmploymentYearAction action, IDispatcher dispatcher)

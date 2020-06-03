@@ -11,9 +11,9 @@
     {
 		private readonly OpenReddingApiService _apiService;
 		private readonly ILogger<SetSalarySortFieldEffect> _logger;
-		private readonly IState<SalariesState> _state;
+		private readonly IState<OpenReddingAppState> _state;
 
-		public SetSalarySortFieldEffect(OpenReddingApiService apiService, ILogger<SetSalarySortFieldEffect> logger, IState<SalariesState> state) =>
+		public SetSalarySortFieldEffect(OpenReddingApiService apiService, ILogger<SetSalarySortFieldEffect> logger, IState<OpenReddingAppState> state) =>
 			(_apiService, _logger, _state) = (apiService, logger, state);
 
 		protected override async Task HandleAsync(SetSalarySortFieldAction action, IDispatcher dispatcher)

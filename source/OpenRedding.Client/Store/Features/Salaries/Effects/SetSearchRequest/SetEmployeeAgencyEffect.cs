@@ -11,9 +11,9 @@
 	{
 		private readonly OpenReddingApiService _apiService;
 		private readonly ILogger<SetEmployeeAgencyEffect> _logger;
-		private readonly IState<SalariesState> _state;
+		private readonly IState<OpenReddingAppState> _state;
 
-		public SetEmployeeAgencyEffect(OpenReddingApiService apiService, ILogger<SetEmployeeAgencyEffect> logger, IState<SalariesState> state) =>
+		public SetEmployeeAgencyEffect(OpenReddingApiService apiService, ILogger<SetEmployeeAgencyEffect> logger, IState<OpenReddingAppState> state) =>
 			(_apiService, _logger, _state) = (apiService, logger, state);
 
 		protected override async Task HandleAsync(SetEmployeeAgencyAction action, IDispatcher dispatcher)

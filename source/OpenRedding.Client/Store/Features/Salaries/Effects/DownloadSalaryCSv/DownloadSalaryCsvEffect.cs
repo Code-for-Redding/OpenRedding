@@ -12,13 +12,13 @@
     {
         private readonly ILogger<DownloadSalaryCsvAction> _logger;
         private readonly OpenReddingApiService _apiService;
-        private readonly IState<SalariesState> _state;
+        private readonly IState<OpenReddingAppState> _state;
         private readonly IJSRuntime _jsRuntime;
 
         public DownloadSalaryCsvEffect(
             ILogger<DownloadSalaryCsvAction> logger,
             OpenReddingApiService apiService,
-            IState<SalariesState> state,
+            IState<OpenReddingAppState> state,
             IJSRuntime jsRuntime)
         {
             _logger = logger;

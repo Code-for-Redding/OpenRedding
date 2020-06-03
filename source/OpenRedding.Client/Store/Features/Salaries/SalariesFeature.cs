@@ -2,10 +2,10 @@
 {
     using Fluxor;
 
-    public class SalariesFeature : Feature<SalariesState>
+    public class SalariesFeature : Feature<OpenReddingAppState>
     {
         public override string GetName() => "Salaries";
 
-        protected override SalariesState GetInitialState() => new SalariesState(false, false, null, null, null);
+        protected override OpenReddingAppState GetInitialState() => new OpenReddingAppState(false, false, null, null, null);
     }
 }

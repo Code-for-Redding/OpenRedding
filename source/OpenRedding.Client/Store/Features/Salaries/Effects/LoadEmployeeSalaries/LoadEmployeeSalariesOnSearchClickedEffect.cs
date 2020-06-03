@@ -10,9 +10,9 @@
     {
 		private readonly OpenReddingApiService _apiService;
 		private readonly ILogger<LoadEmployeeSalariesOnSearchClickedEffect> _logger;
-		private readonly IState<SalariesState> _state;
+		private readonly IState<OpenReddingAppState> _state;
 
-		public LoadEmployeeSalariesOnSearchClickedEffect(OpenReddingApiService apiService, ILogger<LoadEmployeeSalariesOnSearchClickedEffect> logger, IState<SalariesState> state) =>
+		public LoadEmployeeSalariesOnSearchClickedEffect(OpenReddingApiService apiService, ILogger<LoadEmployeeSalariesOnSearchClickedEffect> logger, IState<OpenReddingAppState> state) =>
 			(_apiService, _state, _logger) = (apiService, state, logger);
 
 		protected override async Task HandleAsync(LoadEmployeesOnSearchClickedAction action, IDispatcher dispatcher)

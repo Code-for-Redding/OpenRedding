@@ -16,9 +16,9 @@
     public class SalariesStateFacade
     {
         private readonly IDispatcher _dispatcher;
-        private readonly IState<SalariesState> _state;
+        private readonly IState<OpenReddingAppState> _state;
 
-        public SalariesStateFacade(IDispatcher dispatcher, IState<SalariesState> state) =>
+        public SalariesStateFacade(IDispatcher dispatcher, IState<OpenReddingAppState> state) =>
             (_dispatcher, _state) = (dispatcher, state);
 
         /*
