@@ -12,5 +12,7 @@ namespace OpenRedding.Domain.Salaries.ViewModels
         public decimal? OccupationalBasePayAverage { get; set; }
 
         public decimal? OccupationalTotalPayAverage { get; set; }
+
+        public decimal? OccupationalBenefitsAverage { get; set; }
     }
 }

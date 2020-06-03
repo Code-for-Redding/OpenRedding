@@ -2,11 +2,8 @@
 
 @page "/salaries/detail"
 
-@using ChartJs.Blazor.Charts
-@using ChartJs.Blazor.ChartJS.PieChart
-@using ChartJs.Blazor.ChartJS.Common.Properties
-@using ChartJs.Blazor.Util
 @using Fluxor
+@using OpenRedding.Client.Components.Salaries 
 @using OpenRedding.Client.Services
 @using OpenRedding.Client.Store.Features.Salaries
 @using OpenRedding.Domain.Salaries.Dtos
@@ -15,93 +12,124 @@
 @inject SalariesStateFacade StateFacade
 @inject IState<SalariesState> State
 
-<section id="open-redding-salary-detail" class="container mt-4">
-    <h2 class="text-center font-weight-bolder mb-3">Salary Detail</h2>
+    <section id="open-redding-salary-detail" class="container mt-4">
+        <h2 class="text-center font-weight-bolder mb-3">Salary Detail</h2>
 
-    @if (State.Value.IsLoading)
-    {
-        <div class="d-flex flex-row justify-content-center mt-5">
-            <div class="spinner-border text-info" role="status">
-                <span class="sr-only">Loading salary detail...</span>
-            </div>
-        </div>
-    }
-    else if (State.Value.SalaryDetail is null || State.Value.SalaryDetail.Employee is null)
-    {
-        <div class="d-flex flex-column justify-content-center">
-            <div class="alert alert-light text-center">
-                <h4 class="alert-heading">Uh oh...</h4>
-                <p class="mb-0">Looks like there was an issue retrieving the data, click the button below to go back to the previous search table.</p>
-                <button @onclick="OnNavigateToSalaries" class="mt-3 btn btn-outline-info">Return to Search</button>
-            </div>
-        </div>
-    }
-    else
-    {
-        <h5 class="text-center font-weight-bolder mb-1">Pay breakdown for: @State.Value.SalaryDetail.Employee.Name</h5>
-
-        if (!(chartConfig is null))
+        @if (State.Value.IsLoading)
         {
-            <ChartJsPieChart @ref="doughnutChartJs" Config="@chartConfig" Width="600" Height="300" />
-        }
-
-        @* Salary table data *@
-        <table class="table table-bordered py-2 mt-4">
-            <thead>
-                <tr class="text-center">
-                    <th scope="col">Base Pay</th>
-                    <th scope="col">Overtime Pay</th>
-                    <th scope="col">Benefits</th>
-                    <th scope="col">Other Pay</th>
-                    <th scope="col">Total Pay</th>
-                    <th scope="col">Total Pay with Benefits</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="text-center">
-                    <td>@State.Value.SalaryDetail.Employee.BasePay.ToString("C")</td>
-                    <td>@State.Value.SalaryDetail.Employee.OvertimePay.ToString("C")</td>
-                    <td>@State.Value.SalaryDetail.Employee.Benefits.ToString("C")</td>
-                    <td>@State.Value.SalaryDetail.Employee.OtherPay.ToString("C")</td>
-                    <td>@State.Value.SalaryDetail.Employee.TotalPay.ToString("C")</td>
-                    <td>@State.Value.SalaryDetail.Employee.TotalPayWithBenefits.ToString("C")</td>
-                </tr>
-            </tbody>
-        </table>
-
-        if (State.Value.SalaryDetail.OccupationalBasePayAverage.HasValue && State.Value.SalaryDetail.OccupationalTotalPayAverage.HasValue)
-        {
-            <h5 class="text-center">Occupational Pay Average for: @State.Value.SalaryDetail.Employee.JobTitle</h5>
-            <hr/>
-            <div class="row justify-content-center py-2">
-                <div class="col-md-2 text-center">
-                    <h5>Base pay</h5>
-                    @State.Value.SalaryDetail.OccupationalBasePayAverage!.Value.ToString("C")
-                </div>
-                <div class="col-md-2 text-center">
-                    <h5>Total pay</h5>
-                    @State.Value.SalaryDetail.OccupationalTotalPayAverage!.Value.ToString("C")
+            <div class="d-flex flex-row justify-content-center mt-5">
+                <div class="spinner-border text-info" role="status">
+                    <span class="sr-only">Loading salary detail...</span>
                 </div>
             </div>
         }
+        else if (State.Value.SalaryDetail is null || State.Value.SalaryDetail.Employee is null)
+        {
+            <div class="d-flex flex-column justify-content-center">
+                <div class="alert alert-light text-center">
+                    <h4 class="alert-heading">Uh oh...</h4>
+                    <p class="mb-0">Looks like there was an issue retrieving the data, click the button below to go back to the previous search table.</p>
+                    <button @onclick="OnNavigateToSalaries" class="mt-3 btn btn-outline-info">Return to Search</button>
+                </div>
+            </div>
+        }
+        else
+        {
+            <h5 class="text-center font-weight-bolder mb-3">Pay breakdown for: @State.Value.SalaryDetail.Employee.Name</h5>
 
-        <div class="pt-2 row justify-content-center">
-            <button @onclick="OnNavigateToSalaries" class="btn btn-outline-info">Return to Search</button>
-        </div>
-    }
+            <div class="row justify-content-around">
+                <SalaryDetailCard Title="Base Pay"
+                                  GridSpacing="col-md-4"
+                                  PayAmount="@State.Value.SalaryDetail.Employee.BasePay" />
 
-</section>
+                <SalaryDetailCard Title="Overtime Pay"
+                                  GridSpacing="col-md-4"
+                                  PayAmount="@State.Value.SalaryDetail.Employee.OvertimePay" />
+
+                <SalaryDetailCard Title="Benefits"
+                                  GridSpacing="col-md-4"
+                                  PayAmount="@State.Value.SalaryDetail.Employee.Benefits" />
+            </div>
+
+            <div class="row justify-content-around py-3">
+                <SalaryDetailCard Title="Other Pay"
+                                  GridSpacing="col-md-4"
+                                  PayAmount="@State.Value.SalaryDetail.Employee.OtherPay" />
+
+                <SalaryDetailCard Title="Total Pay"
+                                  GridSpacing="col-md-4"
+                                  PayAmount="@State.Value.SalaryDetail.Employee.TotalPay" />
+
+                <SalaryDetailCard Title="Total Pay & Benefits"
+                                  GridSpacing="col-md-4"
+                                  PayAmount="@State.Value.SalaryDetail.Employee.TotalPayWithBenefits" />
+            </div>
+
+            @if (State.Value.SalaryDetail.OccupationalBasePayAverage.HasValue && State.Value.SalaryDetail.OccupationalTotalPayAverage.HasValue)
+            {
+                <h6 class="text-center mt-2">Occupational Pay Averages for <strong>@State.Value.SalaryDetail.Employee.JobTitle</strong> during <strong>@State.Value.SalaryDetail.Employee.Year</strong></h6>
+                <hr />
+
+                <div class="row justify-content-around py-2">
+                    <SalaryDetailCard Title="Base Pay"
+                                      GridSpacing="col-md-4"
+                                      PayAmount="@State.Value.SalaryDetail.OccupationalBasePayAverage" />
+
+                    <SalaryDetailCard Title="Benefits"
+                                      GridSpacing="col-md-4"
+                                      PayAmount="@State.Value.SalaryDetail.OccupationalBenefitsAverage" />
+
+                    <SalaryDetailCard Title="Total Pay & Benefits"
+                                      GridSpacing="col-md-4"
+                                      PayAmount="@State.Value.SalaryDetail.OccupationalTotalPayAverage" />
+                </div>
+            }
+
+            @if (!(State.Value.SalaryDetail.RelatedRecords is null))
+            {
+                <h6 class="text-center mt-2">Related records <strong>@State.Value.SalaryDetail.Employee.JobTitle</strong> during <strong>@State.Value.SalaryDetail.Employee.Year</strong></h6>
+                <hr />
+
+                @* Salary table data *@
+                <table class="table table-hover mt-2">
+                    <thead>
+                        <tr class="text-center">
+                            <th scope="col">Name</th>
+                            <th scope="col">Job Title</th>
+                            <th scope="col">Agency</th>
+                            <th scope="col">Year</th>
+                            <th scope="col">Base Pay</th>
+                            <th scope="col">Total Pay &Aacute; Benefits</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var relatedRecord in State.Value.SalaryDetail.RelatedRecords)
+                        {
+                            <tr class="text-center cursor-pointer" @onclick="(() => OnRowClicked(relatedRecord))">
+                                <td>@relatedRecord.Name</td>
+                                <td>@relatedRecord.JobTitle</td>
+                                <td>@relatedRecord.Agency</td>
+                                <td>@relatedRecord.Year</td>
+                                <td>@relatedRecord.BasePay.ToString("C")</td>
+                                <td>@relatedRecord.TotalPayWithBenefits.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+
+            <div class="pt-2 row justify-content-center">
+                <button @onclick="OnNavigateToSalaries" class="btn btn-outline-info">Return to Search</button>
+            </div>
+        }
+
+    </section>
 
 @code {
-
-    private PieConfig? chartConfig;
-    private ChartJsPieChart? doughnutChartJs;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-
-        State.StateChanged += BootstrapDoughnutChart;
     }
 
     protected override void Dispose(bool disposing)
@@ -112,73 +140,19 @@
         }
     }
 
-    private void BootstrapDoughnutChart(object sender, SalariesState state)
+    private void OnNavigateToSalaries()
     {
-        if (state.SalaryDetail is null || state.SalaryDetail.Employee is null)
+        Navigation.NavigateTo("salaries");
+    }
+
+    private void OnRowClicked(RelatedEmployeeDetailDto employeeRecord)
+    {
+        if (employeeRecord.Self is null || string.IsNullOrWhiteSpace(employeeRecord.Self.Href))
         {
             return;
         }
 
-        var employeeDetail = state.SalaryDetail.Employee;
-
-        chartConfig = new PieConfig
-        {
-            Options = new PieOptions()
-            {
-                Title = new OptionsTitle
-                {
-                    Display = true,
-                },
-                Responsive = true,
-                Animation = new ArcAnimation
-                {
-                    AnimateRotate = true,
-                    AnimateScale = true
-                }
-            }
-        };
-
-        var payTitle = new[]
-        {
-            "Base Pay",
-            "Overtime Pay",
-            "Benefits",
-            "Other Pay",
-            "Total Pay",
-            "Total Pay & Benefits"
-        };
-
-        var payData = new double[]
-        {
-            decimal.ToDouble(employeeDetail!.BasePay),
-            decimal.ToDouble(employeeDetail!.OvertimePay),
-            decimal.ToDouble(employeeDetail!.Benefits),
-            decimal.ToDouble(employeeDetail!.OtherPay),
-            decimal.ToDouble(employeeDetail!.TotalPay),
-            decimal.ToDouble(employeeDetail!.TotalPayWithBenefits),
-
-        };
-
-        var doughnutSet = new PieDataset
-        {
-            BackgroundColor = new[] { ColorUtil.RandomColorString(), ColorUtil.RandomColorString(), ColorUtil.RandomColorString(), ColorUtil.RandomColorString(), ColorUtil.RandomColorString(), ColorUtil.RandomColorString() },
-            BorderWidth = 0,
-            HoverBackgroundColor = ColorUtil.RandomColorString(),
-            HoverBorderColor = ColorUtil.RandomColorString(),
-            HoverBorderWidth = 1,
-            BorderColor = "#ffffff",
-        };
-
-        chartConfig.Data.Labels.AddRange(payTitle);
-        doughnutSet.Data.AddRange(payData);
-        chartConfig.Data.Datasets.Add(doughnutSet);
-
-        StateHasChanged();
-    }
-
-    private void OnNavigateToSalaries()
-    {
-        Navigation.NavigateTo("salaries");
+        StateFacade.LoadEmployeeDetailFromLink(employeeRecord.Self.Href);
     }
 
 }

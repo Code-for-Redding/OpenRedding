@@ -1,0 +1,33 @@
+﻿<div class="@GridSpacing">
+    <div class="card" style="width: 18rem;">
+        <div class="card-body text-center">
+            <h4 class="card-title">@Title</h4>
+            <h3 class="card-text font-weight-bolder">@scrubbedPayAmount.ToString("C")</h3>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private decimal scrubbedPayAmount = 0m;
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public decimal? PayAmount { get; set; }
+
+    [Parameter]
+    public string? GridSpacing { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (!string.IsNullOrWhiteSpace(GridSpacing))
+        {
+            GridSpacing = $"{GridSpacing} salary-card";
+        }
+
+        scrubbedPayAmount = PayAmount.HasValue ? PayAmount.Value : scrubbedPayAmount;
+    }
+
+}

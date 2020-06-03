@@ -10,6 +10,12 @@
 
         public int Year { get; set; }
 
+        public string? Agency { get; set; }
+
+        public decimal BasePay { get; set; }
+
+        public decimal TotalPayWithBenefits { get; set; }
+
         public OpenReddingLink? Self { get; set; }
     }
 }

@@ -99,6 +99,9 @@ namespace OpenRedding.Core.Extensions
             {
                 Name = string.IsNullOrWhiteSpace(employee.EmployeeName) ? string.Empty : employee.EmployeeName,
                 JobTitle = string.IsNullOrWhiteSpace(employee.JobTitle) ? string.Empty : employee.JobTitle,
+                Agency = employee.EmployeeAgency.ToFriendlyString(),
+                BasePay = employee.BasePay,
+                TotalPayWithBenefits = employee.TotalPayWithBenefits,
                 Year = employee.Year,
                 Self = GetSelfLink(employee.EmployeeId, gatewayUrl)
             };

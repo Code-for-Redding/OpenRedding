@@ -4,6 +4,7 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
     using System.Linq;
     using System.Linq.Expressions;
     using System.Net;
+    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
     using Data;
@@ -52,11 +53,25 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
             var firstName = tokenizedName[0];
             var lastName = tokenizedName.Length > 2 ? tokenizedName[2] : tokenizedName[1];
 
-            // NOTE: As of EF Core 3.0, StringComparison no longer works due to server-side evaluation of queries
-            Expression<Func<Employee, bool>> matchingEmployeeNamePredicate = e =>
+            // Search on names that contain both the first and last, as well as all three parts
+            var searchName = $"{firstName} {lastName}";
+            Expression<Func<Employee, bool>> matchingEmployeeNamePredicate;
+
+            if (tokenizedName.Length > 2)
+            {
+                matchingEmployeeNamePredicate = e =>
                     !string.IsNullOrWhiteSpace(e.EmployeeName) && // Ensure the employee name is populated
-                    e.EmployeeName.Contains(firstName) && e.EmployeeName.Contains(lastName) && // Match on the first and last name
+                    (e.EmployeeName.Equals(employeeDetail.EmployeeName) || e.EmployeeName.Equals(searchName)) && // Match on the first and last name, or first/last/middle name
                     e.Year != employeeDetail.Year; // Exclude the current retrieval year in the result set
+            }
+            else
+            {
+                // Use the original employee name if no middle name is provided
+                matchingEmployeeNamePredicate = e =>
+                    !string.IsNullOrWhiteSpace(e.EmployeeName) && // Ensure the employee name is populated
+                    e.EmployeeName.Equals(employeeDetail.EmployeeName) && // Match on the first and last name
+                    e.Year != employeeDetail.Year; // Exclude the current retrieval year in the result set
+            }
 
             // Retrieve the related records
             var relatedRecords = await _context.Employees
@@ -74,6 +89,10 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
                 .Where(matchingJobTitleForFiscalYear)
                 .AverageAsync(e => e.BasePay, cancellationToken);
 
+            var benefitsAverage = await _context.Employees
+                .Where(matchingJobTitleForFiscalYear)
+                .AverageAsync(e => e.Benefits, cancellationToken);
+
             var totalPayAverage = await _context.Employees
                 .Where(matchingJobTitleForFiscalYear)
                 .AverageAsync(e => e.TotalPayWithBenefits, cancellationToken);
@@ -83,7 +102,8 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
                 Employee = employeeDetail.ToEmployeeSalaryDetailDto(request.GatewayUrl),
                 RelatedRecords = relatedRecords,
                 OccupationalBasePayAverage = basePayAverage,
-                OccupationalTotalPayAverage = totalPayAverage
+                OccupationalTotalPayAverage = totalPayAverage,
+                OccupationalBenefitsAverage = benefitsAverage
             };
         }
     }
