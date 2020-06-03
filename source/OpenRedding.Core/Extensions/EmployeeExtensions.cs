@@ -24,7 +24,7 @@ namespace OpenRedding.Core.Extensions
 
             return new EmployeeSalarySearchResultDto(
                 employee.EmployeeId,
-                employee.EmployeeName,
+                GetEmployeeName(employee),
                 employee.JobTitle,
                 employee.EmployeeAgency.ToFriendlyString(),
                 employee.EmployeeStatus.ToFriendlyString(),
@@ -48,7 +48,7 @@ namespace OpenRedding.Core.Extensions
             return new EmployeeSalaryDetailDto
             {
                 Id = employee.EmployeeId,
-                Name = string.IsNullOrWhiteSpace(employee.EmployeeName) ? string.Empty : employee.EmployeeName,
+                Name = GetEmployeeName(employee),
                 JobTitle = string.IsNullOrWhiteSpace(employee.JobTitle) ? string.Empty : employee.JobTitle,
                 BasePay = employee.BasePay,
                 Benefits = employee.Benefits,
@@ -73,9 +73,37 @@ namespace OpenRedding.Core.Extensions
         {
             ArgumentValidation.CheckNotNull(employeeDto, nameof(employeeDto));
 
+            string firstName = string.Empty;
+            string middleName = string.Empty;
+            string lastName = string.Empty;
+
+            // Parse the employee name to persist
+            var tokenizedName = employeeDto.EmployeeName?.Split(" ");
+
+            if (!(tokenizedName is null))
+            {
+                switch (tokenizedName.Length)
+                {
+                    case 1:
+                        firstName = tokenizedName[0];
+                        break;
+                    case 2:
+                        firstName = tokenizedName[0];
+                        lastName = tokenizedName[1];
+                        break;
+                    case 3:
+                        firstName = tokenizedName[0];
+                        middleName = tokenizedName[1];
+                        lastName = tokenizedName[2];
+                        break;
+                }
+            }
+
             return new Employee
             {
-                EmployeeName = employeeDto.EmployeeName,
+                FirstName = firstName,
+                MiddleName = middleName,
+                LastName = lastName,
                 JobTitle = employeeDto.JobTitle,
                 BasePay = employeeDto.BasePay,
                 OtherPay = employeeDto.OtherPay,
@@ -97,7 +125,7 @@ namespace OpenRedding.Core.Extensions
 
             return new RelatedEmployeeDetailDto
             {
-                Name = string.IsNullOrWhiteSpace(employee.EmployeeName) ? string.Empty : employee.EmployeeName,
+                Name = GetEmployeeName(employee),
                 JobTitle = string.IsNullOrWhiteSpace(employee.JobTitle) ? string.Empty : employee.JobTitle,
                 Agency = employee.EmployeeAgency.ToFriendlyString(),
                 BasePay = employee.BasePay,
@@ -112,7 +140,7 @@ namespace OpenRedding.Core.Extensions
             ArgumentValidation.CheckNotNull(employee, nameof(employee));
 
             return new EmployeeSalaryExportDto(
-                string.IsNullOrWhiteSpace(employee.EmployeeName) ? string.Empty : employee.EmployeeName,
+                GetEmployeeName(employee),
                 string.IsNullOrWhiteSpace(employee.JobTitle) ? string.Empty : employee.JobTitle,
                 employee.BasePay,
                 employee.OvertimePay,
@@ -153,6 +181,13 @@ namespace OpenRedding.Core.Extensions
                 Rel = nameof(EmployeeSalaryDetailViewModel),
                 Method = HttpMethod.Get.Method
             };
+        }
+
+        private static string GetEmployeeName(Employee employee)
+        {
+            return string.IsNullOrWhiteSpace(employee.MiddleName) ?
+                $"{employee.FirstName} {employee.LastName}" :
+                $"{employee.FirstName} {employee.MiddleName} {employee.LastName}";
         }
     }
 }

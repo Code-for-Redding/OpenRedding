@@ -27,7 +27,8 @@
 
             var testEmployee1 = new Employee
             {
-                EmployeeName = "John Smith",
+                FirstName = "John",
+                LastName = "Smith",
                 JobTitle = "Software Engineer",
                 Year = 2020,
                 BasePay = 100m,
@@ -44,7 +45,8 @@
 
             var testEmployee2 = new Employee
             {
-                EmployeeName = "Mary Smith",
+                FirstName = "Mary",
+                LastName = "Smith",
                 JobTitle = "Software Engineering Manager",
                 Year = 2019,
                 BasePay = 120m,
@@ -61,7 +63,8 @@
 
             var testEmployee3 = new Employee
             {
-                EmployeeName = "Joe Shmoe",
+                FirstName = "Joe",
+                LastName = "Schoe",
                 JobTitle = "Accountant",
                 Year = 2018,
                 BasePay = 100m,
@@ -78,7 +81,8 @@
 
             var testEmployee4 = new Employee
             {
-                EmployeeName = "Joey Mckenzie",
+                FirstName = "Joey",
+                LastName = "Mckenzie",
                 JobTitle = "Senior Software Engineer",
                 Year = 2020,
                 BasePay = 95m,

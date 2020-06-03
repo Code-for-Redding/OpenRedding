@@ -45,7 +45,8 @@
             {
                 // NOTE: As of EF Core 3.0, StringComparison no longer works due to server-side evaluation of queries
                 Expression<Func<Employee, bool>> canFilterByEmployeeName = e =>
-                    !string.IsNullOrWhiteSpace(e.EmployeeName) && e.EmployeeName.Contains(searchRequest.Name);
+                    !string.IsNullOrWhiteSpace(e.FirstName) && !string.IsNullOrWhiteSpace(e.LastName) &&
+                    (e.FirstName.Contains(searchRequest.Name) || e.LastName.Contains(searchRequest.Name));
 
                 queriedSalaries = queriedSalaries.Where(canFilterByEmployeeName);
             }
@@ -145,7 +146,7 @@
                     {
                         SalarySortField.BaseSalary => queriedSalaries.OrderBy(e => e.BasePay),
                         SalarySortField.JobTitle => queriedSalaries.OrderBy(e => e.JobTitle),
-                        SalarySortField.Name => queriedSalaries.OrderBy(e => e.EmployeeName),
+                        SalarySortField.Name => queriedSalaries.OrderBy(e => e.LastName),
                         SalarySortField.Year => queriedSalaries.OrderBy(e => e.Year),
                         SalarySortField.TotalWithBenefitsSalary => queriedSalaries.OrderBy(e => e.TotalPayWithBenefits),
                         _ => queriedSalaries
@@ -154,7 +155,7 @@
                     {
                         SalarySortField.BaseSalary => queriedSalaries.OrderByDescending(e => e.BasePay),
                         SalarySortField.JobTitle => queriedSalaries.OrderByDescending(e => e.JobTitle),
-                        SalarySortField.Name => queriedSalaries.OrderByDescending(e => e.EmployeeName),
+                        SalarySortField.Name => queriedSalaries.OrderByDescending(e => e.LastName),
                         SalarySortField.Year => queriedSalaries.OrderByDescending(e => e.Year),
                         SalarySortField.TotalWithBenefitsSalary => queriedSalaries.OrderByDescending(e => e.TotalPayWithBenefits),
                         _ => queriedSalaries

@@ -13,9 +13,19 @@ namespace OpenRedding.Domain.Salaries.Entities
         public int EmployeeId { get; set; }
 
         /// <summary>
-        /// Gets or sets the employee name, both first and last.
+        /// Gets or sets the employee first name.
         /// </summary>
-        public string? EmployeeName { get; set; }
+        public string? FirstName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the employee middle name.
+        /// </summary>
+        public string? MiddleName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the employee last name.
+        /// </summary>
+        public string? LastName { get; set; }
 
         /// <summary>
         /// Gets or sets the employee job title.

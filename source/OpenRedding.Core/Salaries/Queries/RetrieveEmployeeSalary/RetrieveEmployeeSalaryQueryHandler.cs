@@ -36,42 +36,12 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
                 throw new OpenReddingApiException($"Employee with ID {request?.Id} was not found", HttpStatusCode.NotFound);
             }
 
-            // Find related records to display on the view model as links for clients to retrieve
-            // Split the employee name by spaces to get first and last name, ignore matching on middle names
-            var tokenizedName = employeeDetail.EmployeeName?.Split(" ");
-
-            // Name was null or not complete, return the current state
-            if (tokenizedName is null || tokenizedName.Length is 1)
-            {
-                return new EmployeeSalaryDetailViewModel
-                {
-                    Employee = employeeDetail.ToEmployeeSalaryDetailDto(request.GatewayUrl)
-                };
-            }
-
-            // Grab a reference to the first and last name, discarding the middle name (if populated)
-            var firstName = tokenizedName[0];
-            var lastName = tokenizedName.Length > 2 ? tokenizedName[2] : tokenizedName[1];
-
-            // Search on names that contain both the first and last, as well as all three parts
-            var searchName = $"{firstName} {lastName}";
-            Expression<Func<Employee, bool>> matchingEmployeeNamePredicate;
-
-            if (tokenizedName.Length > 2)
-            {
-                matchingEmployeeNamePredicate = e =>
-                    !string.IsNullOrWhiteSpace(e.EmployeeName) && // Ensure the employee name is populated
-                    (e.EmployeeName.Equals(employeeDetail.EmployeeName) || e.EmployeeName.Equals(searchName)) && // Match on the first and last name, or first/last/middle name
-                    e.Year != employeeDetail.Year; // Exclude the current retrieval year in the result set
-            }
-            else
-            {
-                // Use the original employee name if no middle name is provided
-                matchingEmployeeNamePredicate = e =>
-                    !string.IsNullOrWhiteSpace(e.EmployeeName) && // Ensure the employee name is populated
-                    e.EmployeeName.Equals(employeeDetail.EmployeeName) && // Match on the first and last name
-                    e.Year != employeeDetail.Year; // Exclude the current retrieval year in the result set
-            }
+            // NOTE: As of EF Core 3.0, StringComparison no longer works due to server-side evaluation of queries
+            Expression<Func<Employee, bool>> matchingEmployeeNamePredicate = e =>
+                !string.IsNullOrWhiteSpace(e.FirstName) && !string.IsNullOrWhiteSpace(e.LastName) && // Ensure the employee name is populated
+                e.FirstName.Equals(employeeDetail.FirstName) && // Match on the first name
+                e.LastName.Equals(employeeDetail.LastName) && // Match on the last name
+                e.Year != employeeDetail.Year; // Exclude the current retrieval year in the result set
 
             // Retrieve the related records
             var relatedRecords = await _context.Employees

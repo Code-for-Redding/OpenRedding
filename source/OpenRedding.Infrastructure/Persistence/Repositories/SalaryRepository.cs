@@ -57,7 +57,8 @@ VALUES
                 insertSql,
                 parameters: new
                 {
-                    employee?.EmployeeName,
+                    employee?.FirstName,
+                    employee?.LastName,
                     employee?.JobTitle,
                     employee?.BasePay,
                     employee?.Benefits,

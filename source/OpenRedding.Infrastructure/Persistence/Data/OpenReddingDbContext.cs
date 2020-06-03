@@ -24,7 +24,6 @@
         public async Task BulkInsertEntitiesAsync<T>(IList<T> entities, CancellationToken cancellationToken)
             where T : class
         {
-            // ArgumentValidation.CheckNotNull(this, nameof(this), "DbContext cannot be null");
             await this.BulkInsertAsync(entities, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
