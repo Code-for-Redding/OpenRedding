@@ -154,7 +154,7 @@ namespace OpenRedding.Core.Extensions
                 employee.EmployeeStatus);
         }
 
-        private static string ToFriendlyString(this EmployeeAgency agency)
+        public static string ToFriendlyString(this EmployeeAgency agency)
         {
             return agency switch
             {
@@ -163,7 +163,7 @@ namespace OpenRedding.Core.Extensions
             };
         }
 
-        private static string ToFriendlyString(this EmployeeStatus status)
+        public static string ToFriendlyString(this EmployeeStatus status)
         {
             return status switch
             {
