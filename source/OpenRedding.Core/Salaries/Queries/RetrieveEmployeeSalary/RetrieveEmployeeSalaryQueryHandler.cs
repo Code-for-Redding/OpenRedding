@@ -4,6 +4,7 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
     using System.Linq;
     using System.Linq.Expressions;
     using System.Net;
+    using System.Runtime.CompilerServices;
     using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
@@ -55,6 +56,7 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
                     e.JobTitle.Equals(employeeDetail.JobTitle) &&
                     e.Year == employeeDetail.Year;
 
+            // Get the averages for each pay type
             var basePayAverage = await _context.Employees
                 .Where(matchingJobTitleForFiscalYear)
                 .AverageAsync(e => e.BasePay, cancellationToken);
@@ -67,14 +69,25 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
                 .Where(matchingJobTitleForFiscalYear)
                 .AverageAsync(e => e.TotalPayWithBenefits, cancellationToken);
 
+            // Compute the average difference from the employees base, benefits, and total pay
+            var basePayDelta = GetPayDelta(employeeDetail.BasePay, basePayAverage);
+            var benefitsPayDelta = GetPayDelta(employeeDetail.Benefits, benefitsAverage);
+            var totalPayDelta = GetPayDelta(employeeDetail.TotalPayWithBenefits, totalPayAverage);
+
             return new EmployeeSalaryDetailViewModel
             {
                 Employee = employeeDetail.ToEmployeeSalaryDetailDto(request.GatewayUrl),
                 RelatedRecords = relatedRecords,
                 OccupationalBasePayAverage = basePayAverage,
                 OccupationalTotalPayAverage = totalPayAverage,
-                OccupationalBenefitsAverage = benefitsAverage
+                OccupationalBenefitsAverage = benefitsAverage,
+                BasePayDelta = basePayDelta.ToString("P"),
+                BenefitsDelta = benefitsPayDelta.ToString("P"),
+                TotalPayDelta = totalPayDelta.ToString("P")
             };
         }
+
+        private decimal GetPayDelta(decimal employeePay, decimal averagePay) =>
+            (employeePay - averagePay) / employeePay;
     }
 }

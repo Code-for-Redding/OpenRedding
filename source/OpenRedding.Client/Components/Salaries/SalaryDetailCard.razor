@@ -3,6 +3,12 @@
         <div class="card-body text-center">
             <h4 class="card-title">@Title</h4>
             <h3 class="card-text font-weight-bolder">@scrubbedPayAmount.ToString("C")</h3>
+            @if (!string.IsNullOrWhiteSpace(PayDelta))
+            {
+                <div class="pt-1">
+                    <p class="@payDeltaCssClass">@payDeltaText</p>
+                </div>
+            }
         </div>
     </div>
 </div>
@@ -10,6 +16,10 @@
 @code {
 
     private decimal scrubbedPayAmount = 0m;
+
+    private string? payDeltaCssClass;
+
+    private string? payDeltaText;
 
     [Parameter]
     public string? Title { get; set; }
@@ -20,6 +30,9 @@
     [Parameter]
     public string? GridSpacing { get; set; }
 
+    [Parameter]
+    public string? PayDelta { get; set; }
+
     protected override void OnInitialized()
     {
         if (!string.IsNullOrWhiteSpace(GridSpacing))
@@ -28,6 +41,20 @@
         }
 
         scrubbedPayAmount = PayAmount.HasValue ? PayAmount.Value : scrubbedPayAmount;
+
+        if (!string.IsNullOrWhiteSpace(PayDelta))
+        {
+            if (PayDelta.Contains("-"))
+            {
+                payDeltaCssClass = "text-danger";
+                payDeltaText = $"{PayDelta} below the average";
+            }
+            else
+            {
+                payDeltaCssClass = "text-success";
+                payDeltaText = $"{PayDelta} above the average";
+            }
+        }
     }
 
 }
