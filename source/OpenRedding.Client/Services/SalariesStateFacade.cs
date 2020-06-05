@@ -1,7 +1,7 @@
 ﻿namespace OpenRedding.Client.Services
 {
     using Fluxor;
-    using OpenRedding.Client.Store.Features.Salaries;
+    using OpenRedding.Client.Store;
     using OpenRedding.Client.Store.Features.Salaries.Actions.DownloadSalaryCsv;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaryDetail;

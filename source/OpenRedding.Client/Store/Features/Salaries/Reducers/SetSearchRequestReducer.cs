@@ -1,12 +1,13 @@
 ﻿namespace OpenRedding.Client.Store.Features.Salaries.Reducers
 {
-	using Fluxor;
-	using OpenRedding.Client.Components.Dropdowns.Salaries;
-	using OpenRedding.Client.Store.Features.Salaries.Actions.SetSearchRequest;
-	using OpenRedding.Domain.Salaries.Dtos;
-	using OpenRedding.Domain.Salaries.Enums;
+    using Fluxor;
+    using OpenRedding.Client.Components.Dropdowns.Salaries;
+    using OpenRedding.Client.Store;
+    using OpenRedding.Client.Store.Features.Salaries.Actions.SetSearchRequest;
+    using OpenRedding.Domain.Salaries.Dtos;
+    using OpenRedding.Domain.Salaries.Enums;
 
-	public static class SetSearchRequestReducer
+    public static class SetSearchRequestReducer
     {
 		[ReducerMethod]
 		public static OpenReddingAppState SetCurrentSearchRequestActionReducer(OpenReddingAppState state, SetCurrentSearchRequestAction action) =>

@@ -1,10 +1,19 @@
 ﻿@inherits Fluxor.Blazor.Web.Components.FluxorLayout
 
+@using Fluxor
+@using OpenRedding.Client.Components.Common
+@using OpenRedding.Client.Store
+
 @inject NavigationManager NavigationManager
+@inject IState<OpenReddingAppState> State
 
 <NavMenu />
 
 <section id="open-redding-main-container">
+    @* Render any current Errors *@
+    <OpenReddingErrorModal />
+
+    @** Render all child content *@
     @Body
 </section>
 

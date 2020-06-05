@@ -1,6 +1,5 @@
-﻿namespace OpenRedding.Client.Store.Features.Salaries
+﻿namespace OpenRedding.Client.Store
 {
-    using System.Collections.Generic;
     using OpenRedding.Domain.Common.ViewModels;
     using OpenRedding.Domain.Salaries.Dtos;
     using OpenRedding.Domain.Salaries.ViewModels;
@@ -12,13 +11,15 @@
             bool isTableRefresh,
             OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>? salaryResults,
             EmployeeSalaryDetailViewModel? salaryDetail,
-            EmployeeSalarySearchRequestDto? searchRequest)
+            EmployeeSalarySearchRequestDto? searchRequest,
+            string? errorMessage = null)
         {
             IsLoading = isLoading;
             IsTableRefresh = isTableRefresh;
             SalaryResults = salaryResults;
             SalaryDetail = salaryDetail;
             SearchRequest = searchRequest;
+            CurrentErrorMessage = errorMessage;
         }
 
         public bool IsLoading { get; }
@@ -30,5 +31,9 @@
         public EmployeeSalaryDetailViewModel? SalaryDetail { get; }
 
         public EmployeeSalarySearchRequestDto? SearchRequest { get; }
+
+        public string? CurrentErrorMessage { get; }
+
+        public bool HasCurrentErrors => !string.IsNullOrWhiteSpace(CurrentErrorMessage);
     }
 }

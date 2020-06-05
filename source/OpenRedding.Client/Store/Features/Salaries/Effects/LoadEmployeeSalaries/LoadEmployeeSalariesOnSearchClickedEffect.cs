@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
     using Fluxor;
     using Microsoft.Extensions.Logging;
+    using OpenRedding.Client.Store;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
 
     public class LoadEmployeeSalariesOnSearchClickedEffect : Effect<LoadEmployeesOnSearchClickedAction>

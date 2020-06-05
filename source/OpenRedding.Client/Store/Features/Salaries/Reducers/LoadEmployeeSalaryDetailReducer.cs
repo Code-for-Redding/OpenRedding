@@ -1,6 +1,7 @@
 ﻿namespace OpenRedding.Client.Store.Features.Salaries.Reducers
 {
-	using Fluxor;
+    using Fluxor;
+    using OpenRedding.Client.Store;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaryDetail;
 
     public static class LoadEmployeeSalaryDetailReducer
@@ -15,6 +16,6 @@
 
         [ReducerMethod]
         public static OpenReddingAppState ReducerLoadEmployeeSalaryDetailFromLinkFailureAction(OpenReddingAppState state, LoadEmployeeSalaryDetailFailureAction action) =>
-            new OpenReddingAppState(false, false, state.SalaryResults, null, state.SearchRequest);
+            new OpenReddingAppState(false, false, state.SalaryResults, null, state.SearchRequest, "An error has occurred");
     }
 }

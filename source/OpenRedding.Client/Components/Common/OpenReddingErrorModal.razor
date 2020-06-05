@@ -1,0 +1,42 @@
+﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@using Fluxor
+@using OpenRedding.Client.Store 
+
+@inject IState<OpenReddingAppState> State
+@inject IJSRuntime JSRuntime
+
+<div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="error-modal-label" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-danger">Uh oh...</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+                <span class="py-2">An unexpected error has occurred, please make the request again, or try again later.</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {        
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        State.StateChanged += async (sender, state) => await OnErrorStateChanged(sender, state);
+    }
+
+    private async Task OnErrorStateChanged(object sender, OpenReddingAppState state)
+    {
+        if (state.HasCurrentErrors)
+        {
+            await JSRuntime.InvokeVoidAsync("interactWithModal", "#error-modal", "show");
+        }
+    }
+
+}

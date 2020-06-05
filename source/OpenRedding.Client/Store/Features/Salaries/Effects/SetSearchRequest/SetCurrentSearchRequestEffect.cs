@@ -1,9 +1,10 @@
 ﻿namespace OpenRedding.Client.Store.Features.Salaries.Effects.SetSearchRequest
 {
-	using System;
-	using System.Threading.Tasks;
-	using Fluxor;
-	using Microsoft.Extensions.Logging;
+    using System;
+    using System.Threading.Tasks;
+    using Fluxor;
+    using Microsoft.Extensions.Logging;
+    using OpenRedding.Client.Store;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
     using OpenRedding.Client.Store.Features.Salaries.Actions.SetSearchRequest;
 

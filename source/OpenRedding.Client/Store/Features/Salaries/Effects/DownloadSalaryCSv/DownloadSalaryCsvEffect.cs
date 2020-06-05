@@ -6,6 +6,7 @@
     using Microsoft.AspNetCore.Components;
     using Microsoft.Extensions.Logging;
     using Microsoft.JSInterop;
+    using OpenRedding.Client.Store;
     using OpenRedding.Client.Store.Features.Salaries.Actions.DownloadSalaryCsv;
 
     public class DownloadSalaryCsvEffect : Effect<DownloadSalaryCsvAction>
@@ -45,7 +46,7 @@
                 // Shut down the loading modal on error
                 await _jsRuntime.InvokeVoidAsync("interactWithModal", "#loading-modal", "hide");
                 _logger.LogError($"Could not download the CSV report, reason: {e.Message}");
-                dispatcher.Dispatch(new DownloadSalaryCsvActionFailure());
+                dispatcher.Dispatch(new DownloadSalaryCsvFailureAction());
             }
         }
     }

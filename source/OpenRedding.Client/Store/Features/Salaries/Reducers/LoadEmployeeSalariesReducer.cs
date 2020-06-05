@@ -1,7 +1,7 @@
 ﻿namespace OpenRedding.Client.Store.Features.Salaries.Reducers
 {
-    using System.Net.Sockets;
     using Fluxor;
+    using OpenRedding.Client.Store;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
     using OpenRedding.Domain.Salaries.Dtos;
 
@@ -21,7 +21,7 @@
 
         [ReducerMethod]
         public static OpenReddingAppState ReduceLoadEmployeeSalariesFailureAction(OpenReddingAppState state, LoadEmployeeSalariesFailureAction action) =>
-            new OpenReddingAppState(false, false, null, state.SalaryDetail, state.SearchRequest);
+            new OpenReddingAppState(false, false, null, state.SalaryDetail, state.SearchRequest, "An error has occurred");
 
         [ReducerMethod]
         public static OpenReddingAppState ReduceLoadEmployeeSalariesOnSearchClickedAction(OpenReddingAppState state, LoadEmployeesOnSearchClickedAction action)

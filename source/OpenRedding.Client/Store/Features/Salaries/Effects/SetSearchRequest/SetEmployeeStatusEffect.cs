@@ -1,13 +1,14 @@
 ﻿namespace OpenRedding.Client.Store.Features.Salaries.Effects.SetSearchRequest
 {
-	using System;
-	using System.Threading.Tasks;
-	using Fluxor;
-	using Microsoft.Extensions.Logging;
-	using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
-	using OpenRedding.Client.Store.Features.Salaries.Actions.SetSearchRequest;
+    using System;
+    using System.Threading.Tasks;
+    using Fluxor;
+    using Microsoft.Extensions.Logging;
+    using OpenRedding.Client.Store;
+    using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
+    using OpenRedding.Client.Store.Features.Salaries.Actions.SetSearchRequest;
 
-	public class SetEmployeeStatusEffect : Effect<SetEmployeeStatusAction>
+    public class SetEmployeeStatusEffect : Effect<SetEmployeeStatusAction>
 	{
 		private readonly OpenReddingApiService _apiService;
 		private readonly ILogger<SetEmployeeStatusEffect> _logger;
