@@ -64,7 +64,7 @@
             var testEmployee3 = new Employee
             {
                 FirstName = "Joe",
-                LastName = "Schoe",
+                LastName = "Schmoe",
                 JobTitle = "Accountant",
                 Year = 2018,
                 BasePay = 100m,

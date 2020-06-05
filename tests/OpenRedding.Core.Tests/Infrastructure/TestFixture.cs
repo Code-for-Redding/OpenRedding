@@ -3,7 +3,6 @@ namespace OpenRedding.Core.Tests.Infrastructure
     using System;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
-    using OpenRedding.Core.Data;
     using OpenRedding.Infrastructure.Persistence;
     using OpenRedding.Infrastructure.Persistence.Data;
 

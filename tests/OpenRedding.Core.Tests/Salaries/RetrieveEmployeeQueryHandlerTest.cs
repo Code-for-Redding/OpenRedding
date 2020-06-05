@@ -13,12 +13,11 @@
 
     public class RetrieveEmployeeQueryHandlerTest : TestFixture
     {
-        /*
         [Fact]
         public async Task GivenValidRequest_WhenEmployeeSalaryRecordExists_ReturnsDetailViewModel()
         {
             // Arrange
-            var query = new RetrieveEmployeeSalaryQuery(4);
+            var query = new RetrieveEmployeeSalaryQuery(4, TestUri);
             var handler = new RetrieveEmployeeSalaryQueryHandler(Context);
 
             // Act
@@ -27,10 +26,9 @@
             // Assert
             result.ShouldNotBeNull();
             result.ShouldBeOfType<EmployeeSalaryDetailViewModel>();
-            result.ApiVersion.ShouldNotBeNull();
             result.Employee.ShouldNotBeNull();
             result.Employee.ShouldBeOfType<EmployeeSalaryDetailDto>();
-            result.Employee.Id.ShouldBe(4);
+            result.Employee!.Id.ShouldBe(4);
             result.Employee.JobTitle.ShouldNotBeNull();
             result.Employee.JobTitle.ShouldBe("Senior Software Engineer");
             result.Employee.Name.ShouldNotBeNull();
@@ -41,7 +39,7 @@
         public async Task GivenValidRequest_WhenEmployeeSalaryRecordDoesNotExist_ThrowsNotFoundOpenReddingException()
         {
             // Arrange
-            var query = new RetrieveEmployeeSalaryQuery(44);
+            var query = new RetrieveEmployeeSalaryQuery(44, TestUri);
             var handler = new RetrieveEmployeeSalaryQueryHandler(Context);
 
             // Act
@@ -52,6 +50,5 @@
             result.ShouldBeOfType<OpenReddingApiException>();
             result.StatusCode.ShouldBe(HttpStatusCode.NotFound);
         }
-        */
     }
 }
