@@ -1,13 +1,11 @@
 namespace OpenRedding.Api.Controllers
 {
     using System;
-    using System.Net.Http;
+    using System.Linq;
     using System.Threading.Tasks;
     using Domain.Salaries.ViewModels;
     using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Http.Extensions;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using OpenRedding.Api;
@@ -18,15 +16,14 @@ namespace OpenRedding.Api.Controllers
     using OpenRedding.Domain.Common.Miscellaneous;
     using OpenRedding.Domain.Common.ViewModels;
     using OpenRedding.Domain.Salaries.Dtos;
-    using OpenRedding.Shared;
 
     public class SalariesController : OpenReddingBaseController
     {
         private readonly ILogger<SalariesController> _logger;
         private readonly string _gatewayBaseUrl;
-        private readonly ILinkBuilder _linkBuilder;
+        private readonly ILinkBuilder<EmployeeSalarySearchResultDto> _linkBuilder;
 
-        public SalariesController(ILogger<SalariesController> logger, IConfiguration configuration, ILinkBuilder linkBuilder)
+        public SalariesController(ILogger<SalariesController> logger, IConfiguration configuration, ILinkBuilder<EmployeeSalarySearchResultDto> linkBuilder)
         {
             _logger = logger;
             _gatewayBaseUrl = configuration["GatewayBaseUrl"];
@@ -59,9 +56,11 @@ namespace OpenRedding.Api.Controllers
                 $"page [{page}]\n" +
                 $"sortField [{sortField}]");
 
+            _logger.LogInformation("Sending employee salary search request...");
             var searchRequest = new EmployeeSalarySearchRequestDto(name, jobTitle, agency, status, sortBy, year, sortField, basePayRange, totalPayRange);
 
             var response = await Mediator.Send(new GetEmployeeSalariesQuery(searchRequest, new Uri(_gatewayBaseUrl), page));
+            _logger.LogInformation($"Request was successful, {response.Results.Count()} found with {response.Count} results");
 
             return new OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>
             {
@@ -69,7 +68,7 @@ namespace OpenRedding.Api.Controllers
                 Count = response.Count,
                 Pages = response.Pages,
                 CurrentPage = response.CurrentPage,
-                Links = _linkBuilder.BuildPaginationLinks<EmployeeSalarySearchResultDto>(HttpContext.Request.Query, response.Pages, page)
+                Links = _linkBuilder.BuildPaginationLinks(HttpContext.Request.Query, response.Pages, page)
             };
         }
 

@@ -1,7 +1,6 @@
 ﻿namespace OpenRedding.Infrastructure.Extensions
 {
     using System;
-    using System.Collections.Generic;
     using System.Reflection;
     using Core.Data;
     using Microsoft.EntityFrameworkCore;
@@ -10,6 +9,7 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using OpenRedding.Core.Infrastructure.Services;
+    using OpenRedding.Domain.Salaries.Dtos;
     using OpenRedding.Infrastructure.Persistence.Data;
     using OpenRedding.Infrastructure.Persistence.Repositories;
     using OpenRedding.Infrastructure.Services;
@@ -30,15 +30,12 @@
                 builder.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
             }
 
-            // Add EF Core dependencies
+            // Add project dependencies
             services.AddDbContext<OpenReddingDbContext>(options => options.UseSqlServer(connectionString, DbContextOptions));
             services.TryAddScoped<IOpenReddingDbContext>(provider => provider.GetService<OpenReddingDbContext>());
-
-            // Add Dapper dependencies
             services.TryAddScoped<IUnitOfWork>(_ => new UnitOfWork(connectionString));
-
-            // Add Azure services
             services.TryAddScoped<IAzureBlobService, SalaryCsvBlobService>();
+            services.TryAddScoped<ILinkBuilder<EmployeeSalarySearchResultDto>, SalariesLinkBuilder>();
         }
     }
 }
