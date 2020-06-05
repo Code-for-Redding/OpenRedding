@@ -36,9 +36,11 @@
     }
     else
     {
-        <RefinedSalarySearch PageCount="State.Value.SalaryResults.Pages" ResultCount="State.Value.SalaryResults.Count" CurrentPage="State.Value.SalaryResults.CurrentPage" />
+        <div class="mx-4">
+            <RefinedSalarySearch PageCount="State.Value.SalaryResults.Pages" ResultCount="State.Value.SalaryResults.Count" CurrentPage="State.Value.SalaryResults.CurrentPage" />
+            <p class="text-center">To view detailed information about a particular record, select from a row in the table below.</p>
+        </div>
 
-        <p class="text-center">To view detailed information about a particular record, select from a row in the table below.</p>
 
         @* Pagination *@
         @if (State.Value.SalaryResults.Links != null)
@@ -96,29 +98,31 @@
                 </ul>
 
                 @* Page select dropdown *@
-                <div class="d-flex flex-row justify-content-center px-2">
-                    @if (State.Value.IsTableRefresh)
-                    {
-                        <select class="custom-select cursor-not-allowed" disabled>
-                            <option selected>@State.Value.SalaryResults.CurrentPage</option>
-                        </select>
-                    }
-                    else
-                    {
-                        <select @onchange="OnPageDropdownSelect" class="custom-select cursor-pointer">
-                            @for (var pageNumber = 1; pageNumber <= State.Value.SalaryResults.Pages; pageNumber++)
-                            {
-                                @if (pageNumber == State.Value.SalaryResults.CurrentPage)
+                <div class="d-none d-sm-block">
+                    <div class="d-flex flex-row justify-content-center px-2">
+                        @if (State.Value.IsTableRefresh)
+                        {
+                            <select class="custom-select cursor-not-allowed" disabled>
+                                <option selected>@State.Value.SalaryResults.CurrentPage</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select @onchange="OnPageDropdownSelect" class="custom-select cursor-pointer">
+                                @for (var pageNumber = 1; pageNumber <= State.Value.SalaryResults.Pages; pageNumber++)
                                 {
-                                    <option selected value="@pageNumber">@pageNumber</option>
+                                    @if (pageNumber == State.Value.SalaryResults.CurrentPage)
+                                    {
+                                        <option selected value="@pageNumber">@pageNumber</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@pageNumber">@pageNumber</option>
+                                    }
                                 }
-                                else
-                                {
-                                    <option value="@pageNumber">@pageNumber</option>
-                                }
-                            }
-                        </select>
-                    }
+                            </select>
+                        }
+                    </div>
                 </div>
 
                 @* Next and last links *@
@@ -190,10 +194,10 @@
                     <tr class="text-center">
                         <th scope="col">Name</th>
                         <th scope="col">Job Title</th>
-                        <th scope="col">Agency</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Year</th>
-                        <th scope="col">Base Pay</th>
+                        <th scope="col" class="d-none d-md-table-cell">Agency</th>
+                        <th scope="col" class="d-none d-md-table-cell">Status</th>
+                        <th scope="col" class="d-none d-md-table-cell">Year</th>
+                        <th scope="col" class="d-none d-md-table-cell">Base Pay</th>
                         <th scope="col">Total Pay with Benefits</th>
                     </tr>
                 </thead>
@@ -203,10 +207,10 @@
                         <tr class="text-center cursor-pointer" @onclick="(() => OnRowClicked(employeeSalary.EmployeeDetailLink))">
                             <td>@employeeSalary.Name</td>
                             <td>@employeeSalary.JobTitle</td>
-                            <td>@employeeSalary.Agency</td>
-                            <td>@employeeSalary.Status</td>
-                            <td>@employeeSalary.Year</td>
-                            <td>@employeeSalary.BasePay.ToString("C")</td>
+                            <td class="d-none d-md-table-cell">@employeeSalary.Agency</td>
+                            <td class="d-none d-md-table-cell">@employeeSalary.Status</td>
+                            <td class="d-none d-md-table-cell">@employeeSalary.Year</td>
+                            <td class="d-none d-md-table-cell">@employeeSalary.BasePay.ToString("C")</td>
                             <td>@employeeSalary.TotalPayWithBenefits.ToString("C")</td>
                         </tr>
                     }

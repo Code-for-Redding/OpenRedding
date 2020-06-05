@@ -15,152 +15,154 @@
 @inject OpenReddingApiService ApiService
 
 @* Search metadata *@
-<div class="card bg-light mt-4">
+<section id="refined-salary-search">
+    <div class="card bg-light mt-4">
 
-    @* Card container *@
-    <div class="card-body">
-        @* Psuedo header *@
-        <div class="text-center">
-            <h4 class="card-title text-center">Search Criteria</h4>
-            <h6 class="card-subtitle mb-2 text-muted">Enter values below, then hit the search button to refine your results</h6>
-        </div>
-
-        @* Refined search fields *@
-        <div class="d-flex flex-column align-content-center">
-
-            @* Name, job title, agency, and status *@
-            <div class="row justify-content-center">
-                @* Name *@
-                <div class="col-md-3">
-                    <ValidatedInput InputValue="@employeeName"
-                                    OnValidatedInput="IsValidEmployeeNameHandler"
-                                    OnValueInput="EmployeeNameInputHandler"
-                                    DisplayErrorMessage="true"
-                                    FieldLabel="Name"
-                                    InputId="salary-search-name"
-                                    LabelCss="col-form-label text-black" />
-                </div>
-
-                @* Job title *@
-                <div class="col-md-3">
-                    <ValidatedInput InputValue="@jobTitle"
-                                    OnValidatedInput="IsValidEmployeeNameHandler"
-                                    OnValueInput="JobTitleInputHandler"
-                                    DisplayErrorMessage="true"
-                                    FieldLabel="Job Title"
-                                    InputId="salary-search-job-title"
-                                    LabelCss="col-form-label text-black" />
-                </div>
-
-                @* Agency *@
-                <div class="col-md-3">
-                    <EmployeeAgencyDropdown ExistingSelection="Enum.TryParse<EmployeeAgency>(State.Value.SearchRequest?.Agency, true, out var agency) ? agency : EmployeeAgency.AllAgencies"
-                                            LoadFromApi="true"
-                                            LabelCss="col-form-label" />
-                </div>
-
-                @* Status *@
-                <div class="col-md-3">
-                    <EmployeeStatusDropdown ExistingSelection="Enum.TryParse<EmployeeStatus>(State.Value.SearchRequest?.Status, true, out var status) ? status : EmployeeStatus.AllStatuses"
-                                            LoadFromApi="true"
-                                            LabelCss="col-form-label" />
-                </div>
+        @* Card container *@
+        <div class="card-body">
+            @* Psuedo header *@
+            <div class="text-center">
+                <h4 class="card-title text-center">Search Criteria</h4>
+                <h6 class="card-subtitle mb-2 text-muted">Enter values below, then hit the search button to refine your results</h6>
             </div>
 
-            @* Year, base pay range, total pay range *@
-            <div class="row justify-content-center">
-                @* Year *@
-                <div class="col-md-4">
-                    <EmploymentYearDropdown ExistingSelection="GetExistingEmploymentYear()"
-                                            LabelCss="col-form-label" />
+            @* Refined search fields *@
+            <div class="d-flex flex-column align-content-center">
+
+                @* Name, job title, agency, and status *@
+                <div class="row justify-content-center">
+                    @* Name *@
+                    <div class="col-md-3">
+                        <ValidatedInput InputValue="@employeeName"
+                                        OnValidatedInput="IsValidEmployeeNameHandler"
+                                        OnValueInput="EmployeeNameInputHandler"
+                                        DisplayErrorMessage="true"
+                                        FieldLabel="Name"
+                                        InputId="salary-search-name"
+                                        LabelCss="col-form-label text-black" />
+                    </div>
+
+                    @* Job title *@
+                    <div class="col-md-3">
+                        <ValidatedInput InputValue="@jobTitle"
+                                        OnValidatedInput="IsValidEmployeeNameHandler"
+                                        OnValueInput="JobTitleInputHandler"
+                                        DisplayErrorMessage="true"
+                                        FieldLabel="Job Title"
+                                        InputId="salary-search-job-title"
+                                        LabelCss="col-form-label text-black" />
+                    </div>
+
+                    @* Agency *@
+                    <div class="col-md-3">
+                        <EmployeeAgencyDropdown ExistingSelection="Enum.TryParse<EmployeeAgency>(State.Value.SearchRequest?.Agency, true, out var agency) ? agency : EmployeeAgency.AllAgencies"
+                                                LoadFromApi="true"
+                                                LabelCss="col-form-label" />
+                    </div>
+
+                    @* Status *@
+                    <div class="col-md-3">
+                        <EmployeeStatusDropdown ExistingSelection="Enum.TryParse<EmployeeStatus>(State.Value.SearchRequest?.Status, true, out var status) ? status : EmployeeStatus.AllStatuses"
+                                                LoadFromApi="true"
+                                                LabelCss="col-form-label" />
+                    </div>
                 </div>
 
-                @* Base pay range *@
-                <div class="col-md-4">
-                    <PayRangeDropdown Context="SalarySearchContext.BasePayRange"
-                                      ExistingSelection="GetExistingPayRangeOption(SalarySearchContext.BasePayRange)"
-                                      LabelCss="col-form-label" />
+                @* Year, base pay range, total pay range *@
+                <div class="row justify-content-center">
+                    @* Year *@
+                    <div class="col-md-4">
+                        <EmploymentYearDropdown ExistingSelection="GetExistingEmploymentYear()"
+                                                LabelCss="col-form-label" />
+                    </div>
+
+                    @* Base pay range *@
+                    <div class="col-md-4">
+                        <PayRangeDropdown Context="SalarySearchContext.BasePayRange"
+                                          ExistingSelection="GetExistingPayRangeOption(SalarySearchContext.BasePayRange)"
+                                          LabelCss="col-form-label" />
+                    </div>
+
+                    @* Total pay range*@
+                    <div class="col-md-4">
+                        <PayRangeDropdown Context="SalarySearchContext.TotalPayRange"
+                                          ExistingSelection="GetExistingPayRangeOption(SalarySearchContext.TotalPayRange)"
+                                          LabelCss="col-form-label" />
+                    </div>
                 </div>
 
-                @* Total pay range*@
-                <div class="col-md-4">
-                    <PayRangeDropdown Context="SalarySearchContext.TotalPayRange"
-                                      ExistingSelection="GetExistingPayRangeOption(SalarySearchContext.TotalPayRange)"
-                                      LabelCss="col-form-label" />
+                @* Sort options *@
+                <div class="row justify-content-center">
+                    <SortFieldDropdown ExistingFieldSelection="Enum.TryParse<SalarySortField>(State.Value.SearchRequest?.SortField, out var sortField) ? sortField : SalarySortField.Default"
+                                       ExistingOptionSelection="Enum.TryParse<SalarySortByOption>(State.Value.SearchRequest?.SortBy, out var sortBy) ? sortBy : SalarySortByOption.Default"
+                                       LabelCss="col-form-label" />
                 </div>
-            </div>
-
-            @* Sort options *@
-            <div class="row justify-content-center">
-                <SortFieldDropdown ExistingFieldSelection="Enum.TryParse<SalarySortField>(State.Value.SearchRequest?.SortField, out var sortField) ? sortField : SalarySortField.Default"
-                                   ExistingOptionSelection="Enum.TryParse<SalarySortByOption>(State.Value.SearchRequest?.SortBy, out var sortBy) ? sortBy : SalarySortByOption.Default"
-                                   LabelCss="col-form-label" />
-            </div>
-        </div>
-    </div>
-</div>
-
-@* Buttons and search metadata *@
-<div class="row justify-content-center py-1">
-    <div class="d-flex flex-column mt-3">
-        @* Search button *@
-        <div class="d-flex flex-row">
-            <div class="mx-auto">
-                @if (isValidEmployeeName && isValidJobTitle && !State.Value.IsTableRefresh)
-                {
-                    <button @onclick="(() => StateFacade.LoadEmployeesOnSearchClicked(string.IsNullOrWhiteSpace(employeeName) ? string.Empty : employeeName, string.IsNullOrWhiteSpace(jobTitle) ? string.Empty : jobTitle))" 
-                            class="btn btn-outline-info" 
-                            type="button" 
-                            data-toggle="tooltip"
-                            data-placement="bottom" 
-                            title="To browse all salary data, leave all fields above blank.">Search</button>
-                }
-                else
-                {
-                    <button disabled class="btn btn-outline-info cursor-not-allowed" type="button" data-toggle="tooltip" data-placement="bottom" title="Please enter valid values in the fields above before attempting to search.">Search</button>
-                }
-
-                @if (State.Value.IsTableRefresh)
-                {
-                    <span class="px-1"></span>
-                    <button disabled class="btn btn btn-outline-success cursor-not-allowed" type="button">Reset</button>
-                    <span class="px-1"></span>
-                    <button disabled class="btn btn btn-outline-danger cursor-not-allowed" type="button">Download</button>
-                }
-                else
-                {
-                    <span class="px-1"></span>
-                    <button class="btn btn btn-outline-success" type="button" @onclick="OnResetClicked">Reset</button>
-                    <span class="px-1"></span>
-                    <button class="btn btn btn-outline-danger" type="button" @onclick="(() => StateFacade.DownloadSalaryCsv())"  data-toggle="modal" data-target="#loading-modal">Download</button>
-                }
-            </div>
-        </div>
-
-        @* Page and result count *@
-        <div class="d-flex flex-row justify-content-center mt-2">
-            <span><strong>Results</strong>: @ResultCount</span>
-            <span class="px-2"></span>
-            <span><strong>Pages</strong>: @PageCount</span>
-        </div>
-    </div>
-</div>
-
-@* Download modal *@
-<!-- Modal -->
-<div class="modal fade" id="loading-modal" tabindex="-1" role="dialog" aria-labelledby="loading-modal-label" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content text-center">
-            <div class="modal-body d-flex flex-column justify-content-center align-items-center">
-                <h4 class="py-2">Loading report...</h4>
-                <div class="spinner-border text-info" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-                <span class="py-2">This window will automatically close when you're report is ready for download.</span>
             </div>
         </div>
     </div>
-</div>
+
+    @* Buttons and search metadata *@
+    <div class="row justify-content-center py-1">
+        <div class="d-flex flex-column mt-3">
+            @* Search button *@
+            <div class="d-flex flex-row">
+                <div class="mx-auto">
+                    @if (isValidEmployeeName && isValidJobTitle && !State.Value.IsTableRefresh)
+                    {
+                        <button @onclick="(() => StateFacade.LoadEmployeesOnSearchClicked(string.IsNullOrWhiteSpace(employeeName) ? string.Empty : employeeName, string.IsNullOrWhiteSpace(jobTitle) ? string.Empty : jobTitle))" 
+                                class="btn btn-outline-info" 
+                                type="button" 
+                                data-toggle="tooltip"
+                                data-placement="bottom" 
+                                title="To browse all salary data, leave all fields above blank.">Search</button>
+                    }
+                    else
+                    {
+                        <button disabled class="btn btn-outline-info cursor-not-allowed" type="button" data-toggle="tooltip" data-placement="bottom" title="Please enter valid values in the fields above before attempting to search.">Search</button>
+                    }
+
+                    @if (State.Value.IsTableRefresh)
+                    {
+                        <span class="px-1"></span>
+                        <button disabled class="btn btn btn-outline-success cursor-not-allowed" type="button">Reset</button>
+                        <span class="px-1"></span>
+                        <button disabled class="btn btn btn-outline-danger cursor-not-allowed" type="button">Download</button>
+                    }
+                    else
+                    {
+                        <span class="px-1"></span>
+                        <button class="btn btn btn-outline-success" type="button" @onclick="OnResetClicked">Reset</button>
+                        <span class="px-1"></span>
+                        <button class="btn btn btn-outline-danger" type="button" @onclick="(() => StateFacade.DownloadSalaryCsv())"  data-toggle="modal" data-target="#loading-modal">Download</button>
+                    }
+                </div>
+            </div>
+
+            @* Page and result count *@
+            <div class="d-flex flex-row justify-content-center mt-2">
+                <span><strong>Results</strong>: @ResultCount</span>
+                <span class="px-2"></span>
+                <span><strong>Pages</strong>: @PageCount</span>
+            </div>
+        </div>
+    </div>
+
+    @* Download modal *@
+    <!-- Modal -->
+    <div class="modal fade" id="loading-modal" tabindex="-1" role="dialog" aria-labelledby="loading-modal-label" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content text-center">
+                <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+                    <h4 class="py-2">Loading report...</h4>
+                    <div class="spinner-border text-info" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <span class="py-2">This window will automatically close when you're report is ready for download.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 @code {
 
