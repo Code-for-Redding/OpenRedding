@@ -38,7 +38,7 @@
         {
             <h5 class="text-center font-weight-bolder mb-3">Pay breakdown for: @State.Value.SalaryDetail.Employee.Name</h5>
 
-            <div class="row justify-content-around">
+            <div class="row">
                 <SalaryDetailCard Title="Base Pay"
                                   GridSpacing="col-md-4"
                                   PayAmount="@State.Value.SalaryDetail.Employee.BasePay" />
@@ -52,7 +52,7 @@
                                   PayAmount="@State.Value.SalaryDetail.Employee.Benefits" />
             </div>
 
-            <div class="row justify-content-around py-3">
+            <div class="row justify-content-center py-3">
                 <SalaryDetailCard Title="Other Pay"
                                   GridSpacing="col-md-4"
                                   PayAmount="@State.Value.SalaryDetail.Employee.OtherPay" />
@@ -102,10 +102,10 @@
                         <tr class="text-center">
                             <th scope="col">Name</th>
                             <th scope="col">Job Title</th>
-                            <th scope="col">Agency</th>
+                            <th scope="col" class="d-none d-md-table-cell">Agency</th>
                             <th scope="col">Year</th>
-                            <th scope="col">Base Pay</th>
-                            <th scope="col">Total Pay &Aacute; Benefits</th>
+                            <th scope="col" class="d-none d-md-table-cell">Base Pay</th>
+                            <th scope="col" class="d-none d-md-table-cell">Total Pay &Aacute; Benefits</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -114,10 +114,10 @@
                             <tr class="text-center cursor-pointer" @onclick="(() => OnRowClicked(relatedRecord))">
                                 <td>@relatedRecord.Name</td>
                                 <td>@relatedRecord.JobTitle</td>
-                                <td>@relatedRecord.Agency</td>
+                                <td class="d-none d-md-table-cell">@relatedRecord.Agency</td>
                                 <td>@relatedRecord.Year</td>
-                                <td>@relatedRecord.BasePay.ToString("C")</td>
-                                <td>@relatedRecord.TotalPayWithBenefits.ToString("C")</td>
+                                <td class="d-none d-md-table-cell">@relatedRecord.BasePay.ToString("C")</td>
+                                <td class="d-none d-md-table-cell">@relatedRecord.TotalPayWithBenefits.ToString("C")</td>
                             </tr>
                         }
                     </tbody>
