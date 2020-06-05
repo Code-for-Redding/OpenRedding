@@ -2,17 +2,16 @@ namespace OpenRedding.Api.Controllers
 {
     using System;
     using System.Net.Http;
-    using System.Net.Mime;
     using System.Threading.Tasks;
     using Domain.Salaries.ViewModels;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Http.Extensions;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Routing;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
-    using Microsoft.Net.Http.Headers;
     using OpenRedding.Api;
-    using OpenRedding.Core.Exception;
+    using OpenRedding.Core.Infrastructure.Services;
     using OpenRedding.Core.Salaries.Commands.DownloadSalaries;
     using OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries;
     using OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary;
@@ -25,11 +24,13 @@ namespace OpenRedding.Api.Controllers
     {
         private readonly ILogger<SalariesController> _logger;
         private readonly string _gatewayBaseUrl;
+        private readonly ILinkBuilder _linkBuilder;
 
-        public SalariesController(ILogger<SalariesController> logger, IConfiguration configuration)
+        public SalariesController(ILogger<SalariesController> logger, IConfiguration configuration, ILinkBuilder linkBuilder)
         {
             _logger = logger;
             _gatewayBaseUrl = configuration["GatewayBaseUrl"];
+            _linkBuilder = linkBuilder;
         }
 
         [HttpGet]
@@ -62,96 +63,13 @@ namespace OpenRedding.Api.Controllers
 
             var response = await Mediator.Send(new GetEmployeeSalariesQuery(searchRequest, new Uri(_gatewayBaseUrl), page));
 
-            int nextPage;
-            int previousPage;
-            if (page.HasValue)
-            {
-                nextPage = page.Value < response.Pages ? page.Value + 1 : 1;
-                previousPage = page.Value > 1 && page.Value <= response.Pages ? page.Value - 1 : response.Pages;
-            }
-            else
-            {
-                nextPage = response.Pages > 1 ? 2 : 1;
-                previousPage = response.Pages;
-            }
-
-            var nextPageQuery = new QueryBuilder();
-            var previousPageQuery = new QueryBuilder();
-            var firstPageQuery = new QueryBuilder();
-            var lastPageQuery = new QueryBuilder();
-            var pagedLinkQuery = new QueryBuilder();
-            var downloadLinkQuery = new QueryBuilder();
-
-            foreach (var queryParam in HttpContext.Request.Query)
-            {
-                if (!string.Equals(queryParam.Key, "page", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    nextPageQuery.Add(queryParam.Key, queryParam.Value.ToString());
-                    previousPageQuery.Add(queryParam.Key, queryParam.Value.ToString());
-                    firstPageQuery.Add(queryParam.Key, queryParam.Value.ToString());
-                    lastPageQuery.Add(queryParam.Key, queryParam.Value.ToString());
-                    pagedLinkQuery.Add(queryParam.Key, queryParam.Value.ToString());
-                    downloadLinkQuery.Add(queryParam.Key, queryParam.Value.ToString());
-                }
-            }
-
-            nextPageQuery.Add("page", nextPage.ToString());
-            previousPageQuery.Add("page", previousPage.ToString());
-            firstPageQuery.Add("page", "1");
-            lastPageQuery.Add("page", response.Pages.ToString());
-            pagedLinkQuery.Add("page", OpenReddingConstants.PageNumberStringReplacementValue);
-
-            var nextPageLink = $"{_gatewayBaseUrl}/salaries{nextPageQuery.ToQueryString()}";
-            var previousPageLink = $"{_gatewayBaseUrl}/salaries{previousPageQuery.ToQueryString()}";
-            var firstPageLink = $"{_gatewayBaseUrl}/salaries{firstPageQuery.ToQueryString()}";
-            var lastPageLink = $"{_gatewayBaseUrl}/salaries{lastPageQuery.ToQueryString()}";
-            var pagedPageLink = $"{_gatewayBaseUrl}/salaries{pagedLinkQuery.ToQueryString()}";
-            var downloadRequestLink = $"{_gatewayBaseUrl}/salaries/download{downloadLinkQuery.ToQueryString()}";
-
             return new OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>
             {
                 Results = response.Results,
                 Count = response.Count,
                 Pages = response.Pages,
                 CurrentPage = response.CurrentPage,
-                Links = new OpenReddingPagedLinks
-                {
-                    Next = new OpenReddingLink
-                    {
-                        Href = nextPageLink,
-                        Rel = nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>),
-                        Method = HttpMethod.Get.Method
-                    },
-                    Previous = new OpenReddingLink
-                    {
-                        Href = previousPageLink,
-                        Rel = nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>),
-                        Method = HttpMethod.Get.Method
-                    },
-                    First = new OpenReddingLink
-                    {
-                        Href = firstPageLink,
-                        Rel = nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>),
-                        Method = HttpMethod.Get.Method
-                    },
-                    Last = new OpenReddingLink
-                    {
-                        Href = lastPageLink,
-                        Rel = nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>),
-                        Method = HttpMethod.Get.Method
-                    },
-                    Paged = new OpenReddingLink
-                    {
-                        Href = pagedPageLink,
-                        Rel = nameof(OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>),
-                        Method = HttpMethod.Get.Method
-                    },
-                    Download = new OpenReddingLink
-                    {
-                        Href = downloadRequestLink,
-                        Method = HttpMethod.Get.Method
-                    }
-                }
+                Links = _linkBuilder.BuildPaginationLinks<EmployeeSalarySearchResultDto>(HttpContext.Request.Query, response.Pages, page)
             };
         }
 

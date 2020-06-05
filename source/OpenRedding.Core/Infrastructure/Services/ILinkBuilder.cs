@@ -1,10 +1,13 @@
 ﻿namespace OpenRedding.Core.Infrastructure.Services
 {
     using System.Collections.Generic;
+    using Microsoft.Extensions.Primitives;
     using OpenRedding.Domain.Common.Miscellaneous;
 
-    public interface ILinkBuilder<TResult>
+    public interface ILinkBuilder
     {
-        OpenReddingPagedLinks GenerateLinks(IEnumerable<TResult> results);
+        public OpenReddingLink BuildLink();
+
+        public OpenReddingPagedLinks BuildPaginationLinks<TResponse>(IEnumerable<KeyValuePair<string, StringValues>> queryCollection, int totalPages, int? currentPage);
     }
 }
