@@ -19,18 +19,21 @@
 
 		protected override async Task HandleAsync(SetCurrentSearchRequestAction action, IDispatcher dispatcher)
 		{
-			try
-			{
-				_logger.LogInformation($"Loading employee salaries for search request change");
-				var response = await _apiService.GetEmployeesSalariesAsync(action.SearchRequest);
+			if (action.LoadFromApi)
+            {
+				try
+				{
+					_logger.LogInformation($"Loading employee salaries for search request change");
+					var response = await _apiService.GetEmployeesSalariesAsync(action.SearchRequest);
 
-				dispatcher.Dispatch(new LoadEmployeeSalariesSuccessAction(response));
-			}
-			catch (Exception e)
-			{
-				_logger.LogError($"Could not load employee salaries, reason: {e.Message}");
-				dispatcher.Dispatch(new LoadEmployeeSalariesFailureAction());
-			}
+					dispatcher.Dispatch(new LoadEmployeeSalariesSuccessAction(response));
+				}
+				catch (Exception e)
+				{
+					_logger.LogError($"Could not load employee salaries, reason: {e.Message}");
+					dispatcher.Dispatch(new LoadEmployeeSalariesFailureAction());
+				}
+            }
 		}
 	}
 }

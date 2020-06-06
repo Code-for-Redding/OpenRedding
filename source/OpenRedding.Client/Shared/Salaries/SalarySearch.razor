@@ -19,6 +19,7 @@
     @* Name *@
     <div class="col-md-3">
         <ValidatedInput
+                InputValue="@employeeName"
                 OnValidatedInput="IsValidEmployeeNameHandler"
                 OnValueInput="EmployeeNameInputHandler"
                 DisplayErrorMessage="false"
@@ -30,6 +31,7 @@
     @* Job title *@
     <div class="col-md-3">
         <ValidatedInput 
+                InputValue="@jobTitle"
                 OnValidatedInput="IsValidJobTitleHandler"
                 OnValueInput="JobTitleInputHandler"
                 DisplayErrorMessage="false"
@@ -109,7 +111,7 @@
             status: State.Value.SearchRequest?.Status);
 
         // Set the current search request on the state and load employees from the request
-        StateFacade.SetCurrentSearchRequest(searchRequest);
+        StateFacade.SetCurrentSearchRequest(searchRequest, loadFromApi: false);
         StateFacade.LoadEmployeesFromSearchRequest();
     }
 

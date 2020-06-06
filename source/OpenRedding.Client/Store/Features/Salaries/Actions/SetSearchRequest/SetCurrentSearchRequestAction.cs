@@ -4,11 +4,13 @@
 
     public class SetCurrentSearchRequestAction
     {
-        public SetCurrentSearchRequestAction(EmployeeSalarySearchRequestDto? searchRequest, bool isRefreshTable) =>
-            (SearchRequest, IsRefreshTable) = (searchRequest, isRefreshTable);
+        public SetCurrentSearchRequestAction(EmployeeSalarySearchRequestDto? searchRequest, bool isRefreshTable, bool loadFromApi) =>
+            (SearchRequest, IsRefreshTable, LoadFromApi) = (searchRequest, isRefreshTable, loadFromApi);
 
         public EmployeeSalarySearchRequestDto? SearchRequest { get; }
 
         public bool IsRefreshTable { get; }
+
+        public bool LoadFromApi { get; }
     }
 }

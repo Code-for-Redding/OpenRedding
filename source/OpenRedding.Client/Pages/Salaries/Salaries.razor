@@ -4,7 +4,6 @@
 
 @using Fluxor
 @using OpenRedding.Client.Services
-@using OpenRedding.Client.Components.Common
 @using OpenRedding.Client.Store
 @using OpenRedding.Client.Shared.Salaries
 @using OpenRedding.Domain.Common.Miscellaneous 
@@ -229,8 +228,9 @@
     {
         await base.OnInitializedAsync();
 
-        if (State.Value.SalaryResults is null || State.Value.SalaryResults.Count is 0)
+        if (State.Value.SalaryResults is null && !State.Value.IsLoading)
         {
+            Console.WriteLine("LOADING EMPLOYEES");
             StateFacade.LoadAllEmployees();
         }
     }

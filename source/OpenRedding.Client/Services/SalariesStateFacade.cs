@@ -42,8 +42,8 @@
         public void LoadEmployeesOnSearchClicked(string name, string jobTitle) =>
             _dispatcher.Dispatch(new LoadEmployeesOnSearchClickedAction(name, jobTitle));
 
-        public void SetCurrentSearchRequest(EmployeeSalarySearchRequestDto? searchRequest, bool isTableRefresh = false) =>
-            _dispatcher.Dispatch(new SetCurrentSearchRequestAction(searchRequest, isTableRefresh));
+        public void SetCurrentSearchRequest(EmployeeSalarySearchRequestDto? searchRequest, bool isTableRefresh = false, bool loadFromApi = true) =>
+            _dispatcher.Dispatch(new SetCurrentSearchRequestAction(searchRequest, isTableRefresh, loadFromApi));
 
         public void SetEmployeeName(string name) =>
             _dispatcher.Dispatch(new SetEmployeeNameAction(name));
