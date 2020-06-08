@@ -1,11 +1,13 @@
 namespace OpenRedding.Api
 {
     using System;
+    using System.Data;
     using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
     using MediatR;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Data.SqlClient;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -33,18 +35,46 @@ namespace OpenRedding.Api
                     // Drop the tables to recreate them with fresh data every server re-roll
                     if (context.Database.CanConnect())
                     {
+                        var tableExists = false;
                         var timer = new Stopwatch();
                         timer.Start();
-                        logger.LogInformation("Dropping database...");
-                        await context.Database.EnsureDeletedAsync();
-                        logger.LogInformation("Database dropped successfully, applying migrations...");
+
+                        // For Docker, we can't drop the master database by default, so check for the Employees and migrations table to drop
+                        if (args.Contains("docker"))
+                        {
+                            var dbConnection = context.Database.GetDbConnection();
+
+                            if (dbConnection.State.Equals(ConnectionState.Closed))
+                            {
+                                await dbConnection.OpenAsync();
+                            }
+
+                            // Grab a disposable instance of the connection and query for the existing table
+                            using var command = dbConnection.CreateCommand();
+
+                            // Join the tables information and schema tables
+                            command.CommandText = @"
+SELECT 1 FROM sys.tables AS T
+    INNER JOIN sys.schemas AS S ON T.schema_id = S.schema_id
+WHERE S.Name = 'dbo' AND T.Name = 'Employees'";
+                            tableExists = await command.ExecuteScalarAsync() != null;
+                        }
+                        else
+                        {
+                            logger.LogInformation("Dropping database...");
+                            await context.Database.EnsureDeletedAsync();
+                        }
+
+                        logger.LogInformation("Applying migrations...");
                         await context.Database.MigrateAsync();
                         logger.LogInformation("Migration complete, populating database with data from Transparent California...");
 
-                        // await mediator.Send(new SeedSalaryTableCommand());
-                        await mediator.Send(new SeedSalaryTableCommand());
-                        timer.Stop();
-                        logger.LogInformation($"Database seeding was successful, time taken: {timer.Elapsed.TotalSeconds} seconds");
+                        if (!tableExists)
+                        {
+                            await mediator.Send(new SeedSalaryTableCommand());
+                            timer.Stop();
+                            logger.LogInformation($"Database seeding was successful, time taken: {timer.Elapsed.TotalSeconds} seconds");
+                        }
                     }
                     else
                     {

@@ -23,3 +23,5 @@ logs/
 *.csproj.user
 *.DotSettings.user
 node_modules/
+/source/OpenRedding.Gateway/Properties/PublishProfiles
+/.env

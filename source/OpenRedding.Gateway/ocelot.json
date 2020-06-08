@@ -2,11 +2,11 @@
   "ReRoutes": [
     {
       "DownstreamPathTemplate": "/api/salaries",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5003
+          "Host": "open_redding_api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/v1/salaries",
@@ -14,11 +14,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/salaries?name={name}&jobTitle={jobTitle}&agency={agency}&status={status}&sortBy={sortBy}&sortField={sortField}&page={page}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5003
+          "Host": "open_redding_api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/v1/salaries?name={name}&jobTitle={jobTitle}&agency={agency}&status={status}&sortBy={sortBy}&sortField={sortField}&page={page}",
@@ -26,11 +26,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/salaries/{id}",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5003
+          "Host": "open_redding_api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/v1/salaries/{id}",
@@ -38,11 +38,11 @@
     },
     {
       "DownstreamPathTemplate": "/api/salaries/download",
-      "DownstreamScheme": "https",
+      "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 5003
+          "Host": "open_redding_api",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/v1/salaries/download",

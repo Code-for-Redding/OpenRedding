@@ -63,10 +63,12 @@ namespace OpenRedding.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHttpsRedirection();
+            }
 
             app.UseConduitErrorHandlerMiddleware();
-
-            app.UseHttpsRedirection();
 
             // TODO: Update this
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
