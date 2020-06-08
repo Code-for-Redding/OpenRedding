@@ -39,31 +39,21 @@ namespace OpenRedding.Api
                         var timer = new Stopwatch();
                         timer.Start();
 
-                        // For Docker, we can't drop the master database by default, so check for the Employees and migrations table to drop
-                        if (args.Contains("docker"))
+                        var dbConnection = context.Database.GetDbConnection();
+                        if (dbConnection.State.Equals(ConnectionState.Closed))
                         {
-                            var dbConnection = context.Database.GetDbConnection();
+                            await dbConnection.OpenAsync();
+                        }
 
-                            if (dbConnection.State.Equals(ConnectionState.Closed))
-                            {
-                                await dbConnection.OpenAsync();
-                            }
+                        // Grab a disposable instance of the connection and query for the existing table
+                        using var command = dbConnection.CreateCommand();
 
-                            // Grab a disposable instance of the connection and query for the existing table
-                            using var command = dbConnection.CreateCommand();
-
-                            // Join the tables information and schema tables
-                            command.CommandText = @"
+                        // Join the tables information and schema tables
+                        command.CommandText = @"
 SELECT 1 FROM sys.tables AS T
     INNER JOIN sys.schemas AS S ON T.schema_id = S.schema_id
 WHERE S.Name = 'dbo' AND T.Name = 'Employees'";
-                            tableExists = await command.ExecuteScalarAsync() != null;
-                        }
-                        else
-                        {
-                            logger.LogInformation("Dropping database...");
-                            await context.Database.EnsureDeletedAsync();
-                        }
+                        tableExists = await command.ExecuteScalarAsync() != null;
 
                         logger.LogInformation("Applying migrations...");
                         await context.Database.MigrateAsync();

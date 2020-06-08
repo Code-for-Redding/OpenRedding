@@ -5,47 +5,20 @@ services:
   open_redding_api:
     image: open_redding_api
     ports:
-      - 80
-      - 443
+      - "5002:80"
+      - "5003:443"
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: https://+:443;http://+:80
-      ASPNETCORE_HTTPS_PORT: 443
-      ASPNETCORE_Kestrel__Certificates__Default__Password: mypassword123
-      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp.pfx
-      WAIT_HOSTS: localhost:1433
+      WAIT_HOSTS: open_redding_sql_server:1433
       AzureStorageConnectionString: ${AZURE_STORAGE_CONNECTION_STRING}
       SalaryCsvContainer: ${SALARY_CSV_CONTAINER}
       ConnectionString: ${CONNECTION_STRING}
       GatewayBaseUrl: ${GATEWAY_BASE_URL}
-    volumes:
-      - ./https/aspnetapp.pfx:/https/aspnetapp.pfx:ro
     build:
       context: .
       dockerfile: source/OpenRedding.Api/Dockerfile
     depends_on: 
       - open_redding_sql_server
-
-  # Gateway container
-  open_redding_gateway:
-    image: open_redding_gateway
-    ports:
-      - "6000:80"
-      - "6001:443"
-    environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: https://+:443;http://+:80
-      ASPNETCORE_HTTPS_PORT: 6001
-      ASPNETCORE_Kestrel__Certificates__Default__Password: mypassword123
-      ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp.pfx
-    volumes:
-      - ./https/aspnetapp.pfx:/https/aspnetapp.pfx:ro
-    build:
-      context: .
-      dockerfile: source/OpenRedding.Gateway/Dockerfile
-    depends_on:
-      - open_redding_sql_server
-
 
   open_redding_sql_server:
     image: mcr.microsoft.com/mssql/server:2019-latest

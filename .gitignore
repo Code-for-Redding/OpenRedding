@@ -25,3 +25,4 @@ logs/
 node_modules/
 /source/OpenRedding.Gateway/Properties/PublishProfiles
 /.env
+/source/OpenRedding.Api/Properties/PublishProfiles

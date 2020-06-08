@@ -5,7 +5,7 @@ namespace OpenRedding.Api
     using Microsoft.Extensions.DependencyInjection;
 
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     public class OpenReddingBaseController : ControllerBase
     {
         private IMediator? _mediator;
