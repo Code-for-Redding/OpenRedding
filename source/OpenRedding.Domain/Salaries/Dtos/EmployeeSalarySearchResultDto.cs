@@ -1,6 +1,6 @@
 namespace OpenRedding.Domain.Salaries.Dtos
 {
-	using OpenRedding.Domain.Common.Miscellaneous;
+    using OpenRedding.Domain.Common.Miscellaneous;
 
     public class EmployeeSalarySearchResultDto
     {

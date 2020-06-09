@@ -1,6 +1,6 @@
 ﻿namespace OpenRedding.Domain.Common.ViewModels
 {
-	using System.Collections.Generic;
+    using System.Collections.Generic;
 
     public class OpenReddingEnumSelectViewModel<TEnum>
         where TEnum : struct
