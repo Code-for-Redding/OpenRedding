@@ -15,3 +15,26 @@ variables:
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+
+# Run all unit and integration tests
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: './tests/**/*.csproj'
+    testRunTitle: 'Run tests'
+
+# Build the distribution files for the client
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    arguments: './source/OpenRedding.Client/ --no-build -o deploy'
+
+# Copy the distribution files to the static web container
+- task: AzureFileCopy@4
+  inputs:
+    SourcePath: './deploy/wwwroot/'
+    azureSubscription: 'Pay-As-You-Go(af2d9345-cd54-42f1-971c-e4926c8171b7)'
+    Destination: 'AzureBlob'
+    storage: 'openredding'
+    ContainerName: '$web'
