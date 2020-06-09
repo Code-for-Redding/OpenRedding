@@ -16,6 +16,12 @@ steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 
+# Use the SDK version in global.json  
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    useGlobalJson: true
+
 # Run all unit and integration tests
 - task: DotNetCoreCLI@2
   inputs:
