@@ -62,22 +62,10 @@ steps:
 #    Dockerfile: 'source/OpenRedding.Api/Dockerfile.production'
 #    buildContext: '$(Build.SourcesDirectory)'
 
-- task: DockerCompose@0
+- task: Docker@2
   inputs:
-    containerregistrytype: 'Container Registry'
-    dockerRegistryEndpoint: 'DockerHub'
-    dockerComposeFile: 'docker-compose.production.yml'
-    dockerComposeFileArgs: |
-      AzureConnectionString=$env:AZURE_STORAGE_CONNECTION_STRING
-      ConnectionString=$env:CONNECTION_STRING
-      SALAY_CSV_CONTAINER=$env:SALARY_CSV_CONTAINER
-      GATEWAY_BASE_URL=$env:GATEWAY_BASE_URL
-    projectName: 'openreddingapi'
-    action: 'Run a Docker Compose command'
-    dockerComposeCommand: 'build'
-
-  env:
-    AZURE_STORAGE_CONNECTION_STRING: $(AZURE_STORAGE_CONNECTION_STRING)
-    CONNECTION_STRING: $(CONNECTION_STRING)
-    GATEWAY_BASE_URL: $(GATEWAY_BASE_URL)
-    SALARY_CSV_CONTAINER: $(GATEWAY_BASE_URL)
+    containerRegistry: 'DockerHub'
+    repository: 'openreddingapi'
+    command: 'buildAndPush'
+    Dockerfile: 'source/OpenRedding.Api/Dockerfile.production'
+    buildContext: '$(Build.SourcesDirectory)'
