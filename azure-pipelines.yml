@@ -26,7 +26,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
-    projects: './tests/**/*.csproj'
+    projects: 'tests/**/*.csproj'
     testRunTitle: 'Run tests'
 
 # Build the distribution files for the client
@@ -34,7 +34,8 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: true
-    arguments: './source/OpenRedding.Client/ --no-build -o deploy'
+    projects: 'source/OpenRedding.Client/OpenRedding.Client.csproj'
+    arguments: '--no-build -o deploy'
 
 # Copy the distribution files to the static web container
 - task: AzureFileCopy@4
