@@ -69,3 +69,4 @@ steps:
     command: 'buildAndPush'
     Dockerfile: 'source/OpenRedding.Api/Dockerfile.production'
     buildContext: '$(Build.SourcesDirectory)'
+    tags: 'latest'

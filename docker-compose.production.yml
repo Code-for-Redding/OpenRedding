@@ -13,6 +13,3 @@ services:
       SalaryCsvContainer: ${SALARY_CSV_CONTAINER}
       ConnectionString: ${CONNECTION_STRING}
       GatewayBaseUrl: ${GATEWAY_BASE_URL}
-    build:
-      context: .
-      dockerfile: source/OpenRedding.Api/Dockerfile.production
