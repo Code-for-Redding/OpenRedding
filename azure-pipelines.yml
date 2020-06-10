@@ -49,4 +49,4 @@ steps:
     ContainerName: '$web'   
 
   env:
-    AZURE_SUBSCRIPTION_ID: $(azureSubscriptionId)  
+    AZURE_SUBSCRIPTION_ID: $(azureSubscriptionId) 
