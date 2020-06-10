@@ -11,21 +11,14 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  clientProjectPath: 'source/OpenRedding.Client/OpenRedding.Client.csproj'
 
-steps:
-- powershell: |
-    # Using an input-m
-    # Using the mapped env var:
-    Write-Host "This works: $env:AZURE_SUBSCRIPTION_ID"
-    
+steps:    
 # Use the SDK version in global.json  
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
     useGlobalJson: true
-
-- script: dotnet build ./OpenRedding.sln --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
 
 # Run all unit and integration tests
 - task: DotNetCoreCLI@2
@@ -34,12 +27,19 @@ steps:
     projects: 'tests/**/*.csproj'
     testRunTitle: 'Run tests'
 
+# Build the client project
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '$(clientProjectPath)'
+    arguments: '-c $(buildConfiguration)'
+
 # Build the distribution files for the client
 - task: DotNetCoreCLI@2
   inputs:
     command: 'publish'
     publishWebProjects: false
-    projects: 'source/OpenRedding.Client/OpenRedding.Client.csproj'
+    projects: '$(clientProjectPath)'
     arguments: '--output deploy'
     zipAfterPublish: false
     modifyOutputPath: true
@@ -51,7 +51,13 @@ steps:
     azureSubscription: 'Pay-As-You-Go(af2d9345-cd54-42f1-971c-e4926c8171b7)'
     Destination: 'AzureBlob'
     storage: 'openredding'
-    ContainerName: '$web'   
+    ContainerName: '$web'
 
-  env:
-    AZURE_SUBSCRIPTION_ID: $(azureSubscriptionId) 
+# Build and deploy the Docker container
+- task: Docker@2
+  inputs:
+    containerRegistry: 'DockerHub'
+    repository: 'openreddingapi'
+    command: 'buildAndPush'
+    Dockerfile: 'source/OpenRedding.Api/Dockerfile.production'
+    buildContext: '$(Build.SourcesDirectory)
