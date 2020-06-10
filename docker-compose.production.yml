@@ -1,0 +1,18 @@
+version: '3.5'
+
+services:
+  # API container
+  open_redding_api:
+    image: open_redding_api
+    ports:
+      - "5002:80"
+      - "5003:443"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      AzureStorageConnectionString: ${AZURE_STORAGE_CONNECTION_STRING}
+      SalaryCsvContainer: ${SALARY_CSV_CONTAINER}
+      ConnectionString: ${CONNECTION_STRING}
+      GatewayBaseUrl: ${GATEWAY_BASE_URL}
+    build:
+      context: .
+      dockerfile: source/OpenRedding.Api/Dockerfile.production

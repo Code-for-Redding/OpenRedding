@@ -13,7 +13,7 @@ variables:
   buildConfiguration: 'Release'
   clientProjectPath: 'source/OpenRedding.Client/OpenRedding.Client.csproj'
 
-steps:    
+steps:
 # Use the SDK version in global.json  
 - task: UseDotNet@2
   inputs:
@@ -21,43 +21,63 @@ steps:
     useGlobalJson: true
 
 # Run all unit and integration tests
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    projects: 'tests/**/*.csproj'
-    testRunTitle: 'Run tests'
+#- task: DotNetCoreCLI@2
+#  inputs:
+#    command: 'test'
+#    projects: 'tests/**/*.csproj'
+#    testRunTitle: 'Run tests'
 
 # Build the client project
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: '$(clientProjectPath)'
-    arguments: '-c $(buildConfiguration)'
+#- task: DotNetCoreCLI@2
+#  inputs:
+#    command: 'build'
+#    projects: '$(clientProjectPath)'
+#    arguments: '-c $(buildConfiguration)'
 
 # Build the distribution files for the client
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'publish'
-    publishWebProjects: false
-    projects: '$(clientProjectPath)'
-    arguments: '--output deploy'
-    zipAfterPublish: false
-    modifyOutputPath: true
+#- task: DotNetCoreCLI@2
+#  inputs:
+#    command: 'publish'
+#    publishWebProjects: false
+#    projects: '$(clientProjectPath)'
+#    arguments: '--output deploy'
+#    zipAfterPublish: false
+#    modifyOutputPath: true
 
  # Copy the distribution files to the static web container
-- task: AzureFileCopy@4
-  inputs:
-    SourcePath: '$(Build.SourcesDirectory)/deploy/OpenRedding.Client/wwwroot'
-    azureSubscription: 'Pay-As-You-Go(af2d9345-cd54-42f1-971c-e4926c8171b7)'
-    Destination: 'AzureBlob'
-    storage: 'openredding'
-    ContainerName: '$web'
+#- task: AzureFileCopy@4
+#  inputs:
+#    SourcePath: '$(Build.SourcesDirectory)/deploy/OpenRedding.Client/wwwroot'
+#    azureSubscription: 'Pay-As-You-Go(af2d9345-cd54-42f1-971c-e4926c8171b7)'
+#    Destination: 'AzureBlob'
+#    storage: 'openredding'
+#    ContainerName: '$web'
 
 # Build and deploy the Docker container
-- task: Docker@2
+#- task: Docker@2
+#  inputs:
+#    containerRegistry: 'DockerHub'
+#    repository: 'openreddingapi'
+#    command: 'buildAndPush'
+#    Dockerfile: 'source/OpenRedding.Api/Dockerfile.production'
+#    buildContext: '$(Build.SourcesDirectory)'
+
+- task: DockerCompose@0
   inputs:
-    containerRegistry: 'DockerHub'
-    repository: 'openreddingapi'
-    command: 'buildAndPush'
-    Dockerfile: 'source/OpenRedding.Api/Dockerfile.production'
-    buildContext: '$(Build.SourcesDirectory)'
+    containerregistrytype: 'Container Registry'
+    dockerRegistryEndpoint: 'DockerHub'
+    dockerComposeFile: 'docker-compose.production.yml'
+    dockerComposeFileArgs: |
+      AzureConnectionString=$env:AZURE_STORAGE_CONNECTION_STRING
+      ConnectionString=$env:CONNECTION_STRING
+      SALAY_CSV_CONTAINER=$env:SALARY_CSV_CONTAINER
+      GATEWAY_BASE_URL=$env:GATEWAY_BASE_URL
+    projectName: 'openreddingapi'
+    action: 'Run a Docker Compose command'
+    dockerComposeCommand: 'build'
+
+  env:
+    AZURE_STORAGE_CONNECTION_STRING: $(AZURE_STORAGE_CONNECTION_STRING)
+    CONNECTION_STRING: $(CONNECTION_STRING)
+    GATEWAY_BASE_URL: $(GATEWAY_BASE_URL)
+    SALARY_CSV_CONTAINER: $(GATEWAY_BASE_URL)
