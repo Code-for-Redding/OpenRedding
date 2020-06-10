@@ -11,8 +11,13 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  azureSubscriptionId: $(AZURE_SUBSCRIPTION_ID)
 
 steps:
+- powershell: |
+    # Using an input-macro:
+    Write-Host "This works: $(azureSubscriptionId)"
+
 # Use the SDK version in global.json  
 - task: UseDotNet@2
   inputs:
@@ -43,7 +48,7 @@ steps:
 - task: AzureFileCopy@4
   inputs:
     SourcePath: '$(Build.SourcesDirectory)/deploy/OpenRedding.Client/wwwroot'
-    azureSubscription: 'Pay-As-You-Go(af2d9345-cd54-42f1-971c-e4926c8171b7)'
+    azureSubscription: $(azureSubscriptionId)
     Destination: 'AzureBlob'
     storage: 'openredding'
     ContainerName: '$web'
