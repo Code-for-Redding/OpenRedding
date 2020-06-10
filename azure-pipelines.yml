@@ -20,7 +20,7 @@ steps:
     useGlobalJson: true
 
 - script: dotnet build ./OpenRedding.sln --configuration $(buildConfiguration)
-    displayName: 'dotnet build $(buildConfiguration)'
+  displayName: 'dotnet build $(buildConfiguration)'
 
 #Run all unit and integration tests
 - task: DotNetCoreCLI@2
