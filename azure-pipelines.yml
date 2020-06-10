@@ -27,7 +27,7 @@ steps:
 - script: dotnet build ./OpenRedding.sln --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 
-#Run all unit and integration tests
+# Run all unit and integration tests
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
@@ -43,3 +43,15 @@ steps:
     arguments: '--output deploy'
     zipAfterPublish: false
     modifyOutputPath: true
+
+ # Copy the distribution files to the static web container
+- task: AzureFileCopy@4
+  inputs:
+    SourcePath: '$(Build.SourcesDirectory)/deploy/OpenRedding.Client/wwwroot'
+    azureSubscription: $env:AZURE_SUBSCRIPTION_ID
+    Destination: 'AzureBlob'
+    storage: 'openredding'
+    ContainerName: '$web'   
+
+  env:
+    AZURE_SUBSCRIPTION_ID: $(azureSubscriptionId)  
