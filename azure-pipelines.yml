@@ -19,28 +19,30 @@ steps:
     packageType: 'sdk'
     useGlobalJson: true
 
-- script: dotnet build ./OpenRedding.sln --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
-
-# Run all unit and integration tests
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    projects: 'tests/**/*.csproj'
-    testRunTitle: 'Run tests'
+- #script: dotnet build ./OpenRedding.sln --configuration $(buildConfiguration)
+  #displayName: 'dotnet build $(buildConfiguration)'
+  #
+# #Run all unit and integration tests
+- #task: DotNetCoreCLI@2
+  #inputs:
+  #  command: 'test'
+  #  projects: 'tests/**/*.csproj'
+  #  testRunTitle: 'Run tests'
 
 # Build the distribution files for the client
 - task: DotNetCoreCLI@2
   inputs:
     command: 'publish'
-    publishWebProjects: true
+    publishWebProjects: false
     projects: 'source/OpenRedding.Client/OpenRedding.Client.csproj'
-    arguments: '--no-build -o deploy'
+    arguments: '--no-restore --output deploy'
+    zipAfterPublish: false
+    modifyOutputPath: true
 
 # Copy the distribution files to the static web container
 - task: AzureFileCopy@4
   inputs:
-    SourcePath: '/deploy/wwwroot/'
+    SourcePath: '/deploy/OpenRedding.Client/wwwroot/*'
     azureSubscription: 'Pay-As-You-Go(af2d9345-cd54-42f1-971c-e4926c8171b7)'
     Destination: 'AzureBlob'
     storage: 'openredding'
