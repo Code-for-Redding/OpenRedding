@@ -25,9 +25,9 @@ steps:
 #Run all unit and integration tests
 - task: DotNetCoreCLI@2
     inputs:
-    command: 'test'
-    projects: 'tests/**/*.csproj'
-    testRunTitle: 'Run tests'
+      command: 'test'
+      projects: 'tests/**/*.csproj'
+      testRunTitle: 'Run tests'
 
 # Build the distribution files for the client
 - task: DotNetCoreCLI@2
