@@ -1,6 +1,6 @@
 ﻿namespace OpenRedding.Core.Salaries.Commands.DownloadSalaries
 {
-	using FluentValidation;
+    using FluentValidation;
 
     public class DownloadSalariesCommandValidator : AbstractValidator<DownloadSalariesCommand>
     {

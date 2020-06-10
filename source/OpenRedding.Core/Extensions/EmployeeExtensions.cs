@@ -87,10 +87,12 @@ namespace OpenRedding.Core.Extensions
                     case 1:
                         firstName = tokenizedName[0];
                         break;
+
                     case 2:
                         firstName = tokenizedName[0];
                         lastName = tokenizedName[1];
                         break;
+
                     case 3:
                         firstName = tokenizedName[0];
                         middleName = tokenizedName[1];

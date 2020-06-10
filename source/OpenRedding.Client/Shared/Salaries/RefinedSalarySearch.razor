@@ -5,9 +5,8 @@
 @using OpenRedding.Client.Components.Dropdowns.Salaries
 @using OpenRedding.Client.Services
 @using OpenRedding.Client.Store
-@using OpenRedding.Domain.Salaries.Dtos 
+@using OpenRedding.Domain.Salaries.Dtos
 @using OpenRedding.Domain.Salaries.Enums
-
 
 @inject IState<OpenReddingAppState> State
 @inject SalariesStateFacade StateFacade
@@ -108,11 +107,11 @@
                 <div class="mx-auto">
                     @if (isValidEmployeeName && isValidJobTitle && !State.Value.IsTableRefresh)
                     {
-                        <button @onclick="(() => StateFacade.LoadEmployeesOnSearchClicked(string.IsNullOrWhiteSpace(employeeName) ? string.Empty : employeeName, string.IsNullOrWhiteSpace(jobTitle) ? string.Empty : jobTitle))" 
-                                class="btn btn-outline-info" 
-                                type="button" 
+                        <button @onclick="(() => StateFacade.LoadEmployeesOnSearchClicked(string.IsNullOrWhiteSpace(employeeName) ? string.Empty : employeeName, string.IsNullOrWhiteSpace(jobTitle) ? string.Empty : jobTitle))"
+                                class="btn btn-outline-info"
+                                type="button"
                                 data-toggle="tooltip"
-                                data-placement="bottom" 
+                                data-placement="bottom"
                                 title="To browse all salary data, leave all fields above blank.">Search</button>
                     }
                     else

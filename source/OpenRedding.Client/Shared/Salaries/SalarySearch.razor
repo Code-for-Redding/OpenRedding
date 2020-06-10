@@ -1,16 +1,16 @@
 ﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-@using Fluxor 
+@using Fluxor
 @using OpenRedding.Client.Components.Dropdowns.Salaries
 @using OpenRedding.Client.Components.Common
-@using OpenRedding.Client.Services 
+@using OpenRedding.Client.Services
 @using OpenRedding.Client.Store
-@using OpenRedding.Domain.Salaries.Dtos 
+@using OpenRedding.Domain.Salaries.Dtos
 @using OpenRedding.Domain.Salaries.Enums
 
 @inject SalariesStateFacade StateFacade
 @inject NavigationManager Navigation
-@inject IState<OpenReddingAppState> State 
+@inject IState<OpenReddingAppState> State
 @inject IJSRuntime JSRuntime
 
 @* Salary search *@
@@ -23,34 +23,34 @@
                 OnValidatedInput="IsValidEmployeeNameHandler"
                 OnValueInput="EmployeeNameInputHandler"
                 DisplayErrorMessage="false"
-                FieldLabel="Name" 
-                InputId="salary-search-name" 
+                FieldLabel="Name"
+                InputId="salary-search-name"
                 LabelCss="col-form-label text-white" />
     </div>
 
     @* Job title *@
     <div class="col-md-3">
-        <ValidatedInput 
+        <ValidatedInput
                 InputValue="@jobTitle"
                 OnValidatedInput="IsValidJobTitleHandler"
                 OnValueInput="JobTitleInputHandler"
                 DisplayErrorMessage="false"
                 FieldLabel="Job Title"
-                InputId="salary-search-job-title" 
+                InputId="salary-search-job-title"
                 LabelCss="col-form-label text-white" />
     </div>
 
     @* Agency *@
     <div class="col-md-3">
-        <EmployeeAgencyDropdown 
-                LabelCss="col-form-label text-white-90" 
+        <EmployeeAgencyDropdown
+                LabelCss="col-form-label text-white-90"
                 LoadFromApi="false"
                 ExistingSelection="Enum.TryParse<EmployeeAgency>(State.Value.SearchRequest?.Agency, true, out var agency) ? agency : EmployeeAgency.AllAgencies" />
     </div>
 
     @* Status *@
     <div class="col-md-3">
-        <EmployeeStatusDropdown 
+        <EmployeeStatusDropdown
                 LabelCss="col-form-label text-white-90"
                 ExistingSelection="Enum.TryParse<EmployeeStatus>(State.Value.SearchRequest?.Status, true, out var status) ? status : EmployeeStatus.AllStatuses" />
     </div>

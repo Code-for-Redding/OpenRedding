@@ -1,6 +1,6 @@
 ﻿namespace OpenRedding.Client.Validation.Models
 {
-	using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations;
 
     public class AlphabeticalTextInput
     {

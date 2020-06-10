@@ -1,14 +1,10 @@
 namespace OpenRedding.Core.Infrastructure.Behaviors
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using FluentValidation;
     using MediatR;
     using Microsoft.Extensions.Logging;
     using OpenRedding.Core.Infrastructure.Requests;
-    using OpenRedding.Domain.Common.Validation;
     using OpenRedding.Domain.Common.ViewModels;
     using OpenRedding.Shared;
 

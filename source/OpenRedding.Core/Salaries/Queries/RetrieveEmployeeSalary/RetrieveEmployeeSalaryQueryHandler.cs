@@ -4,8 +4,6 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
     using System.Linq;
     using System.Linq.Expressions;
     using System.Net;
-    using System.Runtime.CompilerServices;
-    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
     using Data;

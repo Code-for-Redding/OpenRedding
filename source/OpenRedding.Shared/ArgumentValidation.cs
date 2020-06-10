@@ -6,6 +6,7 @@ namespace OpenRedding.Shared
     public static class ArgumentValidation
     {
 #pragma warning disable SA1011 // Closing square brackets should be spaced correctly
+
         public static void ValidateNotNull(params object[]? methodParameters)
 #pragma warning restore SA1011 // Closing square brackets should be spaced correctly
         {

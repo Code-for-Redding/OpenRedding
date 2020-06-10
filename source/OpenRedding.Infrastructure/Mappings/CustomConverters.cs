@@ -2,7 +2,6 @@ namespace OpenRedding.Infrastructure.Mappings
 {
     using System;
     using Domain.Salaries.Dtos;
-    using Domain.Salaries.Entities;
     using OpenRedding.Domain.Salaries.Enums;
 
     public static class CustomConverters

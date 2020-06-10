@@ -10,30 +10,30 @@
 
     public class SetCurrentSearchRequestEffect : Effect<SetCurrentSearchRequestAction>
     {
-		private readonly OpenReddingApiService _apiService;
-		private readonly ILogger<SetCurrentSearchRequestEffect> _logger;
-		private readonly IState<OpenReddingAppState> _state;
+        private readonly OpenReddingApiService _apiService;
+        private readonly ILogger<SetCurrentSearchRequestEffect> _logger;
+        private readonly IState<OpenReddingAppState> _state;
 
-		public SetCurrentSearchRequestEffect(OpenReddingApiService apiService, ILogger<SetCurrentSearchRequestEffect> logger, IState<OpenReddingAppState> state) =>
-			(_apiService, _logger, _state) = (apiService, logger, state);
+        public SetCurrentSearchRequestEffect(OpenReddingApiService apiService, ILogger<SetCurrentSearchRequestEffect> logger, IState<OpenReddingAppState> state) =>
+            (_apiService, _logger, _state) = (apiService, logger, state);
 
-		protected override async Task HandleAsync(SetCurrentSearchRequestAction action, IDispatcher dispatcher)
-		{
-			if (action.LoadFromApi)
+        protected override async Task HandleAsync(SetCurrentSearchRequestAction action, IDispatcher dispatcher)
+        {
+            if (action.LoadFromApi)
             {
-				try
-				{
-					_logger.LogInformation($"Loading employee salaries for search request change");
-					var response = await _apiService.GetEmployeesSalariesAsync(action.SearchRequest);
+                try
+                {
+                    _logger.LogInformation($"Loading employee salaries for search request change");
+                    var response = await _apiService.GetEmployeesSalariesAsync(action.SearchRequest);
 
-					dispatcher.Dispatch(new LoadEmployeeSalariesSuccessAction(response));
-				}
-				catch (Exception e)
-				{
-					_logger.LogError($"Could not load employee salaries, reason: {e.Message}");
-					dispatcher.Dispatch(new LoadEmployeeSalariesFailureAction());
-				}
+                    dispatcher.Dispatch(new LoadEmployeeSalariesSuccessAction(response));
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError($"Could not load employee salaries, reason: {e.Message}");
+                    dispatcher.Dispatch(new LoadEmployeeSalariesFailureAction());
+                }
             }
-		}
-	}
+        }
+    }
 }

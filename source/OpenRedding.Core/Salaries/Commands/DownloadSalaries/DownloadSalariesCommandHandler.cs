@@ -1,6 +1,5 @@
 ﻿namespace OpenRedding.Core.Salaries.Commands.DownloadSalaries
 {
-	using System;
     using System.Linq;
     using System.Net;
     using System.Threading;

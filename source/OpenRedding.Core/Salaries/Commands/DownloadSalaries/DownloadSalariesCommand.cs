@@ -1,6 +1,6 @@
 ﻿namespace OpenRedding.Core.Salaries.Commands.DownloadSalaries
 {
-	using MediatR;
+    using MediatR;
     using OpenRedding.Domain.Common.Miscellaneous;
     using OpenRedding.Domain.Salaries.Dtos;
 

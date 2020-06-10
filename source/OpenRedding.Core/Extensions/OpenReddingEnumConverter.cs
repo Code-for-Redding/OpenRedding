@@ -1,7 +1,6 @@
 namespace OpenRedding.Core.Extensions
 {
     using System;
-    using Domain.Salaries.Entities;
     using OpenRedding.Domain.Salaries.Enums;
 
     public static class OpenReddingEnumConverter

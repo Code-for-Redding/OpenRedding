@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
-    using System.Reflection.Metadata;
     using System.Threading;
     using System.Threading.Tasks;
     using Azure.Storage.Blobs;

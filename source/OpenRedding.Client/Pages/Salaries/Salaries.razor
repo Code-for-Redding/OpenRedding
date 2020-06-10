@@ -6,7 +6,7 @@
 @using OpenRedding.Client.Services
 @using OpenRedding.Client.Store
 @using OpenRedding.Client.Shared.Salaries
-@using OpenRedding.Domain.Common.Miscellaneous 
+@using OpenRedding.Domain.Common.Miscellaneous
 
 @inject NavigationManager Navigation
 @inject IState<OpenReddingAppState> State
@@ -40,7 +40,6 @@
             <RefinedSalarySearch PageCount="State.Value.SalaryResults.Pages" ResultCount="State.Value.SalaryResults.Count" CurrentPage="State.Value.SalaryResults.CurrentPage" />
             <p class="text-center">To view detailed information about a particular record, select from a row in the table below.</p>
         </div>
-
 
         @* Pagination *@
         @if (State.Value.SalaryResults.Links != null)

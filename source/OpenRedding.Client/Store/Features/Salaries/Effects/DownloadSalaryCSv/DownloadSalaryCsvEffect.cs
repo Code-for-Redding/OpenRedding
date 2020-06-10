@@ -3,7 +3,6 @@
     using System;
     using System.Threading.Tasks;
     using Fluxor;
-    using Microsoft.AspNetCore.Components;
     using Microsoft.Extensions.Logging;
     using Microsoft.JSInterop;
     using OpenRedding.Client.Store;
