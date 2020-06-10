@@ -48,7 +48,7 @@ steps:
 - task: AzureFileCopy@4
   inputs:
     SourcePath: '$(Build.SourcesDirectory)/deploy/OpenRedding.Client/wwwroot'
-    azureSubscription: $env:AZURE_SUBSCRIPTION_ID
+    azureSubscription: '$env:AZURE_SUBSCRIPTION_ID'
     Destination: 'AzureBlob'
     storage: 'openredding'
     ContainerName: '$web'   
