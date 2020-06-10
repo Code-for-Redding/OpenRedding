@@ -35,7 +35,7 @@ steps:
     command: 'publish'
     publishWebProjects: false
     projects: 'source/OpenRedding.Client/OpenRedding.Client.csproj'
-    arguments: '--no-restore --output deploy'
+    arguments: '--output deploy'
     zipAfterPublish: false
     modifyOutputPath: true
 
