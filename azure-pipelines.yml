@@ -11,13 +11,8 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  azureSubscriptionId: $(AZURE_SUBSCRIPTION_ID)
 
 steps:
-- powershell: |
-    # Using an input-macro:
-    Write-Host "This works: $(azureSubscriptionId)"
-
 # Use the SDK version in global.json  
 - task: UseDotNet@2
   inputs:
