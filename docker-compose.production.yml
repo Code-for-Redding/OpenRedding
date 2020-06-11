@@ -3,7 +3,7 @@ version: '3.5'
 services:
   # API container
   open_redding_api:
-    image: open_redding_api
+    image: joey32793/openreddingapi:latest
     ports:
       - "5002:80"
       - "5003:443"

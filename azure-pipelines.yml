@@ -28,45 +28,36 @@ steps:
 #    testRunTitle: 'Run tests'
 
 # Build the client project
-#- task: DotNetCoreCLI@2
-#  inputs:
-#    command: 'build'
-#    projects: '$(clientProjectPath)'
-#    arguments: '-c $(buildConfiguration)'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '$(clientProjectPath)'
+    arguments: '-c $(buildConfiguration)'
 
 # Build the distribution files for the client
-#- task: DotNetCoreCLI@2
-#  inputs:
-#    command: 'publish'
-#    publishWebProjects: false
-#    projects: '$(clientProjectPath)'
-#    arguments: '--output deploy'
-#    zipAfterPublish: false
-#    modifyOutputPath: true
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: '$(clientProjectPath)'
+    arguments: '--output deploy'
+    zipAfterPublish: false
+    modifyOutputPath: true
 
- # Copy the distribution files to the static web container
-#- task: AzureFileCopy@4
-#  inputs:
-#    SourcePath: '$(Build.SourcesDirectory)/deploy/OpenRedding.Client/wwwroot'
-#    azureSubscription: 'Pay-As-You-Go(af2d9345-cd54-42f1-971c-e4926c8171b7)'
-#    Destination: 'AzureBlob'
-#    storage: 'openredding'
-#    ContainerName: '$web'
+# Copy the distribution files to the static web container
+- task: AzureFileCopy@4
+  inputs:
+    SourcePath: '$(Build.SourcesDirectory)/deploy/OpenRedding.Client/wwwroot'
+    azureSubscription: 'Pay-As-You-Go(af2d9345-cd54-42f1-971c-e4926c8171b7)'
+    Destination: 'AzureBlob'
+    storage: 'openredding'
+    ContainerName: '$web'
 
-# Build and deploy the Docker container
 #- task: Docker@2
 #  inputs:
 #    containerRegistry: 'DockerHub'
-#    repository: 'openreddingapi'
+#    repository: 'joey32793/openreddingapi'
 #    command: 'buildAndPush'
 #    Dockerfile: 'source/OpenRedding.Api/Dockerfile.production'
 #    buildContext: '$(Build.SourcesDirectory)'
-
-- task: Docker@2
-  inputs:
-    containerRegistry: 'DockerHub'
-    repository: 'joey32793/openreddingapi'
-    command: 'buildAndPush'
-    Dockerfile: 'source/OpenRedding.Api/Dockerfile.production'
-    buildContext: '$(Build.SourcesDirectory)'
-    tags: 'latest'
+#    tags: 'latest'
