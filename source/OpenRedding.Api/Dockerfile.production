@@ -4,6 +4,12 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
+ENV AzureStorageConnectionString $AZURE_STORAGE_CONNECTION_STRING
+ENV ConnectionString $CONNECTION_STRING
+ENV GatewayBaseUrl $GATEWAY_BASE_URL
+ENV SalaryCsvContainer $SALARY_CSV_CONTAINER
+ENV ASPNETCORE_ENVIRONMENT Production
+
 # Pull in project dependencies for caching before restoring build
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
