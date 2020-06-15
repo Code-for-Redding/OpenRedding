@@ -1,11 +1,11 @@
 ﻿namespace OpenRedding.Client.Services
 {
     using Fluxor;
-    using OpenRedding.Client.Store;
     using OpenRedding.Client.Store.Features.Salaries.Actions.DownloadSalaryCsv;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaryDetail;
     using OpenRedding.Client.Store.Features.Salaries.Actions.SetSearchRequest;
+    using OpenRedding.Client.Store.State;
     using OpenRedding.Domain.Salaries.Dtos;
     using OpenRedding.Domain.Salaries.Enums;
 
@@ -16,9 +16,9 @@
     public class SalariesStateFacade
     {
         private readonly IDispatcher _dispatcher;
-        private readonly IState<OpenReddingAppState> _state;
+        private readonly IState<SalariesState> _state;
 
-        public SalariesStateFacade(IDispatcher dispatcher, IState<OpenReddingAppState> state) =>
+        public SalariesStateFacade(IDispatcher dispatcher, IState<SalariesState> state) =>
             (_dispatcher, _state) = (dispatcher, state);
 
         /*

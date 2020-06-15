@@ -1,12 +1,12 @@
-﻿namespace OpenRedding.Client.Store
+﻿namespace OpenRedding.Client.Store.State
 {
     using OpenRedding.Domain.Common.ViewModels;
     using OpenRedding.Domain.Salaries.Dtos;
     using OpenRedding.Domain.Salaries.ViewModels;
 
-    public class OpenReddingAppState
+    public class SalariesState
     {
-        public OpenReddingAppState(
+        public SalariesState(
             bool isLoading,
             bool isTableRefresh,
             OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>? salaryResults,

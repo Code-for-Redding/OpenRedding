@@ -1,9 +1,9 @@
 ﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 @using Fluxor
-@using OpenRedding.Client.Store
+@using OpenRedding.Client.Store.State
 
-@inject IState<OpenReddingAppState> State
+@inject IState<SalariesState> State
 @inject IJSRuntime JSRuntime
 
 <div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="error-modal-label" aria-hidden="true" data-backdrop="static">
@@ -31,7 +31,7 @@
         State.StateChanged += async (sender, state) => await OnErrorStateChanged(sender, state);
     }
 
-    private async Task OnErrorStateChanged(object sender, OpenReddingAppState state)
+    private async Task OnErrorStateChanged(object sender, SalariesState state)
     {
         if (state.HasCurrentErrors)
         {

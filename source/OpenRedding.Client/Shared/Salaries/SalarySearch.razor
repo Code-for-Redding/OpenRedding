@@ -4,13 +4,13 @@
 @using OpenRedding.Client.Components.Dropdowns.Salaries
 @using OpenRedding.Client.Components.Common
 @using OpenRedding.Client.Services
-@using OpenRedding.Client.Store
+@using OpenRedding.Client.Store.State
 @using OpenRedding.Domain.Salaries.Dtos
 @using OpenRedding.Domain.Salaries.Enums
 
 @inject SalariesStateFacade StateFacade
 @inject NavigationManager Navigation
-@inject IState<OpenReddingAppState> State
+@inject IState<SalariesState> State
 @inject IJSRuntime JSRuntime
 
 @* Salary search *@

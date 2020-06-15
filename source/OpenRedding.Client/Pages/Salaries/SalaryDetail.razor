@@ -5,13 +5,13 @@
 @using Fluxor
 @using OpenRedding.Client.Components.Salaries
 @using OpenRedding.Client.Services
-@using OpenRedding.Client.Store
+@using OpenRedding.Client.Store.State
 @using OpenRedding.Domain.Salaries.Dtos
 @using OpenRedding.Domain.Salaries.ViewModels
 
 @inject NavigationManager Navigation
 @inject SalariesStateFacade StateFacade
-@inject IState<OpenReddingAppState> State
+@inject IState<SalariesState> State
 
     <section id="open-redding-salary-detail" class="container mt-4">
         <h2 class="text-center font-weight-bolder mb-3">Salary Detail</h2>

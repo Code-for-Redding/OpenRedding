@@ -4,17 +4,17 @@
     using System.Threading.Tasks;
     using Fluxor;
     using Microsoft.Extensions.Logging;
-    using OpenRedding.Client.Store;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
     using OpenRedding.Client.Store.Features.Salaries.Actions.SetSearchRequest;
+    using OpenRedding.Client.Store.State;
 
     public class SetSalarySortByEffect : Effect<SetSalarySortByAction>
     {
         private readonly OpenReddingApiService _apiService;
         private readonly ILogger<SetSalarySortByEffect> _logger;
-        private readonly IState<OpenReddingAppState> _state;
+        private readonly IState<SalariesState> _state;
 
-        public SetSalarySortByEffect(OpenReddingApiService apiService, ILogger<SetSalarySortByEffect> logger, IState<OpenReddingAppState> state) =>
+        public SetSalarySortByEffect(OpenReddingApiService apiService, ILogger<SetSalarySortByEffect> logger, IState<SalariesState> state) =>
             (_apiService, _logger, _state) = (apiService, logger, state);
 
         protected override async Task HandleAsync(SetSalarySortByAction action, IDispatcher dispatcher)

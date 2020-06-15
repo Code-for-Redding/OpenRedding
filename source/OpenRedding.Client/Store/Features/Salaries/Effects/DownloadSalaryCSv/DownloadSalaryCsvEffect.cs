@@ -5,20 +5,20 @@
     using Fluxor;
     using Microsoft.Extensions.Logging;
     using Microsoft.JSInterop;
-    using OpenRedding.Client.Store;
     using OpenRedding.Client.Store.Features.Salaries.Actions.DownloadSalaryCsv;
+    using OpenRedding.Client.Store.State;
 
     public class DownloadSalaryCsvEffect : Effect<DownloadSalaryCsvAction>
     {
         private readonly ILogger<DownloadSalaryCsvAction> _logger;
         private readonly OpenReddingApiService _apiService;
-        private readonly IState<OpenReddingAppState> _state;
+        private readonly IState<SalariesState> _state;
         private readonly IJSRuntime _jsRuntime;
 
         public DownloadSalaryCsvEffect(
             ILogger<DownloadSalaryCsvAction> logger,
             OpenReddingApiService apiService,
-            IState<OpenReddingAppState> state,
+            IState<SalariesState> state,
             IJSRuntime jsRuntime)
         {
             _logger = logger;

@@ -4,17 +4,17 @@
     using System.Threading.Tasks;
     using Fluxor;
     using Microsoft.Extensions.Logging;
-    using OpenRedding.Client.Store;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
     using OpenRedding.Client.Store.Features.Salaries.Actions.SetSearchRequest;
+    using OpenRedding.Client.Store.State;
 
     public class SetSalarySearchBaseRangeEffect : Effect<SetSalarySearchBaseRangeAction>
     {
         private readonly OpenReddingApiService _apiService;
         private readonly ILogger<SetSalarySearchBaseRangeEffect> _logger;
-        private readonly IState<OpenReddingAppState> _state;
+        private readonly IState<SalariesState> _state;
 
-        public SetSalarySearchBaseRangeEffect(OpenReddingApiService apiService, ILogger<SetSalarySearchBaseRangeEffect> logger, IState<OpenReddingAppState> state) =>
+        public SetSalarySearchBaseRangeEffect(OpenReddingApiService apiService, ILogger<SetSalarySearchBaseRangeEffect> logger, IState<SalariesState> state) =>
             (_apiService, _logger, _state) = (apiService, logger, state);
 
         protected override async Task HandleAsync(SetSalarySearchBaseRangeAction action, IDispatcher dispatcher)

@@ -2,19 +2,19 @@
 {
     using Fluxor;
     using OpenRedding.Client.Components.Dropdowns.Salaries;
-    using OpenRedding.Client.Store;
     using OpenRedding.Client.Store.Features.Salaries.Actions.SetSearchRequest;
+    using OpenRedding.Client.Store.State;
     using OpenRedding.Domain.Salaries.Dtos;
     using OpenRedding.Domain.Salaries.Enums;
 
     public static class SetSearchRequestReducer
     {
         [ReducerMethod]
-        public static OpenReddingAppState SetCurrentSearchRequestActionReducer(OpenReddingAppState state, SetCurrentSearchRequestAction action) =>
-            new OpenReddingAppState(state.IsLoading, action.IsRefreshTable, state.SalaryResults, state.SalaryDetail, action.SearchRequest);
+        public static SalariesState SetCurrentSearchRequestActionReducer(SalariesState state, SetCurrentSearchRequestAction action) =>
+            new SalariesState(state.IsLoading, action.IsRefreshTable, state.SalaryResults, state.SalaryDetail, action.SearchRequest);
 
         [ReducerMethod]
-        public static OpenReddingAppState SetEmployeeNameActionReducer(OpenReddingAppState state, SetEmployeeNameAction action)
+        public static SalariesState SetEmployeeNameActionReducer(SalariesState state, SetEmployeeNameAction action)
         {
             if (state.SearchRequest is null)
             {
@@ -32,11 +32,11 @@
                 basePayRange: state.SearchRequest.BasePayRange,
                 totalPayRange: state.SearchRequest.TotalPayRange);
 
-            return new OpenReddingAppState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         [ReducerMethod]
-        public static OpenReddingAppState SetEmployeeJobTitleActionReducer(OpenReddingAppState state, SetEmployeeJobTitleAction action)
+        public static SalariesState SetEmployeeJobTitleActionReducer(SalariesState state, SetEmployeeJobTitleAction action)
         {
             if (state.SearchRequest is null)
             {
@@ -54,11 +54,11 @@
                 basePayRange: state.SearchRequest.BasePayRange,
                 totalPayRange: state.SearchRequest.TotalPayRange);
 
-            return new OpenReddingAppState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         [ReducerMethod]
-        public static OpenReddingAppState SetEmployeeAgencyActionReducer(OpenReddingAppState state, SetEmployeeAgencyAction action)
+        public static SalariesState SetEmployeeAgencyActionReducer(SalariesState state, SetEmployeeAgencyAction action)
         {
             if (state.SearchRequest is null)
             {
@@ -76,11 +76,11 @@
                 basePayRange: state.SearchRequest.BasePayRange,
                 totalPayRange: state.SearchRequest.TotalPayRange);
 
-            return new OpenReddingAppState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         [ReducerMethod]
-        public static OpenReddingAppState SetEmployeeStatusActionReducer(OpenReddingAppState state, SetEmployeeStatusAction action)
+        public static SalariesState SetEmployeeStatusActionReducer(SalariesState state, SetEmployeeStatusAction action)
         {
             if (state.SearchRequest is null)
             {
@@ -98,11 +98,11 @@
                 basePayRange: state.SearchRequest.BasePayRange,
                 totalPayRange: state.SearchRequest.TotalPayRange);
 
-            return new OpenReddingAppState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         [ReducerMethod]
-        public static OpenReddingAppState SetEmploymentYearActionReducer(OpenReddingAppState state, SetEmploymentYearAction action)
+        public static SalariesState SetEmploymentYearActionReducer(SalariesState state, SetEmploymentYearAction action)
         {
             if (state.SearchRequest is null)
             {
@@ -120,11 +120,11 @@
                 basePayRange: state.SearchRequest.BasePayRange,
                 totalPayRange: state.SearchRequest.TotalPayRange);
 
-            return new OpenReddingAppState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         [ReducerMethod]
-        public static OpenReddingAppState SetSalarySearchBaseRangeActionReducer(OpenReddingAppState state, SetSalarySearchBaseRangeAction action)
+        public static SalariesState SetSalarySearchBaseRangeActionReducer(SalariesState state, SetSalarySearchBaseRangeAction action)
         {
             if (state.SearchRequest is null)
             {
@@ -142,11 +142,11 @@
                 basePayRange: (int)action.Range,
                 totalPayRange: state.SearchRequest.TotalPayRange);
 
-            return new OpenReddingAppState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         [ReducerMethod]
-        public static OpenReddingAppState SetSalarySearchTotalRangeActionReducer(OpenReddingAppState state, SetSalarySearchTotalRangeAction action)
+        public static SalariesState SetSalarySearchTotalRangeActionReducer(SalariesState state, SetSalarySearchTotalRangeAction action)
         {
             if (state.SearchRequest is null)
             {
@@ -164,11 +164,11 @@
                 basePayRange: state.SearchRequest.BasePayRange,
                 totalPayRange: (int)action.Range);
 
-            return new OpenReddingAppState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         [ReducerMethod]
-        public static OpenReddingAppState SetSalarySortFieldActionReducer(OpenReddingAppState state, SetSalarySortFieldAction action)
+        public static SalariesState SetSalarySortFieldActionReducer(SalariesState state, SetSalarySortFieldAction action)
         {
             var sortField = action.SortField.ToString();
 
@@ -188,11 +188,11 @@
                 basePayRange: state.SearchRequest.BasePayRange,
                 totalPayRange: state.SearchRequest.TotalPayRange);
 
-            return new OpenReddingAppState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         [ReducerMethod]
-        public static OpenReddingAppState SetSalarySortByActionReducer(OpenReddingAppState state, SetSalarySortByAction action)
+        public static SalariesState SetSalarySortByActionReducer(SalariesState state, SetSalarySortByAction action)
         {
             var sortOption = action.Option.ToString();
 
@@ -212,10 +212,10 @@
                 basePayRange: state.SearchRequest.BasePayRange,
                 totalPayRange: state.SearchRequest.TotalPayRange);
 
-            return new OpenReddingAppState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
-        private static OpenReddingAppState InitializeSearchRequest(OpenReddingAppState state, SalarySearchContext context, string? value)
+        private static SalariesState InitializeSearchRequest(SalariesState state, SalarySearchContext context, string? value)
         {
             var searchRequest = context switch
             {
@@ -231,7 +231,7 @@
                 _ => new EmployeeSalarySearchRequestDto()
             };
 
-            return new OpenReddingAppState(false, true, state.SalaryResults, state.SalaryDetail, searchRequest);
+            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, searchRequest);
         }
     }
 }

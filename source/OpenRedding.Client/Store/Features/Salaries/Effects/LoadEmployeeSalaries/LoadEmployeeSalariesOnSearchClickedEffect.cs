@@ -4,16 +4,16 @@
     using System.Threading.Tasks;
     using Fluxor;
     using Microsoft.Extensions.Logging;
-    using OpenRedding.Client.Store;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaries;
+    using OpenRedding.Client.Store.State;
 
     public class LoadEmployeeSalariesOnSearchClickedEffect : Effect<LoadEmployeesOnSearchClickedAction>
     {
         private readonly OpenReddingApiService _apiService;
         private readonly ILogger<LoadEmployeeSalariesOnSearchClickedEffect> _logger;
-        private readonly IState<OpenReddingAppState> _state;
+        private readonly IState<SalariesState> _state;
 
-        public LoadEmployeeSalariesOnSearchClickedEffect(OpenReddingApiService apiService, ILogger<LoadEmployeeSalariesOnSearchClickedEffect> logger, IState<OpenReddingAppState> state) =>
+        public LoadEmployeeSalariesOnSearchClickedEffect(OpenReddingApiService apiService, ILogger<LoadEmployeeSalariesOnSearchClickedEffect> logger, IState<SalariesState> state) =>
             (_apiService, _state, _logger) = (apiService, state, logger);
 
         protected override async Task HandleAsync(LoadEmployeesOnSearchClickedAction action, IDispatcher dispatcher)
