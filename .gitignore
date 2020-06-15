@@ -27,3 +27,4 @@ node_modules/
 /.env
 /source/OpenRedding.Api/Properties/PublishProfiles
 /deploy
+**/deploy

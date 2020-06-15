@@ -1,11 +1,11 @@
 # Pull in the base image and expose app HTTP and SSL ports
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
 # Pull in project dependencies for caching before restoring build
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /src
 COPY ["source/OpenRedding.Api/OpenRedding.Api.csproj", "source/OpenRedding.Api/"]
 COPY ["source/OpenRedding.Infrastructure/OpenRedding.Infrastructure.csproj", "source/OpenRedding.Infrastructure/"]

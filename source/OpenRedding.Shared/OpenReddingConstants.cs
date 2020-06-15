@@ -3,7 +3,7 @@
     public static class OpenReddingConstants
     {
         public const string Author = "Joey Mckenzie";
-        public const string Version = "api/";
+        public const string Version = "v1.0.0-alpha";
         public const int RequestElapsedMillisecondTimeWarningLimit = 500;
         public const int MaxPageSizeResult = 25;
         public const string PageNumberStringReplacementValue = "{:pageNumber}";
