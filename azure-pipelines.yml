@@ -44,16 +44,6 @@ steps:
     zipAfterPublish: false
     modifyOutputPath: true
 
-# TODO: Need to revisit this at some point
-# Copy the distribution files to the static web container
-#- task: AzureFileCopy@4
-#  inputs:
-#    SourcePath: '$(Build.SourcesDirectory)/deploy/OpenRedding.Client/wwwroot'
-#    azureSubscription: 'Pay-As-You-Go(af2d9345-cd54-42f1-971c-e4926c8171b7)'
-#    Destination: 'AzureBlob'
-#    storage: 'openredding'
-#    ContainerName: '$web'
-
 # Build and deploy the docker image
 - task: Docker@2
   inputs:
