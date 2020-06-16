@@ -5,6 +5,7 @@
 
 trigger:
 - master
+- dev
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -46,6 +47,7 @@ steps:
 
 # Build and deploy the docker image
 - task: Docker@2
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   inputs:
     containerRegistry: 'DockerHub'
     repository: 'joey32793/openreddingapi'
