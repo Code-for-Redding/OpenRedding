@@ -19,7 +19,6 @@
             <section id="landing-page-header" class="d-flex flex-column mx-auto text-center">
                 <h1 class="text-white font-weight-bolder">Open Redding</h1>
                 <h5 class="text-white">An open data portal for Redding, for the people, by the people.</h5>
-                <p class="text-white">@OpenReddingConstants.Version</p>
             </section>
 
             @* Search panels *@
@@ -55,8 +54,11 @@
                     }
 
                     <div class="row justify-content-center mx-3">
-                        <div class="alert alert-light text-center">
-                            <p class="mb-0">Found a bug? Feel free to report any issues on Open Redding's <a style="color: deepskyblue;" target="_blank" href="https://github.com/joey32793/OpenRedding/issues">GitHub</a> page.</p>
+                        <div class="d-flex flex-column">
+                            <div class="alert alert-light text-center">
+                                <p class="mb-0">Found a bug? Feel free to report any issues on Open Redding's <a style="color: deepskyblue;" target="_blank" href="https://github.com/joey32793/OpenRedding/issues">GitHub</a> page.</p>
+                                <span>@OpenReddingConstants.Version</span>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -16,7 +16,7 @@
                 </button>
             </div>
             <div class="modal-body d-flex flex-column justify-content-center align-items-center">
-                <span class="py-2">An unexpected error has occurred, please make the request again, or try again later.</span>
+                <span class="py-2">@GetErrorMessage()</span>
             </div>
         </div>
     </div>
@@ -38,5 +38,10 @@
             await JSRuntime.InvokeVoidAsync("interactWithModal", "#error-modal", "show");
         }
     }
+
+    private string GetErrorMessage() =>
+        string.IsNullOrWhiteSpace(State.Value.ErrorMessage) ?
+            "An unexpected error has occurred, please make the request again, or try again later" :
+            State.Value.ErrorMessage;
 
 }
