@@ -22,7 +22,7 @@
             _apiBaseUrl = configuration["apiBaseUrl"];
         }
 
-        public async Task<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>> GetEmployeesSalariesAsync(EmployeeSalarySearchRequestDto? searchRequest)
+        public Task<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>> GetEmployeesSalariesAsync(EmployeeSalarySearchRequestDto? searchRequest)
         {
             var searchRequestUrl = $"{_apiBaseUrl}/salaries";
 
@@ -81,22 +81,27 @@
                 searchRequestUrl = QueryHelpers.AddQueryString(searchRequestUrl, queryParameters);
             }
 
-            return await _httpClient.GetJsonAsync<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>>(searchRequestUrl);
+            return _httpClient.GetJsonAsync<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>>(searchRequestUrl);
         }
 
-        public async Task<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>> GetEmployeesSalariesFromLinkAsync(string link)
+        public Task<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>> GetEmployeesSalariesFromLinkAsync(string link)
         {
-            return await _httpClient.GetJsonAsync<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>>(link);
+            return _httpClient.GetJsonAsync<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>>(link);
         }
 
-        public async Task<EmployeeSalaryDetailViewModel> GetEmployeeSalaryDetailFromLink(string link)
+        public Task<EmployeeSalaryDetailViewModel> GetEmployeeSalaryDetailFromId(string id)
         {
-            return await _httpClient.GetJsonAsync<EmployeeSalaryDetailViewModel>(link);
+            return _httpClient.GetJsonAsync<EmployeeSalaryDetailViewModel>($"{_apiBaseUrl}/salaries/{id}");
         }
 
-        public async Task<OpenReddingLink> GetDownloadCsvLink(EmployeeSalarySearchRequestDto? searchRequest)
+        public Task<EmployeeSalaryDetailViewModel> GetEmployeeSalaryDetailFromLink(string link)
         {
-            return await _httpClient.PostJsonAsync<OpenReddingLink>($"{_apiBaseUrl}/salaries/download", searchRequest ?? new EmployeeSalarySearchRequestDto());
+            return _httpClient.GetJsonAsync<EmployeeSalaryDetailViewModel>(link);
+        }
+
+        public Task<OpenReddingLink> GetDownloadCsvLink(EmployeeSalarySearchRequestDto? searchRequest)
+        {
+            return _httpClient.PostJsonAsync<OpenReddingLink>($"{_apiBaseUrl}/salaries/download", searchRequest ?? new EmployeeSalarySearchRequestDto());
         }
     }
 }

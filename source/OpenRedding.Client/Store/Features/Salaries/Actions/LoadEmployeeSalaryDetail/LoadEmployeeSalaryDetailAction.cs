@@ -2,9 +2,9 @@
 {
     public class LoadEmployeeSalaryDetailAction
     {
-        public LoadEmployeeSalaryDetailAction(int employeeId) =>
-            EmployeeId = employeeId;
+        public LoadEmployeeSalaryDetailAction(string id) =>
+            Id = id;
 
-        public int EmployeeId { get; set; }
+        public string Id { get; }
     }
 }

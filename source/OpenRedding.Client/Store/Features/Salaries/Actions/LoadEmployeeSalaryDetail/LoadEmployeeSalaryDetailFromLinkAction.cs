@@ -2,9 +2,11 @@
 {
     public class LoadEmployeeSalaryDetailFromLinkAction
     {
-        public LoadEmployeeSalaryDetailFromLinkAction(string link) =>
-            Link = link;
+        public LoadEmployeeSalaryDetailFromLinkAction(string link, int id) =>
+            (Link, Id) = (link, id);
 
         public string Link { get; }
+
+        public int Id { get; }
     }
 }

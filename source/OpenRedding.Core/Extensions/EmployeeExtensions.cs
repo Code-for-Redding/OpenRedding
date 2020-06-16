@@ -127,6 +127,7 @@ namespace OpenRedding.Core.Extensions
 
             return new RelatedEmployeeDetailDto
             {
+                Id = employee.EmployeeId,
                 Name = GetEmployeeName(employee),
                 JobTitle = string.IsNullOrWhiteSpace(employee.JobTitle) ? string.Empty : employee.JobTitle,
                 Agency = employee.EmployeeAgency.ToFriendlyString(),

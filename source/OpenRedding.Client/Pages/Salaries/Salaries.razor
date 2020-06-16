@@ -203,7 +203,7 @@
                 <tbody>
                     @foreach (var employeeSalary in State.Value.SalaryResults.Results)
                     {
-                        <tr class="text-center cursor-pointer" @onclick="(() => OnRowClicked(employeeSalary.EmployeeDetailLink))">
+                        <tr class="text-center cursor-pointer" @onclick="(() => OnRowClicked(employeeSalary.EmployeeDetailLink, employeeSalary.Id))">
                             <td>@employeeSalary.Name</td>
                             <td>@employeeSalary.JobTitle</td>
                             <td class="d-none d-md-table-cell">@employeeSalary.Agency</td>
@@ -280,14 +280,14 @@
         return link != null && !string.IsNullOrWhiteSpace(link.Href) && !State.Value.IsTableRefresh;
     }
 
-    private void OnRowClicked(OpenReddingLink? link)
+    private void OnRowClicked(OpenReddingLink? link, int id)
     {
         if (link is null || string.IsNullOrWhiteSpace(link.Href))
         {
             return;
         }
 
-        StateFacade.LoadEmployeeDetailFromLink(link.Href);
+        StateFacade.LoadEmployeeDetailFromLink(link.Href, id);
     }
 
 }

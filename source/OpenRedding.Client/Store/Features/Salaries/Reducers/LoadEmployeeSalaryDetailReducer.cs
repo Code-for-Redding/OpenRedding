@@ -7,8 +7,12 @@
     public static class LoadEmployeeSalaryDetailReducer
     {
         [ReducerMethod]
+        public static SalariesState ReduceLoadEmployeeSalaryDetailAction(SalariesState state, LoadEmployeeSalaryDetailAction action) =>
+            new SalariesState(true, false, state.SalaryResults, null, state.SearchRequest);
+
+        [ReducerMethod]
         public static SalariesState ReduceLoadEmployeeSalaryDetailFromLinkAction(SalariesState state, LoadEmployeeSalaryDetailFromLinkAction action) =>
-            new SalariesState(true, false, state.SalaryResults, state.SalaryDetail, state.SearchRequest);
+            new SalariesState(true, false, state.SalaryResults, null, state.SearchRequest);
 
         [ReducerMethod]
         public static SalariesState ReducerLoadEmployeeSalaryDetailFromLinkSuccessAction(SalariesState state, LoadEmployeeSalaryDetailSuccessAction action) =>

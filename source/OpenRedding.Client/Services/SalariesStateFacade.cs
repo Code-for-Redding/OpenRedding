@@ -31,8 +31,11 @@
         public void LoadEmployeesFromSearchRequest(bool isTableRefresh = false) =>
             _dispatcher.Dispatch(new LoadEmployeeSalariesAction(_state.Value.SearchRequest, isTableRefresh));
 
-        public void LoadEmployeeDetailFromLink(string link) =>
-            _dispatcher.Dispatch(new LoadEmployeeSalaryDetailFromLinkAction(link));
+        public void LoadEmployeeDetail(string id) =>
+            _dispatcher.Dispatch(new LoadEmployeeSalaryDetailAction(id));
+
+        public void LoadEmployeeDetailFromLink(string link, int id) =>
+            _dispatcher.Dispatch(new LoadEmployeeSalaryDetailFromLinkAction(link, id));
 
         public void LoadEmployeesFromLink(string link) =>
             _dispatcher.Dispatch(new LoadEmployeeSalariesFromLinkAction(link));

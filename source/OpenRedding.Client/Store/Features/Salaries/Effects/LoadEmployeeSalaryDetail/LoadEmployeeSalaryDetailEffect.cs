@@ -7,25 +7,25 @@
     using Microsoft.Extensions.Logging;
     using OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaryDetail;
 
-    public class LoadEmployeeSalaryDetailFromLinkEffect : Effect<LoadEmployeeSalaryDetailFromLinkAction>
+    public class LoadEmployeeSalaryDetailEffect : Effect<LoadEmployeeSalaryDetailAction>
     {
         private readonly OpenReddingApiService _apiService;
-        private readonly ILogger<LoadEmployeeSalaryDetailFromLinkEffect> _logger;
+        private readonly ILogger<LoadEmployeeSalaryDetailEffect> _logger;
         private readonly NavigationManager _navigation;
 
-        public LoadEmployeeSalaryDetailFromLinkEffect(OpenReddingApiService apiService, ILogger<LoadEmployeeSalaryDetailFromLinkEffect> logger, NavigationManager navigation) =>
+        public LoadEmployeeSalaryDetailEffect(OpenReddingApiService apiService, ILogger<LoadEmployeeSalaryDetailEffect> logger, NavigationManager navigation) =>
             (_apiService, _navigation, _logger) = (apiService, navigation, logger);
 
-        protected override async Task HandleAsync(LoadEmployeeSalaryDetailFromLinkAction action, IDispatcher dispatcher)
+        protected override async Task HandleAsync(LoadEmployeeSalaryDetailAction action, IDispatcher dispatcher)
         {
             try
             {
                 _navigation.NavigateTo($"salaries/detail/{action.Id}");
 
-                _logger.LogInformation("Loading employee detail...");
-                var employeeSalaries = await _apiService.GetEmployeeSalaryDetailFromLink(action.Link);
+                _logger.LogInformation("Loading employee detail from ID...");
+                var employeeSalaries = await _apiService.GetEmployeeSalaryDetailFromId(action.Id);
 
-                _logger.LogInformation("Employee salaries load was successful");
+                _logger.LogInformation($"Employee salary {action.Id} load was successful");
                 dispatcher.Dispatch(new LoadEmployeeSalaryDetailSuccessAction(employeeSalaries));
             }
             catch (Exception e)

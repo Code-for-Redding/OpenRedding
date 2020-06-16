@@ -1,6 +1,6 @@
 ﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
-@page "/salaries/detail"
+@page "/salaries/detail/{id}"
 
 @using Fluxor
 @using OpenRedding.Client.Components.Salaries
@@ -111,7 +111,7 @@
                     <tbody>
                         @foreach (var relatedRecord in State.Value.SalaryDetail.RelatedRecords)
                         {
-                            <tr class="text-center cursor-pointer" @onclick="(() => OnRowClicked(relatedRecord))">
+                            <tr class="text-center cursor-pointer" @onclick="(() => OnRowClicked(relatedRecord, relatedRecord.Id))">
                                 <td>@relatedRecord.Name</td>
                                 <td>@relatedRecord.JobTitle</td>
                                 <td class="d-none d-md-table-cell">@relatedRecord.Agency</td>
@@ -132,9 +132,28 @@
 
 @code {
 
+    [Parameter]
+    public string? Id { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+
+        // If the user has refreshed the page, load the employee detail from the URI
+        if (!State.Value.IsLoading && State.Value.SalaryDetail is null)
+        {
+            if (string.IsNullOrWhiteSpace(Id))
+            {
+                // Break, show the error page and force users back to search
+                return;
+            }
+
+            // Verify the ID can be parsed into a valid integer before calling the API
+            if (int.TryParse(Id, out var _))
+            {
+                StateFacade.LoadEmployeeDetail(Id);
+            }
+        }
     }
 
     protected override void Dispose(bool disposing)
@@ -150,14 +169,14 @@
         Navigation.NavigateTo("salaries");
     }
 
-    private void OnRowClicked(RelatedEmployeeDetailDto employeeRecord)
+    private void OnRowClicked(RelatedEmployeeDetailDto employeeRecord, int id)
     {
         if (employeeRecord.Self is null || string.IsNullOrWhiteSpace(employeeRecord.Self.Href))
         {
             return;
         }
 
-        StateFacade.LoadEmployeeDetailFromLink(employeeRecord.Self.Href);
+        StateFacade.LoadEmployeeDetailFromLink(employeeRecord.Self.Href, id);
     }
 
     private bool HasOccupationalPayAverages(EmployeeSalaryDetailViewModel? employeeDetail)
