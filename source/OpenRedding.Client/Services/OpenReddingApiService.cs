@@ -35,47 +35,47 @@
 
                 if (!string.IsNullOrWhiteSpace(searchRequest.Name))
                 {
-                    queryParameters.Add("name", searchRequest.Name);
+                    queryParameters.Add(nameof(searchRequest.Name), searchRequest.Name);
                 }
 
                 if (!string.IsNullOrWhiteSpace(searchRequest.JobTitle))
                 {
-                    queryParameters.Add("jobTitle", searchRequest.JobTitle);
+                    queryParameters.Add(nameof(searchRequest.JobTitle), searchRequest.JobTitle);
                 }
 
                 if (!string.IsNullOrWhiteSpace(year))
                 {
-                    queryParameters.Add("year", year);
+                    queryParameters.Add(nameof(year), year);
                 }
 
                 if (!string.IsNullOrWhiteSpace(searchRequest.Agency))
                 {
-                    queryParameters.Add("agency", searchRequest.Agency);
+                    queryParameters.Add(nameof(searchRequest.Agency), searchRequest.Agency);
                 }
 
                 if (!string.IsNullOrWhiteSpace(searchRequest.Status))
                 {
-                    queryParameters.Add("status", searchRequest.Status);
+                    queryParameters.Add(nameof(searchRequest.Status), searchRequest.Status);
                 }
 
                 if (!string.IsNullOrWhiteSpace(basePayRange))
                 {
-                    queryParameters.Add("basePayRange", basePayRange);
+                    queryParameters.Add(nameof(basePayRange), basePayRange);
                 }
 
                 if (!string.IsNullOrWhiteSpace(totalPayRange))
                 {
-                    queryParameters.Add("totalPayRange", totalPayRange);
+                    queryParameters.Add(nameof(totalPayRange), totalPayRange);
                 }
 
                 if (!string.IsNullOrWhiteSpace(searchRequest.SortField))
                 {
-                    queryParameters.Add("sortField", searchRequest.SortField);
+                    queryParameters.Add(nameof(searchRequest.SortField), searchRequest.SortField);
                 }
 
                 if (!string.IsNullOrWhiteSpace(searchRequest.SortBy))
                 {
-                    queryParameters.Add("sortBy", searchRequest.SortBy);
+                    queryParameters.Add(nameof(searchRequest.SortBy), searchRequest.SortBy);
                 }
 
                 searchRequestUrl = QueryHelpers.AddQueryString(searchRequestUrl, queryParameters);
