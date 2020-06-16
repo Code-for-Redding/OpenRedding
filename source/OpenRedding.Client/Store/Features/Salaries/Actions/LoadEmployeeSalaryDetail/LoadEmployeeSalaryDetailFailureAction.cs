@@ -1,6 +1,12 @@
 ﻿namespace OpenRedding.Client.Store.Features.Salaries.Actions.LoadEmployeeSalaryDetail
 {
-    public class LoadEmployeeSalaryDetailFailureAction
+	using OpenRedding.Client.Store.Features.Shared.Actions;
+
+    public class LoadEmployeeSalaryDetailFailureAction : FailureAction
     {
+        public LoadEmployeeSalaryDetailFailureAction(string errorMessage)
+            : base(errorMessage)
+        {
+        }
     }
 }

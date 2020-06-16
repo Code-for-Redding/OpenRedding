@@ -4,25 +4,16 @@
     using OpenRedding.Domain.Salaries.Dtos;
     using OpenRedding.Domain.Salaries.ViewModels;
 
-    public class SalariesState
+    public class SalariesState : RootState
     {
-        public SalariesState(
-            bool isLoading,
-            bool isTableRefresh,
-            OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>? salaryResults,
-            EmployeeSalaryDetailViewModel? salaryDetail,
-            EmployeeSalarySearchRequestDto? searchRequest,
-            string? errorMessage = null)
+        public SalariesState(bool isLoading, string? errorMessage, bool isTableRefresh, OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>? salaryResults, EmployeeSalaryDetailViewModel? salaryDetail, EmployeeSalarySearchRequestDto? searchRequest)
+            : base(isLoading, errorMessage)
         {
-            IsLoading = isLoading;
             IsTableRefresh = isTableRefresh;
             SalaryResults = salaryResults;
             SalaryDetail = salaryDetail;
             SearchRequest = searchRequest;
-            CurrentErrorMessage = errorMessage;
         }
-
-        public bool IsLoading { get; }
 
         public bool IsTableRefresh { get; }
 
@@ -31,9 +22,5 @@
         public EmployeeSalaryDetailViewModel? SalaryDetail { get; }
 
         public EmployeeSalarySearchRequestDto? SearchRequest { get; }
-
-        public string? CurrentErrorMessage { get; }
-
-        public bool HasCurrentErrors => !string.IsNullOrWhiteSpace(CurrentErrorMessage);
     }
 }

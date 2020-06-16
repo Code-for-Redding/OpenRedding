@@ -1,6 +1,12 @@
 ﻿namespace OpenRedding.Client.Store.Features.Salaries.Actions.DownloadSalaryCsv
 {
-    public class DownloadSalaryCsvFailureAction
+	using OpenRedding.Client.Store.Features.Shared.Actions;
+
+    public class DownloadSalaryCsvFailureAction : FailureAction
     {
+        public DownloadSalaryCsvFailureAction(string errorMessage)
+            : base(errorMessage)
+        {
+        }
     }
 }

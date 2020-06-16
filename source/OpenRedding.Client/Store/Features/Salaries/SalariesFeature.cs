@@ -8,6 +8,6 @@
         public override string GetName() => "Salaries";
 
         protected override SalariesState GetInitialState() =>
-            new SalariesState(false, false, null, null, null);
+            new SalariesState(false, null, false, null, null, null);
     }
 }

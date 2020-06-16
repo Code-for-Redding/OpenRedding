@@ -29,7 +29,7 @@
             catch (Exception e)
             {
                 _logger.LogError($"Employee salaries failed to load, reason: {e.Message}");
-                dispatcher.Dispatch(new LoadEmployeeSalariesFailureAction());
+                dispatcher.Dispatch(new LoadEmployeeSalariesFailureAction(e.Message));
             }
         }
     }

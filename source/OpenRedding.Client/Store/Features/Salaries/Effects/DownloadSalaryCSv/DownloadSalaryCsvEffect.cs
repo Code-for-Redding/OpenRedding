@@ -45,7 +45,7 @@
                 // Shut down the loading modal on error
                 await _jsRuntime.InvokeVoidAsync("interactWithModal", "#loading-modal", "hide");
                 _logger.LogError($"Could not download the CSV report, reason: {e.Message}");
-                dispatcher.Dispatch(new DownloadSalaryCsvFailureAction());
+                dispatcher.Dispatch(new DownloadSalaryCsvFailureAction(e.Message));
             }
         }
     }

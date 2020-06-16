@@ -11,7 +11,7 @@
     {
         [ReducerMethod]
         public static SalariesState SetCurrentSearchRequestActionReducer(SalariesState state, SetCurrentSearchRequestAction action) =>
-            new SalariesState(state.IsLoading, action.IsRefreshTable, state.SalaryResults, state.SalaryDetail, action.SearchRequest);
+            new SalariesState(state.IsLoading, null, action.IsRefreshTable, state.SalaryResults, state.SalaryDetail, action.SearchRequest);
 
         [ReducerMethod]
         public static SalariesState SetEmployeeNameActionReducer(SalariesState state, SetEmployeeNameAction action)
@@ -32,7 +32,7 @@
                 basePayRange: state.SearchRequest.BasePayRange,
                 totalPayRange: state.SearchRequest.TotalPayRange);
 
-            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, null, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         [ReducerMethod]
@@ -54,7 +54,7 @@
                 basePayRange: state.SearchRequest.BasePayRange,
                 totalPayRange: state.SearchRequest.TotalPayRange);
 
-            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, null, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         [ReducerMethod]
@@ -76,7 +76,7 @@
                 basePayRange: state.SearchRequest.BasePayRange,
                 totalPayRange: state.SearchRequest.TotalPayRange);
 
-            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, null, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         [ReducerMethod]
@@ -98,7 +98,7 @@
                 basePayRange: state.SearchRequest.BasePayRange,
                 totalPayRange: state.SearchRequest.TotalPayRange);
 
-            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, null, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         [ReducerMethod]
@@ -120,7 +120,7 @@
                 basePayRange: state.SearchRequest.BasePayRange,
                 totalPayRange: state.SearchRequest.TotalPayRange);
 
-            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, null, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         [ReducerMethod]
@@ -142,7 +142,7 @@
                 basePayRange: (int)action.Range,
                 totalPayRange: state.SearchRequest.TotalPayRange);
 
-            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, null, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         [ReducerMethod]
@@ -164,7 +164,7 @@
                 basePayRange: state.SearchRequest.BasePayRange,
                 totalPayRange: (int)action.Range);
 
-            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, null, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         [ReducerMethod]
@@ -188,7 +188,7 @@
                 basePayRange: state.SearchRequest.BasePayRange,
                 totalPayRange: state.SearchRequest.TotalPayRange);
 
-            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, null, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         [ReducerMethod]
@@ -212,7 +212,7 @@
                 basePayRange: state.SearchRequest.BasePayRange,
                 totalPayRange: state.SearchRequest.TotalPayRange);
 
-            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, null, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         private static SalariesState InitializeSearchRequest(SalariesState state, SalarySearchContext context, string? value)
@@ -231,7 +231,7 @@
                 _ => new EmployeeSalarySearchRequestDto()
             };
 
-            return new SalariesState(false, true, state.SalaryResults, state.SalaryDetail, searchRequest);
+            return new SalariesState(false, null, true, state.SalaryResults, state.SalaryDetail, searchRequest);
         }
     }
 }
