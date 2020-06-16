@@ -13,122 +13,122 @@
 @inject SalariesStateFacade StateFacade
 @inject IState<SalariesState> State
 
-    <section id="open-redding-salary-detail" class="container mt-4">
-        <h2 class="text-center font-weight-bolder mb-3">Salary Detail</h2>
+<section id="open-redding-salary-detail" class="container mt-4">
+    <h2 class="text-center font-weight-bolder mb-3">Salary Detail</h2>
 
-        @if (State.Value.IsLoading)
-        {
-            <div class="d-flex flex-row justify-content-center mt-5">
-                <div class="spinner-border text-info" role="status">
-                    <span class="sr-only">Loading salary detail...</span>
-                </div>
+    @if (State.Value.IsLoading)
+    {
+        <div class="d-flex flex-row justify-content-center mt-5">
+            <div class="spinner-border text-info" role="status">
+                <span class="sr-only">Loading salary detail...</span>
             </div>
-        }
-        else if (State.Value.SalaryDetail is null || State.Value.SalaryDetail.Employee is null)
-        {
-            <div class="d-flex flex-column justify-content-center">
-                <div class="alert alert-light text-center">
-                    <h4 class="alert-heading">Uh oh...</h4>
-                    <p class="mb-0">Looks like there was an issue retrieving the data, click the button below to go back to the previous search table.</p>
-                    <button @onclick="OnNavigateToSalaries" class="mt-3 btn btn-outline-info">Return to Search</button>
-                </div>
+        </div>
+    }
+    else if (State.Value.SalaryDetail is null || State.Value.SalaryDetail.Employee is null)
+    {
+        <div class="d-flex flex-column justify-content-center">
+            <div class="alert alert-light text-center">
+                <h4 class="alert-heading">Uh oh...</h4>
+                <p class="mb-0">Looks like there was an issue retrieving the data, click the button below to go back to the previous search table.</p>
+                <button @onclick="OnNavigateToSalaries" class="mt-3 btn btn-outline-info">Return to Search</button>
             </div>
-        }
-        else
-        {
-            <h5 class="text-center font-weight-bolder mb-3">Pay breakdown for: @State.Value.SalaryDetail.Employee.Name</h5>
+        </div>
+    }
+    else
+    {
+        <h5 class="text-center font-weight-bolder mb-3">Pay breakdown for: @State.Value.SalaryDetail.Employee.Name</h5>
 
-            <div class="row">
+        <div class="row">
+            <SalaryDetailCard Title="Base Pay"
+                              GridSpacing="col-md-4"
+                              PayAmount="@State.Value.SalaryDetail.Employee.BasePay" />
+
+            <SalaryDetailCard Title="Overtime Pay"
+                              GridSpacing="col-md-4"
+                              PayAmount="@State.Value.SalaryDetail.Employee.OvertimePay" />
+
+            <SalaryDetailCard Title="Benefits"
+                              GridSpacing="col-md-4"
+                              PayAmount="@State.Value.SalaryDetail.Employee.Benefits" />
+        </div>
+
+        <div class="row justify-content-center py-3">
+            <SalaryDetailCard Title="Other Pay"
+                              GridSpacing="col-md-4"
+                              PayAmount="@State.Value.SalaryDetail.Employee.OtherPay" />
+
+            <SalaryDetailCard Title="Total Pay"
+                              GridSpacing="col-md-4"
+                              PayAmount="@State.Value.SalaryDetail.Employee.TotalPay" />
+
+            <SalaryDetailCard Title="Total Pay & Benefits"
+                              GridSpacing="col-md-4"
+                              PayAmount="@State.Value.SalaryDetail.Employee.TotalPayWithBenefits" />
+        </div>
+
+        @if (HasOccupationalPayAverages(State.Value.SalaryDetail))
+        {
+            <h6 class="text-center mt-4">Occupational Pay Averages for <strong>@State.Value.SalaryDetail.Employee.JobTitle</strong> during <strong>@State.Value.SalaryDetail.Employee.Year</strong></h6>
+            <hr />
+
+            <div class="row justify-content-around py-2">
                 <SalaryDetailCard Title="Base Pay"
                                   GridSpacing="col-md-4"
-                                  PayAmount="@State.Value.SalaryDetail.Employee.BasePay" />
-
-                <SalaryDetailCard Title="Overtime Pay"
-                                  GridSpacing="col-md-4"
-                                  PayAmount="@State.Value.SalaryDetail.Employee.OvertimePay" />
+                                  PayDelta="@State.Value.SalaryDetail.BasePayDelta"
+                                  PayAmount="@State.Value.SalaryDetail.OccupationalBasePayAverage" />
 
                 <SalaryDetailCard Title="Benefits"
                                   GridSpacing="col-md-4"
-                                  PayAmount="@State.Value.SalaryDetail.Employee.Benefits" />
-            </div>
-
-            <div class="row justify-content-center py-3">
-                <SalaryDetailCard Title="Other Pay"
-                                  GridSpacing="col-md-4"
-                                  PayAmount="@State.Value.SalaryDetail.Employee.OtherPay" />
-
-                <SalaryDetailCard Title="Total Pay"
-                                  GridSpacing="col-md-4"
-                                  PayAmount="@State.Value.SalaryDetail.Employee.TotalPay" />
+                                  PayDelta="@State.Value.SalaryDetail.BenefitsDelta"
+                                  PayAmount="@State.Value.SalaryDetail.OccupationalBenefitsAverage" />
 
                 <SalaryDetailCard Title="Total Pay & Benefits"
                                   GridSpacing="col-md-4"
-                                  PayAmount="@State.Value.SalaryDetail.Employee.TotalPayWithBenefits" />
-            </div>
-
-            @if (HasOccupationalPayAverages(State.Value.SalaryDetail))
-            {
-                <h6 class="text-center mt-4">Occupational Pay Averages for <strong>@State.Value.SalaryDetail.Employee.JobTitle</strong> during <strong>@State.Value.SalaryDetail.Employee.Year</strong></h6>
-                <hr />
-
-                <div class="row justify-content-around py-2">
-                    <SalaryDetailCard Title="Base Pay"
-                                      GridSpacing="col-md-4"
-                                      PayDelta="@State.Value.SalaryDetail.BasePayDelta"
-                                      PayAmount="@State.Value.SalaryDetail.OccupationalBasePayAverage" />
-
-                    <SalaryDetailCard Title="Benefits"
-                                      GridSpacing="col-md-4"
-                                      PayDelta="@State.Value.SalaryDetail.BenefitsDelta"
-                                      PayAmount="@State.Value.SalaryDetail.OccupationalBenefitsAverage" />
-
-                    <SalaryDetailCard Title="Total Pay & Benefits"
-                                      GridSpacing="col-md-4"
-                                      PayDelta="@State.Value.SalaryDetail.TotalPayDelta"
-                                      PayAmount="@State.Value.SalaryDetail.OccupationalTotalPayAverage" />
-                </div>
-            }
-
-            @if (!(State.Value.SalaryDetail.RelatedRecords is null))
-            {
-                <div class="d-flex flex-column align-items-center justify-content-center mt-2">
-                    <h6 class="text-center mt-4">Related employee records for <strong>@State.Value.SalaryDetail.Employee.Name</strong></h6>
-                    <p>Click on a table row below to view the salary detail breakdown for that employee's employment year.</p>
-                </div>
-
-                @* Salary table data *@
-                <table class="table table-hover">
-                    <thead>
-                        <tr class="text-center">
-                            <th scope="col">Name</th>
-                            <th scope="col">Job Title</th>
-                            <th scope="col" class="d-none d-md-table-cell">Agency</th>
-                            <th scope="col">Year</th>
-                            <th scope="col" class="d-none d-md-table-cell">Base Pay</th>
-                            <th scope="col" class="d-none d-md-table-cell">Total Pay &amp; Benefits</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var relatedRecord in State.Value.SalaryDetail.RelatedRecords)
-                        {
-                            <tr class="text-center cursor-pointer" @onclick="(() => OnRowClicked(relatedRecord, relatedRecord.Id))">
-                                <td>@relatedRecord.Name</td>
-                                <td>@relatedRecord.JobTitle</td>
-                                <td class="d-none d-md-table-cell">@relatedRecord.Agency</td>
-                                <td>@relatedRecord.Year</td>
-                                <td class="d-none d-md-table-cell">@relatedRecord.BasePay.ToString("C")</td>
-                                <td class="d-none d-md-table-cell">@relatedRecord.TotalPayWithBenefits.ToString("C")</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            }
-
-            <div class="pt-2 row justify-content-center">
-                <button @onclick="OnNavigateToSalaries" class="btn btn-outline-info">Return to Search</button>
+                                  PayDelta="@State.Value.SalaryDetail.TotalPayDelta"
+                                  PayAmount="@State.Value.SalaryDetail.OccupationalTotalPayAverage" />
             </div>
         }
-    </section>
+
+        @if (!(State.Value.SalaryDetail.RelatedRecords is null))
+        {
+            <div class="d-flex flex-column align-items-center justify-content-center mt-2">
+                <h6 class="text-center mt-4">Related employee records for <strong>@State.Value.SalaryDetail.Employee.Name</strong></h6>
+                <p>Click on a table row below to view the salary detail breakdown for that employee's employment year.</p>
+            </div>
+
+            @* Salary table data *@
+            <table class="table table-hover">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col">Name</th>
+                        <th scope="col">Job Title</th>
+                        <th scope="col" class="d-none d-md-table-cell">Agency</th>
+                        <th scope="col">Year</th>
+                        <th scope="col" class="d-none d-md-table-cell">Base Pay</th>
+                        <th scope="col" class="d-none d-md-table-cell">Total Pay &amp; Benefits</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var relatedRecord in State.Value.SalaryDetail.RelatedRecords)
+                    {
+                        <tr class="text-center cursor-pointer" @onclick="(() => OnRowClicked(relatedRecord, relatedRecord.Id))">
+                            <td>@relatedRecord.Name</td>
+                            <td>@relatedRecord.JobTitle</td>
+                            <td class="d-none d-md-table-cell">@relatedRecord.Agency</td>
+                            <td>@relatedRecord.Year</td>
+                            <td class="d-none d-md-table-cell">@relatedRecord.BasePay.ToString("C")</td>
+                            <td class="d-none d-md-table-cell">@relatedRecord.TotalPayWithBenefits.ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        <div class="pt-2 row justify-content-center">
+            <button @onclick="OnNavigateToSalaries" class="btn btn-outline-info">Return to Search</button>
+        </div>
+    }
+</section>
 
 @code {
 
