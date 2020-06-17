@@ -13,6 +13,7 @@ pool:
 variables:
   buildConfiguration: 'Release'
   clientProjectPath: 'source/OpenRedding.Client/OpenRedding.Client.csproj'
+  clientProjectDist: '$(Build.SourcesDirectory)/source/OpenRedding.Client/dist'
 
 steps:
 # Use the SDK version in global.json  
@@ -22,11 +23,11 @@ steps:
     useGlobalJson: true
 
 # Run all unit and integration tests
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    projects: 'tests/**/*.csproj'
-    testRunTitle: 'Run tests'
+#- task: DotNetCoreCLI@2
+#  inputs:
+#    command: 'test'
+#    projects: 'tests/**/*.csproj'
+#    testRunTitle: 'Run tests'
 
 # Build the client project
 - task: DotNetCoreCLI@2
@@ -41,17 +42,26 @@ steps:
     command: 'publish'
     publishWebProjects: false
     projects: '$(clientProjectPath)'
-    arguments: '--output deploy'
+    arguments: '--no-restore --output dist'
     zipAfterPublish: false
     modifyOutputPath: true
 
 # Build and deploy the docker image
-- task: Docker@2
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  inputs:
-    containerRegistry: 'DockerHub'
-    repository: 'joey32793/openreddingapi'
-    command: 'buildAndPush'
-    Dockerfile: 'source/OpenRedding.Api/Dockerfile.production'
-    buildContext: '$(Build.SourcesDirectory)'
-    tags: 'latest'
+#- task: Docker@2
+#  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+#  inputs:
+#    containerRegistry: 'DockerHub'
+#    repository: 'joey32793/openreddingapi'
+#    command: 'buildAndPush'
+#    Dockerfile: 'source/OpenRedding.Api/Dockerfile.production'
+#    buildContext: '$(Build.SourcesDirectory)'
+#    tags: 'latest'
+
+# Install netlify-cli
+- script: npm install netlify-cli 
+  displayName: 'Install netlify-cli'
+
+# Deploy the wwwroot from the output directory
+# The argument "--prod" deploys to production
+- script: npx netlify deploy --prod --dir $(clientProjectDist)/wwwroot --site $(netlifySiteId) --auth $(netlifyApiKey)
+  displayName: 'Deploy site to Netlify'
