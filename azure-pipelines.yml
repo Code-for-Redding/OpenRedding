@@ -42,7 +42,7 @@ steps:
     command: 'publish'
     publishWebProjects: false
     projects: '$(clientProjectPath)'
-    arguments: '--no-restore --output dist'
+    arguments: '--no-restore --output $(Build.StagingDirectory)/dist'
     zipAfterPublish: false
     modifyOutputPath: true
 
