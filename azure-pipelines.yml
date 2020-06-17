@@ -63,5 +63,5 @@ steps:
 
 # Deploy the wwwroot from the output directory
 # The argument "--prod" deploys to production
-- script: npx netlify deploy --prod --dir $(clientProjectDist)/wwwroot --site $(netlifySiteId) --auth $(netlifyApiKey)
+- script: npx netlify deploy --prod --dir /dist/OpenRedding.Client/wwwroot --site $(netlifySiteId) --auth $(netlifyApiKey)
   displayName: 'Deploy site to Netlify'
