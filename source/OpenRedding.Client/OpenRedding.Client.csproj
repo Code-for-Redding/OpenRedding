@@ -9,11 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="_redirects" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="_redirects" />
+    <None Include="wwwroot\_redirects" />
   </ItemGroup>
 
   <ItemGroup>
