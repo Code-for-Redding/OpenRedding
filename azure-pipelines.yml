@@ -41,6 +41,7 @@ steps:
     zipAfterPublish: false
     modifyOutputPath: true
 
+### PRODUCTION DEPLOYMENT STEPS ###
 # Build and deploy the docker image
 - task: Docker@2
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
@@ -52,11 +53,62 @@ steps:
     buildContext: '$(Build.SourcesDirectory)'
     tags: 'latest'
 
+# Update the build version on the client appSettings file    
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      function Add-OrUpdateJsonMember {
+          [CmdletBinding()]
+          Param(
+              [Parameter(Position=0, Mandatory=$true)]
+              [string]$Property,
+              [Parameter(Position=1, Mandatory=$true)]
+              [string]$Value,
+              [Parameter(Position=2, Mandatory=$true)]
+              [PSCustomObject]$Json
+          )
+      
+          # Check for existence of the property
+          $PropertyExists = [bool](Get-Member -InputObject $Json -Name $Property -MemberType Properties)
+      
+          # Add the property if none is found, else update the value if available
+          if ($PropertyExists) {
+              $Json.$Property = $Value
+          } else {
+              $Json | Add-Member -Name $Property -value $Value -MemberType NoteProperty
+          }
+      }
+      
+      $MajorVersion = '1'
+      $BuildNumber = $(Build.BuildNumber)
+      
+      $MajorVersionProperty = 'MajorVersion'
+      $BuilderNumberProperty = 'BuildNumber'
+      $appSettingsFilePath = '$(Build.StagingDirectory)/dist/OpenRedding.Client/wwwroot/appSettings.json'
+      
+      # Open the file and modify/update the property values
+      $appSettings = Get-Content $appSettingsFilePath -Raw | ConvertFrom-Json
+      Add-OrUpdateJsonMember -Property $MajorVersionProperty -Value $MajorVersion -Json $appSettings
+      Add-OrUpdateJsonMember -Property $BuilderNumberProperty -Value $BuildNumber -Json $appSettings
+      
+      # Override the configuration file
+      $appSettings | ConvertTo-Json -Depth 32 | Set-Content $appSettingsFilePath
+
+      # Remove the development file from distribution
+      Remove-Item -Force '$(Build.StagingDirectory)/dist/OpenRedding.Client/wwwroot/appSettings.Development.json'
+    failOnStderr: true
+    pwsh: true
+
 # Install netlify-cli
 - script: npm install netlify-cli 
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   displayName: 'Install netlify-cli'
 
-# Deploy the wwwroot from the output directory
-# The argument "--prod" deploys to production
-- script: npx netlify deploy --prod --dir $(Build.StagingDirectory)/dist/OpenRedding.Client/wwwroot --site $(netlifySiteId) --auth $(netlifyApiKey)
+# Deploy the wwwroot directory from the distribution folder
+- script: npx netlify deploy --prod --dir --site $env:NETLIFY_SITE_ID --auth $env:NETLIFY_API_KEY 
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   displayName: 'Deploy site to Netlify'
+  env:
+    NETLIFY_API_KEY: $(netlifyApiKey)
+    NETLIFT_SITE_ID: $(netlifySiteId)
