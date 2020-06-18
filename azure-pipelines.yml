@@ -13,19 +13,22 @@ variables:
 steps:
 # Use the SDK version in global.json  
 - task: UseDotNet@2
+  displayName: 'Install global.json SDK version'
   inputs:
     packageType: 'sdk'
     useGlobalJson: true
 
 # Run all unit and integration tests
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    projects: 'tests/**/*.csproj'
-    testRunTitle: 'Run tests'
+#- task: DotNetCoreCLI@2
+#  displayName: 'Run unit and integration tests'
+#  inputs:
+#    command: 'test'
+#    projects: 'tests/**/*.csproj'
+#    testRunTitle: 'Run tests'
 
 # Build the client project
 - task: DotNetCoreCLI@2
+  displayName: 'Build client project'
   inputs:
     command: 'build'
     projects: '$(clientProjectPath)'
@@ -33,6 +36,7 @@ steps:
 
 # Build the distribution files for the client
 - task: DotNetCoreCLI@2
+  displayName: 'Publish client project'
   inputs:
     command: 'publish'
     publishWebProjects: false
@@ -43,18 +47,20 @@ steps:
 
 ### PRODUCTION DEPLOYMENT STEPS ###
 # Build and deploy the docker image
-- task: Docker@2
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  inputs:
-    containerRegistry: 'DockerHub'
-    repository: 'joey32793/openreddingapi'
-    command: 'buildAndPush'
-    Dockerfile: 'source/OpenRedding.Api/Dockerfile.production'
-    buildContext: '$(Build.SourcesDirectory)'
-    tags: 'latest'
+#- task: Docker@2
+#  displayName: 'Build and deploy Docker container'
+#  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+#  inputs:
+#    containerRegistry: 'DockerHub'
+#    repository: 'joey32793/openreddingapi'
+#    command: 'buildAndPush'
+#    Dockerfile: 'source/OpenRedding.Api/Dockerfile.production'
+#    buildContext: '$(Build.SourcesDirectory)'
+#    tags: 'latest'
 
 # Update the build version on the client appSettings file    
 - task: PowerShell@2
+  displayName: 'Update client configuration files'
   inputs:
     targetType: 'inline'
     script: |
@@ -85,7 +91,7 @@ steps:
       
       $MajorVersionProperty = 'MajorVersion'
       $BuilderNumberProperty = 'BuildNumber'
-      $appSettingsFilePath = '$(Build.StagingDirectory)/dist/OpenRedding.Client/wwwroot/appSettings.json'
+      $appSettingsFilePath = '$(Build.StagingDirectory)/dist/OpenRedding.Client/wwwroot/appsettings.json'
       
       # Open the file and modify/update the property values
       $appSettings = Get-Content $appSettingsFilePath -Raw | ConvertFrom-Json
@@ -96,7 +102,7 @@ steps:
       $appSettings | ConvertTo-Json -Depth 32 | Set-Content $appSettingsFilePath
 
       # Remove the development file from distribution
-      Remove-Item -Force '$(Build.StagingDirectory)/dist/OpenRedding.Client/wwwroot/appSettings.Development.json'
+      Remove-Item -Force '$(Build.StagingDirectory)/dist/OpenRedding.Client/wwwroot/appsettings.Development.json'
     failOnStderr: true
     pwsh: true
 
@@ -106,9 +112,9 @@ steps:
   displayName: 'Install netlify-cli'
 
 # Deploy the wwwroot directory from the distribution folder
-- script: npx netlify deploy --prod --dir --site $env:NETLIFY_SITE_ID --auth $env:NETLIFY_API_KEY 
+- script: npx netlify deploy --prod --dir $(Build.StagingDirectory)/dist/OpenRedding.Client/wwwroot --site $env:NETLIFY_SITE_ID --auth $env:NETLIFY_API_KEY 
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  displayName: 'Deploy site to Netlify'
+  displayName: 'Deploy client project to Netlify'
   env:
     NETLIFY_API_KEY: $(netlifyApiKey)
     NETLIFT_SITE_ID: $(netlifySiteId)
