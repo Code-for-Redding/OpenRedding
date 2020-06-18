@@ -112,9 +112,6 @@ steps:
   displayName: 'Install netlify-cli'
 
 # Deploy the wwwroot directory from the distribution folder
-- script: npx netlify deploy --prod --dir $(Build.StagingDirectory)/dist/OpenRedding.Client/wwwroot --site $env:NETLIFY_SITE_ID --auth $env:NETLIFY_API_KEY 
+- script: npx netlify deploy --prod --dir $(Build.StagingDirectory)/dist/OpenRedding.Client/wwwroot --site $(netlifySiteId) --auth $(netlifyApiKey)
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   displayName: 'Deploy client project to Netlify'
-  env:
-    NETLIFY_API_KEY: $(netlifyApiKey)
-    NETLIFY_SITE_ID: $(netlifySiteId)
