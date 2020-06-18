@@ -117,4 +117,4 @@ steps:
   displayName: 'Deploy client project to Netlify'
   env:
     NETLIFY_API_KEY: $(netlifyApiKey)
-    NETLIFT_SITE_ID: $(netlifySiteId)
+    NETLIFY_SITE_ID: $(netlifySiteId)
