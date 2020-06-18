@@ -19,12 +19,12 @@ steps:
     useGlobalJson: true
 
 # Run all unit and integration tests
-#- task: DotNetCoreCLI@2
-#  displayName: 'Run unit and integration tests'
-#  inputs:
-#    command: 'test'
-#    projects: 'tests/**/*.csproj'
-#    testRunTitle: 'Run tests'
+- task: DotNetCoreCLI@2
+  displayName: 'Run unit and integration tests'
+  inputs:
+    command: 'test'
+    projects: 'tests/**/*.csproj'
+    testRunTitle: 'Run tests'
 
 # Build the client project
 - task: DotNetCoreCLI@2
@@ -47,16 +47,16 @@ steps:
 
 ### PRODUCTION DEPLOYMENT STEPS ###
 # Build and deploy the docker image
-#- task: Docker@2
-#  displayName: 'Build and deploy Docker container'
-#  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-#  inputs:
-#    containerRegistry: 'DockerHub'
-#    repository: 'joey32793/openreddingapi'
-#    command: 'buildAndPush'
-#    Dockerfile: 'source/OpenRedding.Api/Dockerfile.production'
-#    buildContext: '$(Build.SourcesDirectory)'
-#    tags: 'latest'
+- task: Docker@2
+  displayName: 'Build and deploy Docker container'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  inputs:
+    containerRegistry: 'DockerHub'
+    repository: 'joey32793/openreddingapi'
+    command: 'buildAndPush'
+    Dockerfile: 'source/OpenRedding.Api/Dockerfile.production'
+    buildContext: '$(Build.SourcesDirectory)'
+    tags: 'latest'
 
 # Update the build version on the client appSettings file    
 - task: PowerShell@2
