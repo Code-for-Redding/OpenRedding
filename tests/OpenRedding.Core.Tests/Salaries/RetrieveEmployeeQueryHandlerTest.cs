@@ -33,6 +33,12 @@
             result.Employee.JobTitle.ShouldBe("Senior Software Engineer");
             result.Employee.Name.ShouldNotBeNull();
             result.Employee.Name.ShouldBe("Joey Mckenzie");
+            result.OccupationalBasePayAverage.HasValue.ShouldBeTrue();
+            result.OccupationalBasePayAverage!.Value.ShouldBe(95m);
+            result.OccupationalBenefitsAverage.HasValue.ShouldBeTrue();
+            result.OccupationalBenefitsAverage!.Value.ShouldBe(100m);
+            result.OccupationalTotalPayAverage.HasValue.ShouldBeTrue();
+            result.OccupationalTotalPayAverage!.Value.ShouldBe(150m);
         }
 
         [Fact]

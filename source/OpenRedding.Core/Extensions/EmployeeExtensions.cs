@@ -57,8 +57,8 @@ namespace OpenRedding.Core.Extensions
                 TotalPay = employee.TotalPay,
                 TotalPayWithBenefits = employee.TotalPayWithBenefits,
                 Year = employee.Year,
-                Agency = employee.EmployeeAgency.ToString(),
-                Status = employee.EmployeeStatus.ToString(),
+                Agency = employee.EmployeeAgency.ToFriendlyString(),
+                Status = employee.EmployeeStatus.ToFriendlyString(),
                 Self = GetSelfLink(employee.EmployeeId, gatewayUrl)
             };
         }

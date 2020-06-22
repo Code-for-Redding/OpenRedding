@@ -3,6 +3,8 @@ namespace OpenRedding.Core.Tests.Infrastructure
     using System;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
+    using OpenRedding.Domain.Salaries.Entities;
+    using OpenRedding.Domain.Salaries.Enums;
     using OpenRedding.Infrastructure.Persistence;
     using OpenRedding.Infrastructure.Persistence.Data;
 
@@ -24,11 +26,32 @@ namespace OpenRedding.Core.Tests.Infrastructure
 
             Context = databaseContext;
             TestUri = new Uri("http://test-domain.com");
+            TestEmployee = new Employee
+            {
+                EmployeeId = 1,
+                FirstName = "Joey",
+                MiddleName = "M",
+                LastName = "Mckenzie",
+                JobTitle = "Software Engineer",
+                BasePay = 100m,
+                Benefits = 10m,
+                EmployeeAgency = EmployeeAgency.Redding,
+                EmployeeStatus = EmployeeStatus.FullTime,
+                Notes = "Great!",
+                Year = 2020,
+                OtherPay = 0m,
+                OvertimePay = 0m,
+                PensionDebt = 0m,
+                TotalPay = 150m,
+                TotalPayWithBenefits = 170m
+            };
         }
 
         protected OpenReddingDbContext Context { get; }
 
         protected Uri TestUri { get; }
+
+        protected Employee TestEmployee { get; }
 
         public void Dispose()
         {
