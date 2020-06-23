@@ -3,8 +3,12 @@ namespace OpenRedding.Core.Tests.Infrastructure
     using System;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.DependencyInjection;
+    using OpenRedding.Core.Extensions;
+    using OpenRedding.Domain.Common.Miscellaneous;
+    using OpenRedding.Domain.Salaries.Dtos;
     using OpenRedding.Domain.Salaries.Entities;
     using OpenRedding.Domain.Salaries.Enums;
+    using OpenRedding.Domain.Salaries.ViewModels;
     using OpenRedding.Infrastructure.Persistence;
     using OpenRedding.Infrastructure.Persistence.Data;
 
@@ -45,6 +49,23 @@ namespace OpenRedding.Core.Tests.Infrastructure
                 TotalPay = 150m,
                 TotalPayWithBenefits = 170m
             };
+
+            TestCsvReadDto = new TransparentCaliforniaCsvReadEmployeeDto
+            {
+                EmployeeName = "John Smith",
+                JobTitle = "Accountant",
+                BasePay = 100m,
+                OvertimePay = 10m,
+                OtherPay = 20m,
+                Benefits = 30m,
+                TotalPay = 125m,
+                PensionDebt = 10m,
+                TotalPayWithBenefits = 150m,
+                Year = 2019,
+                Notes = string.Empty,
+                EmployeeAgency = "Shasta County",
+                EmployeeStatus = "FT"
+            };
         }
 
         protected OpenReddingDbContext Context { get; }
@@ -52,6 +73,8 @@ namespace OpenRedding.Core.Tests.Infrastructure
         protected Uri TestUri { get; }
 
         protected Employee TestEmployee { get; }
+
+        protected TransparentCaliforniaCsvReadEmployeeDto TestCsvReadDto { get; }
 
         public void Dispose()
         {

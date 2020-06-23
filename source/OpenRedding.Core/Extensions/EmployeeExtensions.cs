@@ -121,6 +121,12 @@ namespace OpenRedding.Core.Extensions
             };
         }
 
+        /// <summary>
+        /// Maps an employee record from the database to a related record, i.e. other employee records found with the same name.
+        /// </summary>
+        /// <param name="employee">Employee record returned from the database.</param>
+        /// <param name="gatewayUrl">Domain to use when building the link for the UI to follow.</param>
+        /// <returns>Mapped related employee detail DTO.</returns>
         public static RelatedEmployeeDetailDto ToRelatedEmployeeDetailDto(this Employee employee, Uri gatewayUrl)
         {
             ArgumentValidation.CheckNotNull(employee, nameof(employee));
@@ -161,6 +167,7 @@ namespace OpenRedding.Core.Extensions
         {
             return agency switch
             {
+                EmployeeAgency.AllAgencies => "All Agencies",
                 EmployeeAgency.ShastaCounty => "Shasta County",
                 _ => agency.ToString()
             };
@@ -170,6 +177,7 @@ namespace OpenRedding.Core.Extensions
         {
             return status switch
             {
+                EmployeeStatus.AllStatuses => "All Statuses",
                 EmployeeStatus.FullTime => "Full-time",
                 EmployeeStatus.PartTime => "Part-time",
                 _ => status.ToString()

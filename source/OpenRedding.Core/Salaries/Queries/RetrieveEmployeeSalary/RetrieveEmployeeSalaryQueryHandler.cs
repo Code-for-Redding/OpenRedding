@@ -28,7 +28,9 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
         {
             Validate.NotNull(request, nameof(request));
 
-            var employeeDetail = await _context.Employees.FirstOrDefaultAsync(e => e.EmployeeId == request.Id, cancellationToken);
+            var employeeDetail = await _context.Employees
+                .FirstOrDefaultAsync(e => e.EmployeeId == request.Id, cancellationToken)
+                .ConfigureAwait(false);
 
             if (employeeDetail is null)
             {

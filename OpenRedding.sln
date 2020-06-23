@@ -25,11 +25,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRedding.Infrastructure"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRedding.Client", "source\OpenRedding.Client\OpenRedding.Client.csproj", "{88657FB0-2D0D-4329-9046-B0D29B83531B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deploy", "deploy", "{A44636F8-F731-41A9-ABE0-626C4DE70941}"
-	ProjectSection(SolutionItems) = preProject
-		Deploy-ClientApplication.ps1 = Deploy-ClientApplication.ps1
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
