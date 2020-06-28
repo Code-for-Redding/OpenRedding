@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRedding.Infrastructure"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRedding.Client", "source\OpenRedding.Client\OpenRedding.Client.csproj", "{88657FB0-2D0D-4329-9046-B0D29B83531B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRedding.Infrastructure.Tests", "tests\OpenRedding.Infrastructure.Tests\OpenRedding.Infrastructure.Tests.csproj", "{FFDFD2B8-56E0-46F7-9C50-BC2AE6520992}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +131,18 @@ Global
 		{88657FB0-2D0D-4329-9046-B0D29B83531B}.Release|x64.Build.0 = Release|Any CPU
 		{88657FB0-2D0D-4329-9046-B0D29B83531B}.Release|x86.ActiveCfg = Release|Any CPU
 		{88657FB0-2D0D-4329-9046-B0D29B83531B}.Release|x86.Build.0 = Release|Any CPU
+		{FFDFD2B8-56E0-46F7-9C50-BC2AE6520992}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFDFD2B8-56E0-46F7-9C50-BC2AE6520992}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFDFD2B8-56E0-46F7-9C50-BC2AE6520992}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FFDFD2B8-56E0-46F7-9C50-BC2AE6520992}.Debug|x64.Build.0 = Debug|Any CPU
+		{FFDFD2B8-56E0-46F7-9C50-BC2AE6520992}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FFDFD2B8-56E0-46F7-9C50-BC2AE6520992}.Debug|x86.Build.0 = Debug|Any CPU
+		{FFDFD2B8-56E0-46F7-9C50-BC2AE6520992}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFDFD2B8-56E0-46F7-9C50-BC2AE6520992}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFDFD2B8-56E0-46F7-9C50-BC2AE6520992}.Release|x64.ActiveCfg = Release|Any CPU
+		{FFDFD2B8-56E0-46F7-9C50-BC2AE6520992}.Release|x64.Build.0 = Release|Any CPU
+		{FFDFD2B8-56E0-46F7-9C50-BC2AE6520992}.Release|x86.ActiveCfg = Release|Any CPU
+		{FFDFD2B8-56E0-46F7-9C50-BC2AE6520992}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -142,6 +156,7 @@ Global
 		{71FC758F-702A-4FDD-8AF4-EED6140DBC5D} = {B0D39FD8-FF46-4D0E-8C01-4272DC66EDC6}
 		{9DFD8BE9-6BF5-49F9-96DE-EB3B9C284B9F} = {347E2481-0795-4693-87E5-FA9217B0BCE0}
 		{88657FB0-2D0D-4329-9046-B0D29B83531B} = {347E2481-0795-4693-87E5-FA9217B0BCE0}
+		{FFDFD2B8-56E0-46F7-9C50-BC2AE6520992} = {B0D39FD8-FF46-4D0E-8C01-4272DC66EDC6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F67D9DEF-8605-45E7-8314-528A17CBCB06}

@@ -13,7 +13,7 @@ namespace OpenRedding.Core.Tests.Salaries
     using Shouldly;
     using Xunit;
 
-    public class GetEmployeeSalariesQueryHandlerTest : TestFixture
+    public class GetEmployeeSalariesQueryHandlerTest : CoreTestFixture
     {
         [Fact]
         public async Task GivenValidRequest_WhenNameIsInQuery_FiltersByEmployeeName()

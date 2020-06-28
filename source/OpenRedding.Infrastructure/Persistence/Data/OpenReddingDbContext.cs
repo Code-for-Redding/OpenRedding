@@ -9,6 +9,7 @@
     using EFCore.BulkExtensions;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
+    using OpenRedding.Domain.Zoning.Entities;
 
     public class OpenReddingDbContext : DbContext, IOpenReddingDbContext
     {
@@ -20,6 +21,8 @@
         }
 
         public DbSet<Employee> Employees { get; set; } = default!;
+
+        public DbSet<ReddingZone> Zones { get; set; } = default!;
 
         public async Task BulkInsertEntitiesAsync<T>(IList<T> entities, CancellationToken cancellationToken)
             where T : class

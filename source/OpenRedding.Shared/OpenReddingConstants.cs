@@ -8,6 +8,7 @@
         public const int MaxPageSizeResult = 25;
         public const string PageNumberStringReplacementValue = "{:pageNumber}";
         public const int UnknownNumericSelection = -1;
+        public const string ZoningApiBaseUrl = "https://opendata.arcgis.com/datasets/6f5024ec0abc4d12b6ed6901cc3541b2_0.geojson";
         public static readonly string ApiPath = $"/{Version}/api";
 
         public static readonly string[] Urls =

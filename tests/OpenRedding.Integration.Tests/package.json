@@ -1,0 +1,15 @@
+{
+  "name": "openredding.integration.tests",
+  "version": "1.0.0",
+  "description": "Cypress UI and integration tests for Open Redding",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Joey Mckenzie",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^4.8.0",
+    "uuid-js": "^0.7.5"
+  }
+}

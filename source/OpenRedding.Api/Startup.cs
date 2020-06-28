@@ -10,6 +10,7 @@ namespace OpenRedding.Api
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using OpenRedding.Api.Middleware;
+    using OpenRedding.Api.Settings;
     using OpenRedding.Core.Infrastructure.Services;
     using OpenRedding.Infrastructure.Extensions;
     using OpenRedding.Infrastructure.Services;
@@ -29,6 +30,10 @@ namespace OpenRedding.Api
             // Retrieve the connection string from environment source and cancel bootstrap if none is found
             var connectionString = Configuration["ConnectionString"];
 
+            // Bind Azure configuration
+            var azureConfig = Configuration.GetSection("Azure");
+            services.Configure<OpenReddingSettings>(azureConfig);
+
             if (string.IsNullOrWhiteSpace(connectionString))
             {
                 throw new ArgumentException("Database connection string is null");
@@ -44,7 +49,8 @@ namespace OpenRedding.Api
                 });
 
             // Service dependencies
-            services.AddHttpClient<ISalaryTableSeeder, SalaryTableSeeder>(options => options.Timeout = TimeSpan.FromSeconds(30));
+            services.AddHttpClient<ISalaryTableSeeder, SalaryTableSeeder>(nameof(SalaryTableSeeder), options => options.Timeout = TimeSpan.FromSeconds(30));
+            services.AddHttpClient<IZoningTableSeeder, ZoningTableSeeder>(nameof(ZoningTableSeeder), options => options.Timeout = TimeSpan.FromSeconds(30));
 
             // Project dependencies
             services.AddOpenReddingCore();

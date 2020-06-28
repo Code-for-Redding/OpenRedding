@@ -14,7 +14,7 @@
     using Shouldly;
     using Xunit;
 
-    public class RetrieveEmployeeQueryHandlerTest : TestFixture
+    public class RetrieveEmployeeQueryHandlerTest : CoreTestFixture
     {
         [Fact]
         public async Task GivenValidRequest_WhenEmployeeSalaryRecordExists_ReturnsDetailViewModel()

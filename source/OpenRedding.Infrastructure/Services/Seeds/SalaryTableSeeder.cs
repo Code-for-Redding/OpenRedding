@@ -36,7 +36,7 @@
         /// <param name="cancellationToken">Cancellation token provided by MediatR.</param>
         /// <returns>Completed Task.</returns>
         /// <exception cref="InvalidDataException">Throws if no data was added to the collection for bulk insertion.</exception>
-        public async Task SeedAsync(CancellationToken cancellationToken)
+        public async Task SeedSalaryDataAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Pulling data from Transparent California...");
             var salariedEmployees = new List<Employee>();

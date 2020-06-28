@@ -10,4 +10,8 @@
     <ProjectReference Include="..\OpenRedding.Shared\OpenRedding.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Zoning\Dtos\" />
+  </ItemGroup>
+
 </Project>

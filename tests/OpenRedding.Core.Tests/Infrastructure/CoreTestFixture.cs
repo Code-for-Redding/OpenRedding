@@ -12,9 +12,9 @@ namespace OpenRedding.Core.Tests.Infrastructure
     using OpenRedding.Infrastructure.Persistence;
     using OpenRedding.Infrastructure.Persistence.Data;
 
-    public class TestFixture : IDisposable
+    public class CoreTestFixture : IDisposable
     {
-        public TestFixture()
+        public CoreTestFixture()
         {
             // Configure services
             var services = new ServiceCollection();

@@ -11,7 +11,7 @@
     using Shouldly;
     using Xunit;
 
-    public class EmployeeExtensionsTest : TestFixture
+    public class EmployeeExtensionsTest : CoreTestFixture
     {
         [Fact]
         public void ToEmployeeSalarySearchResultDto_GivenValidEmployee_ProperlyMapsToDto()

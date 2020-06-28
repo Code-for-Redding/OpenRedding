@@ -3,7 +3,7 @@
     using Xunit;
 
     [CollectionDefinition("ConduitCollectionFixture")]
-    public class OpenReddingCollectionFixture : ICollectionFixture<TestFixture>
+    public class InfrastructureCollectionFixture : ICollectionFixture<InfrastructureTestFixture>
     {
     }
 }

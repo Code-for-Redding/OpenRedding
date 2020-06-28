@@ -20,7 +20,7 @@ namespace OpenRedding.Core.Salaries.Commands.SeedSalaryTable
         public async Task<Unit> Handle(SeedSalaryTableCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Attempting to seed salary table...");
-            await _seeder.SeedAsync(cancellationToken).ConfigureAwait(false);
+            await _seeder.SeedSalaryDataAsync(cancellationToken).ConfigureAwait(false);
             _logger.LogInformation("Seed was successful!");
 
             return Unit.Value;

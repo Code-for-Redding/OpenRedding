@@ -2,6 +2,7 @@
 {
     using System;
     using System.Reflection;
+    using Azure.Storage.Blobs;
     using Core.Data;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Infrastructure;
