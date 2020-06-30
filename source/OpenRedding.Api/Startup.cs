@@ -10,7 +10,7 @@ namespace OpenRedding.Api
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using OpenRedding.Api.Middleware;
-    using OpenRedding.Api.Settings;
+    using OpenRedding.Core.Configuration;
     using OpenRedding.Core.Infrastructure.Services;
     using OpenRedding.Infrastructure.Extensions;
     using OpenRedding.Infrastructure.Services;
@@ -31,8 +31,8 @@ namespace OpenRedding.Api
             var connectionString = Configuration["ConnectionString"];
 
             // Bind Azure configuration
-            var azureConfig = Configuration.GetSection("Azure");
-            services.Configure<OpenReddingSettings>(azureConfig);
+            var configurationUrls = Configuration.GetSection("Urls");
+            services.Configure<ApplicationSettings>(configurationUrls);
 
             if (string.IsNullOrWhiteSpace(connectionString))
             {

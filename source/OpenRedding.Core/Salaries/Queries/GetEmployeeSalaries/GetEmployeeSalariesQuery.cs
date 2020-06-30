@@ -7,12 +7,12 @@
 
     public class GetEmployeeSalariesQuery : OpenReddingRequest<OpenReddingSearchResultAggregate<EmployeeSalarySearchResultDto>>
     {
-        public GetEmployeeSalariesQuery(EmployeeSalarySearchRequestDto searchRequest, Uri gatewayBaseUrl, int? page) =>
-            (SearchRequest, GatewayBaseUrl, Page) = (searchRequest, gatewayBaseUrl, page ?? 1);
+        public GetEmployeeSalariesQuery(EmployeeSalarySearchRequestDto searchRequest, Uri apiBaseUrl, int? page) =>
+            (SearchRequest, ApiBaseUrl, Page) = (searchRequest, apiBaseUrl, page ?? 1);
 
         public EmployeeSalarySearchRequestDto SearchRequest { get; }
 
-        public Uri GatewayBaseUrl { get; }
+        public Uri ApiBaseUrl { get; }
 
         public int Page { get; }
     }

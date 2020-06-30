@@ -2,6 +2,7 @@
 {
     public enum ZoningClass
     {
+        AllZones,
         Commercial,
         Industry,
         MixedUse,

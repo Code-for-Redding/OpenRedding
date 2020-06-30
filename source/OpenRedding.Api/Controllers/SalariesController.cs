@@ -6,9 +6,10 @@ namespace OpenRedding.Api.Controllers
     using Domain.Salaries.ViewModels;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
     using OpenRedding.Api;
+    using OpenRedding.Core.Configuration;
     using OpenRedding.Core.Infrastructure.Services;
     using OpenRedding.Core.Salaries.Commands.DownloadSalaries;
     using OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries;
@@ -16,18 +17,23 @@ namespace OpenRedding.Api.Controllers
     using OpenRedding.Domain.Common.Miscellaneous;
     using OpenRedding.Domain.Common.ViewModels;
     using OpenRedding.Domain.Salaries.Dtos;
+    using OpenRedding.Shared;
 
     public class SalariesController : OpenReddingBaseController
     {
         private readonly ILogger<SalariesController> _logger;
-        private readonly string _gatewayBaseUrl;
+        private readonly Uri _apiBaseUrl;
         private readonly ILinkBuilder<EmployeeSalarySearchResultDto> _linkBuilder;
 
-        public SalariesController(ILogger<SalariesController> logger, IConfiguration configuration, ILinkBuilder<EmployeeSalarySearchResultDto> linkBuilder)
+        public SalariesController(ILogger<SalariesController> logger, IOptions<ApplicationSettings> settings, ILinkBuilder<EmployeeSalarySearchResultDto> linkBuilder)
         {
+            ArgumentValidation.CheckNotNull(settings, nameof(settings));
+
             _logger = logger;
-            _gatewayBaseUrl = configuration["GatewayBaseUrl"];
             _linkBuilder = linkBuilder;
+            _apiBaseUrl = string.IsNullOrWhiteSpace(settings.Value.ApiBaseUrl) ?
+                throw new ArgumentNullException(nameof(settings)) :
+                new Uri(settings.Value.ApiBaseUrl);
         }
 
         [HttpGet]
@@ -59,7 +65,7 @@ namespace OpenRedding.Api.Controllers
             _logger.LogInformation("Sending employee salary search request...");
             var searchRequest = new EmployeeSalarySearchRequestDto(name, jobTitle, agency, status, sortBy, year, sortField, basePayRange, totalPayRange);
 
-            var response = await Mediator.Send(new GetEmployeeSalariesQuery(searchRequest, new Uri(_gatewayBaseUrl), page));
+            var response = await Mediator.Send(new GetEmployeeSalariesQuery(searchRequest, _apiBaseUrl, page));
             _logger.LogInformation($"Request was successful, {response.Results.Count()} found with {response.Count} results");
 
             return new OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>
@@ -77,7 +83,7 @@ namespace OpenRedding.Api.Controllers
         public async Task<EmployeeSalaryDetailViewModel> GetEmployeeSalary([FromRoute] int id)
         {
             _logger.LogInformation($"Retrieving employee salary detail for employeeId [{id}]");
-            return await Mediator.Send(new RetrieveEmployeeSalaryQuery(id, new Uri(_gatewayBaseUrl)));
+            return await Mediator.Send(new RetrieveEmployeeSalaryQuery(id, _apiBaseUrl));
         }
 
         [HttpPost("download")]

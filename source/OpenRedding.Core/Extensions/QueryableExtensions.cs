@@ -6,6 +6,9 @@
     using OpenRedding.Domain.Salaries.Dtos;
     using OpenRedding.Domain.Salaries.Entities;
     using OpenRedding.Domain.Salaries.Enums;
+    using OpenRedding.Domain.Zoning.Dtos;
+    using OpenRedding.Domain.Zoning.Entities;
+    using OpenRedding.Domain.Zoning.Enums;
     using OpenRedding.Shared;
 
     public static class QueryableExtensions
@@ -13,10 +16,7 @@
         public static IQueryable<T> SkipAndTakeDefault<T>(this IQueryable<T> queryable, int page)
             where T : class
         {
-            if (queryable is null)
-            {
-                throw new ArgumentNullException(nameof(queryable), "Queryable cannot be null, please check LINQ statement");
-            }
+            ArgumentValidation.CheckNotNull(queryable, nameof(queryable));
 
             return queryable
                 .Skip(OpenReddingConstants.MaxPageSizeResult * (page - 1))
@@ -25,10 +25,7 @@
 
         public static IQueryable<Employee> FromSearchRequest(this IQueryable<Employee> queriedSalaries, EmployeeSalarySearchRequestDto searchRequest)
         {
-            if (queriedSalaries is null)
-            {
-                throw new ArgumentNullException(nameof(queriedSalaries), "Queryable cannot be null, please check LINQ statement");
-            }
+            ArgumentValidation.CheckNotNull(queriedSalaries, nameof(queriedSalaries));
 
             // Filter by job title, if available
             if (!string.IsNullOrWhiteSpace(searchRequest.JobTitle))
@@ -165,6 +162,27 @@
             }
 
             return queriedSalaries;
+        }
+
+        public static IQueryable<ReddingZone> FromSearchRequest(this IQueryable<ReddingZone> queriedZones, ZoneSearchRequestDto searchRequest)
+        {
+            ArgumentValidation.CheckNotNull(queriedZones, nameof(queriedZones));
+
+            // Filter by zone, if available
+            if (!string.IsNullOrWhiteSpace(searchRequest.Zoning))
+            {
+                queriedZones = queriedZones.Where(z => !string.IsNullOrWhiteSpace(z.Zoning) && z.Zoning.Contains(searchRequest.Zoning));
+            }
+
+            // Filter by zoning class, if available
+            if (searchRequest.ZoningClass.HasValue && Enum.IsDefined(typeof(ZoningClass), searchRequest.ZoningClass.Value))
+            {
+                var parsedZoningClass = (ZoningClass)searchRequest.ZoningClass.Value;
+
+                queriedZones = queriedZones.Where(z => z.ZoningClass == parsedZoningClass);
+            }
+
+            return queriedZones;
         }
     }
 }

@@ -2,7 +2,6 @@
 {
     using System;
     using System.Reflection;
-    using Azure.Storage.Blobs;
     using Core.Data;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -11,6 +10,7 @@
     using Microsoft.Extensions.DependencyInjection.Extensions;
     using OpenRedding.Core.Infrastructure.Services;
     using OpenRedding.Domain.Salaries.Dtos;
+    using OpenRedding.Domain.Zoning.Dtos;
     using OpenRedding.Infrastructure.Persistence.Data;
     using OpenRedding.Infrastructure.Persistence.Repositories;
     using OpenRedding.Infrastructure.Services;
@@ -36,7 +36,10 @@
             services.TryAddScoped<IOpenReddingDbContext>(provider => provider.GetService<OpenReddingDbContext>());
             services.TryAddScoped<IUnitOfWork>(_ => new UnitOfWork(connectionString));
             services.TryAddScoped<IAzureBlobService, SalaryCsvBlobService>();
+
+            // Add link builders
             services.TryAddScoped<ILinkBuilder<EmployeeSalarySearchResultDto>, SalariesLinkBuilder>();
+            services.TryAddScoped<ILinkBuilder<ZoningSearchResultDto>, ZoningLinkBuilder>();
         }
     }
 }

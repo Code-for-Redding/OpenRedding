@@ -29,3 +29,4 @@ node_modules/
 /deploy
 **/deploy
 **/node_modules/
+**/*.csproj.user

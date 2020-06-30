@@ -31,9 +31,10 @@ namespace OpenRedding.Core.Salaries.Queries.GetEmployeeSalaries
             // Perform the query and map each resulting record to its search DTO
             var totalResults = queriedSalaries.Count();
             var resultingSalaries = await queriedSalaries
-                .Select(e => e.ToEmployeeSalarySearchResultDto(request.GatewayBaseUrl))
+                .Select(e => e.ToEmployeeSalarySearchResultDto(request.ApiBaseUrl))
                 .SkipAndTakeDefault(request.Page)
-                .ToListAsync(cancellationToken);
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
 
             return new OpenReddingSearchResultAggregate<EmployeeSalarySearchResultDto>(resultingSalaries.AsEnumerable(), totalResults, request.Page);
         }
