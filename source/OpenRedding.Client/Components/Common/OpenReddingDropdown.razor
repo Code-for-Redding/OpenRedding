@@ -1,0 +1,19 @@
+﻿@typeparam TEnum
+
+<div class="d-flex flex-column">
+    <label class="@LabelCss" for="@DropdownId">@Label</label>
+    <select id="@DropdownId" @onchange="OnValueSelected" class="form-control">
+        <option disabled>Select an @Label?.ToLower()</option>
+        @foreach (var statusOption in DropdownOptions!.SelectOptions)
+        {
+            @if (statusOption.Key.Equals(ExistingSelection))
+            {
+                <option selected value="@statusOption.Key">@statusOption.Value</option>
+            }
+            else
+            {
+                <option value="@statusOption.Key">@statusOption.Value</option>
+            }
+        }
+    </select>
+</div>

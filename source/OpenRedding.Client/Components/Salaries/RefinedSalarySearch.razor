@@ -5,6 +5,7 @@
 @using OpenRedding.Client.Components.Dropdowns.Salaries
 @using OpenRedding.Client.Services
 @using OpenRedding.Client.Store.State
+@using OpenRedding.Domain.Common.ViewModels
 @using OpenRedding.Domain.Salaries.Dtos
 @using OpenRedding.Domain.Salaries.Enums
 
@@ -53,16 +54,26 @@
 
                     @* Agency *@
                     <div class="col-md-3">
-                        <EmployeeAgencyDropdown ExistingSelection="Enum.TryParse<EmployeeAgency>(State.Value.SearchRequest?.Agency, true, out var agency) ? agency : EmployeeAgency.AllAgencies"
-                                                LoadFromApi="true"
-                                                LabelCss="col-form-label" />
+                        <OpenReddingDropdown 
+                                TEnum="EmployeeAgency"
+                                DropdownId="agency-dropdown"
+                                Label="Agency"
+                                LabelCss="col-form-label"
+                                ExistingSelection="Enum.TryParse<EmployeeAgency>(State.Value.SearchRequest?.Agency, true, out var agency) ? agency : EmployeeAgency.AllAgencies"
+                                DropdownOptions="employeeAgencySelectOptions"
+                                ValueSelectedHandler="OnAgencySelected" />
                     </div>
 
                     @* Status *@
                     <div class="col-md-3">
-                        <EmployeeStatusDropdown ExistingSelection="Enum.TryParse<EmployeeStatus>(State.Value.SearchRequest?.Status, true, out var status) ? status : EmployeeStatus.AllStatuses"
-                                                LoadFromApi="true"
-                                                LabelCss="col-form-label" />
+                        <OpenReddingDropdown 
+                                TEnum="EmployeeStatus"
+                                DropdownId="status-dropdown"
+                                Label="Status"
+                                LabelCss="col-form-label"
+                                ExistingSelection="Enum.TryParse<EmployeeStatus>(State.Value.SearchRequest?.Status, true, out var status) ? status : EmployeeStatus.AllStatuses"
+                                DropdownOptions="employeeStatusSelectOptions"
+                                ValueSelectedHandler="OnStatusSelected" />
                     </div>
                 </div>
 
@@ -172,6 +183,10 @@
 
     private bool isValidJobTitle = true;
 
+    private OpenReddingEnumSelectViewModel<EmployeeAgency> employeeAgencySelectOptions = new OpenReddingEnumSelectViewModel<EmployeeAgency>();
+
+    private OpenReddingEnumSelectViewModel<EmployeeStatus> employeeStatusSelectOptions = new OpenReddingEnumSelectViewModel<EmployeeStatus>();
+
     [Parameter]
     public int ResultCount { get; set; }
 
@@ -193,6 +208,18 @@
         // Set search values from the original query
         employeeName = State.Value.SearchRequest.Name;
         jobTitle = State.Value.SearchRequest.JobTitle;
+
+        employeeStatusSelectOptions
+            .AddOption(EmployeeStatus.AllStatuses, "All Statuses")
+            .AddOption(EmployeeStatus.FullTime, "Full-time")
+            .AddOption(EmployeeStatus.PartTime, "Part-time")
+            .AddOption(EmployeeStatus.Other, "Other");
+
+        employeeAgencySelectOptions
+            .AddOption(EmployeeAgency.AllAgencies, "All Agencies")
+            .AddOption(EmployeeAgency.Redding, "Redding")
+            .AddOption(EmployeeAgency.ShastaCounty, "Shasta County")
+            .AddOption(EmployeeAgency.Other, "Other");
     }
 
     protected override void Dispose(bool disposing)
@@ -201,26 +228,6 @@
         {
             base.Dispose(disposing);
         }
-    }
-
-    private void IsValidEmployeeNameHandler(bool isValid)
-    {
-        isValidEmployeeName = isValid;
-    }
-
-    private void IsValidJobTitleHandler(bool isValid)
-    {
-        isValidJobTitle = isValid;
-    }
-
-    private void EmployeeNameInputHandler(string? updatedEmployeeValue)
-    {
-        employeeName = updatedEmployeeValue;
-    }
-
-    private void JobTitleInputHandler(string? updatedJobtTileHandler)
-    {
-        jobTitle = updatedJobtTileHandler;
     }
 
     private EmploymentYear GetExistingEmploymentYear()
@@ -252,12 +259,43 @@
         };
     }
 
+    /***** Event Handlers *****/
+    private void IsValidEmployeeNameHandler(bool isValid)
+    {
+        isValidEmployeeName = isValid;
+    }
+
+    private void IsValidJobTitleHandler(bool isValid)
+    {
+        isValidJobTitle = isValid;
+    }
+
+    private void EmployeeNameInputHandler(string? updatedEmployeeValue)
+    {
+        employeeName = updatedEmployeeValue;
+    }
+
+    private void JobTitleInputHandler(string? updatedJobtTileHandler)
+    {
+        jobTitle = updatedJobtTileHandler;
+    }
+
     private void OnResetClicked()
     {
         employeeName = string.Empty;
         jobTitle = string.Empty;
 
         StateFacade.SetCurrentSearchRequest(new EmployeeSalarySearchRequestDto(), true);
+    }
+
+    private void OnAgencySelected(EmployeeAgency agency)
+    {
+        StateFacade.SetEmployeeAgency(agency, true);
+    }
+
+    private void OnStatusSelected(EmployeeStatus status)
+    {
+        StateFacade.SetEmployeeStatus(status, true);
     }
 
 }

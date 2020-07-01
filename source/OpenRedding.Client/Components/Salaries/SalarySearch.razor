@@ -1,8 +1,8 @@
 ﻿@inherits Fluxor.Blazor.Web.Components.FluxorComponent
 
 @using Fluxor
-@using OpenRedding.Client.Components.Dropdowns.Salaries
 @using OpenRedding.Client.Components.Common
+@using OpenRedding.Client.Models
 @using OpenRedding.Client.Services
 @using OpenRedding.Client.Store.State
 @using OpenRedding.Domain.Salaries.Dtos
@@ -18,41 +18,49 @@
 
     @* Name *@
     <div class="col-md-3">
-        <ValidatedInput
-                InputValue="@employeeName"
-                OnValidatedInput="IsValidEmployeeNameHandler"
-                OnValueInput="EmployeeNameInputHandler"
-                DisplayErrorMessage="false"
-                FieldLabel="Name"
-                InputId="salary-search-name"
-                LabelCss="col-form-label text-white" />
+        <ValidatedInput InputValue="@employeeName"
+                        OnValidatedInput="IsValidEmployeeNameHandler"
+                        OnValueInput="EmployeeNameInputHandler"
+                        DisplayErrorMessage="false"
+                        FieldLabel="Name"
+                        InputId="salary-search-name"
+                        LabelCss="col-form-label text-white" />
     </div>
 
     @* Job title *@
     <div class="col-md-3">
-        <ValidatedInput
-                InputValue="@jobTitle"
-                OnValidatedInput="IsValidJobTitleHandler"
-                OnValueInput="JobTitleInputHandler"
-                DisplayErrorMessage="false"
-                FieldLabel="Job Title"
-                InputId="salary-search-job-title"
-                LabelCss="col-form-label text-white" />
+        <ValidatedInput InputValue="@jobTitle"
+                        OnValidatedInput="IsValidJobTitleHandler"
+                        OnValueInput="JobTitleInputHandler"
+                        DisplayErrorMessage="false"
+                        FieldLabel="Job Title"
+                        InputId="salary-search-job-title"
+                        LabelCss="col-form-label text-white" />
     </div>
 
     @* Agency *@
     <div class="col-md-3">
-        <EmployeeAgencyDropdown
+        @*
+        *@
+        <OpenReddingDropdown 
+                TEnum="EmployeeAgency"
+                DropdownId="agency-dropdown"
+                Label="Agency"
                 LabelCss="col-form-label text-white-90"
-                LoadFromApi="false"
-                ExistingSelection="Enum.TryParse<EmployeeAgency>(State.Value.SearchRequest?.Agency, true, out var agency) ? agency : EmployeeAgency.AllAgencies" />
+                ExistingSelection="Enum.TryParse<EmployeeAgency>(State.Value.SearchRequest?.Agency, true, out var agency) ? agency : EmployeeAgency.AllAgencies"
+                DropdownOptions="agencyDropdownFactory?.GetDropdownOptions()"
+                ValueSelectedHandler="OnAgencySelected" />
     </div>
 
     @* Status *@
     <div class="col-md-3">
-        <EmployeeStatusDropdown
-                LabelCss="col-form-label text-white-90"
-                ExistingSelection="Enum.TryParse<EmployeeStatus>(State.Value.SearchRequest?.Status, true, out var status) ? status : EmployeeStatus.AllStatuses" />
+        <OpenReddingDropdown TEnum="EmployeeStatus"
+                             DropdownId="status-dropdown"
+                             Label="Status"
+                             LabelCss="col-form-label text-white-90"
+                             ExistingSelection="Enum.TryParse<EmployeeStatus>(State.Value.SearchRequest?.Status, true, out var status) ? status : EmployeeStatus.AllStatuses"
+                             DropdownOptions="statusDropdownFactory?.GetDropdownOptions()"
+                             ValueSelectedHandler="OnStatusSelected" />
     </div>
 
     @* Search button *@
@@ -80,8 +88,18 @@
 
     private bool isValidJobTitle = true;
 
+    private EmployeeStatusDropdownFactory? statusDropdownFactory;
+
+    private EmployeeAgencyDropdownFactory? agencyDropdownFactory;
+
     protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
+
+        // Assign the values for the dropdown markup
+        statusDropdownFactory = new EmployeeStatusDropdownFactory();
+        agencyDropdownFactory = new EmployeeAgencyDropdownFactory();
+
         if (State.Value.SearchRequest is null)
         {
             return;
@@ -90,8 +108,6 @@
         // Set search values from the original query
         employeeName = State.Value.SearchRequest.Name;
         jobTitle = State.Value.SearchRequest.JobTitle;
-
-        await base.OnInitializedAsync();
     }
 
     protected override void Dispose(bool disposing)
@@ -102,6 +118,7 @@
         }
     }
 
+    /***** Event Handlers *****/
     private void OnSearchClicked()
     {
         var searchRequest = new EmployeeSalarySearchRequestDto(
@@ -133,6 +150,16 @@
     private void JobTitleInputHandler(string? updatedJobtTileHandler)
     {
         jobTitle = updatedJobtTileHandler;
+    }
+
+    private void OnAgencySelected(EmployeeAgency agency)
+    {
+        StateFacade.SetEmployeeAgency(agency);
+    }
+
+    private void OnStatusSelected(EmployeeStatus status)
+    {
+        StateFacade.SetEmployeeStatus(status);
     }
 
 }
