@@ -29,13 +29,13 @@
                     <div class="d-flex flex-row justify-content-center py-4">
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                             <label class="btn btn-info active">
-                                <input @onclick="(() => selectedSearchOption = SearchOption.Salaries)" type="radio" name="options" id="salary-radio-option" autocomplete="off" checked="checked"> Salaries
+                                <input id="search-salaries-button-option" @onclick="(() => selectedSearchOption = SearchOption.Salaries)" type="radio" name="options" autocomplete="off" checked="checked"> Salaries
                             </label>
                             <label class="btn btn-info">
-                                <input @onclick="(() => selectedSearchOption = SearchOption.Budget)" type="radio" name="options" id="budget-radio-option" autocomplete="off"> Budget
+                                <input id="search-budget-button-option" @onclick="(() => selectedSearchOption = SearchOption.Budget)" type="radio" name="options" autocomplete="off"> Budget
                             </label>
                             <label class="btn btn-info">
-                                <input @onclick="(() => selectedSearchOption = SearchOption.Zoning)" type="radio" name="options" id="zoning-radio-option" autocomplete="off"> Zoning
+                                <input id="search-zoning-button-option" @onclick="(() => selectedSearchOption = SearchOption.Zoning)" type="radio" name="options" autocomplete="off"> Zoning
                             </label>
                         </div>
                     </div>

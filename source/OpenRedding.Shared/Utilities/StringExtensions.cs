@@ -6,10 +6,10 @@
         {
             if (nullableStringValue is null)
             {
-                return string.Empty;
+                return defaultValue ?? string.Empty;
             }
 
-            return defaultValue ?? nullableStringValue;
+            return nullableStringValue;
         }
     }
 }

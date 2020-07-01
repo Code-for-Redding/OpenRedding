@@ -59,13 +59,13 @@
     @if (isValidEmployeeName && isValidJobTitle)
     {
         <div class="pt-4 d-flex flex-row mx-auto">
-            <button @onclick="OnSearchClicked" class="btn btn-lg btn-info" type="button" data-toggle="tooltip" data-placement="bottom" title="To browse all salary data, leave all fields above blank.">Search</button>
+            <button id="salary-search-button" @onclick="OnSearchClicked" class="btn btn-lg btn-info" type="button" data-toggle="tooltip" data-placement="bottom" title="To browse all salary data, leave all fields above blank.">Search</button>
         </div>
     }
     else
     {
         <div class="pt-4 d-flex flex-row mx-auto">
-            <button style="cursor: not-allowed" disabled @onclick="OnSearchClicked" class="btn btn-lg btn-info" type="button" data-toggle="tooltip" data-placement="bottom" title="Please enter valid values in the fields above before attempting to search.">Search</button>
+            <button id="salary-search-button" style="cursor: not-allowed;" disabled @onclick="OnSearchClicked" class="btn btn-lg btn-info" type="button" data-toggle="tooltip" data-placement="bottom" title="Please enter valid values in the fields above before attempting to search.">Search</button>
         </div>
     }
 </div>

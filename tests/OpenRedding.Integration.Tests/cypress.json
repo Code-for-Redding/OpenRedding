@@ -1,0 +1,7 @@
+{
+    "baseUrl": "https://localhost:5001",
+    "defaultCommandTimeout": 15000,
+    "env": {
+        "apiUrl": "https://localhost:5003"
+    }
+}
