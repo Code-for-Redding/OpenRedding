@@ -32,7 +32,7 @@
                 basePayRange: state.SearchRequest.BasePayRange,
                 totalPayRange: state.SearchRequest.TotalPayRange);
 
-            return new SalariesState(false, null, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, null, false, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         [ReducerMethod]
@@ -54,7 +54,7 @@
                 basePayRange: state.SearchRequest.BasePayRange,
                 totalPayRange: state.SearchRequest.TotalPayRange);
 
-            return new SalariesState(false, null, true, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
+            return new SalariesState(false, null, false, state.SalaryResults, state.SalaryDetail, updatedSearchRequest);
         }
 
         [ReducerMethod]
@@ -223,7 +223,7 @@
                 SalarySearchContext.JobTitle => new EmployeeSalarySearchRequestDto(jobTitle: value),
                 SalarySearchContext.Agency => new EmployeeSalarySearchRequestDto(agency: value),
                 SalarySearchContext.Status => new EmployeeSalarySearchRequestDto(status: value),
-                SalarySearchContext.Year => new EmployeeSalarySearchRequestDto(year: int.TryParse(value, out var parsedValue) ? parsedValue : (int)EmploymentYear.AllYears),
+                SalarySearchContext.Year => new EmployeeSalarySearchRequestDto(year: int.TryParse(value, out var parsedValue) ? parsedValue : (int)FiscalYear.AllYears),
                 SalarySearchContext.BasePayRange => new EmployeeSalarySearchRequestDto(basePayRange: int.TryParse(value, out var parsedValue) ? parsedValue : (int)SalarySearchRange.AllSalaries),
                 SalarySearchContext.TotalPayRange => new EmployeeSalarySearchRequestDto(totalPayRange: int.TryParse(value, out var parsedValue) ? parsedValue : (int)SalarySearchRange.AllSalaries),
                 SalarySearchContext.SortField => new EmployeeSalarySearchRequestDto(sortField: value),

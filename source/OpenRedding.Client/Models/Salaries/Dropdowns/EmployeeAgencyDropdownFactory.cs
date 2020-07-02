@@ -1,4 +1,4 @@
-﻿namespace OpenRedding.Client.Models
+﻿namespace OpenRedding.Client.Models.Salaries.Dropdowns
 {
     using OpenRedding.Domain.Common.ViewModels;
     using OpenRedding.Domain.Salaries.Enums;

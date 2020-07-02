@@ -62,7 +62,7 @@
         public void SetEmployeeStatus(EmployeeStatus status, bool loadFromApi = false) =>
             _dispatcher.Dispatch(new SetEmployeeStatusAction(status, loadFromApi));
 
-        public void SetEmploymentYear(EmploymentYear year) =>
+        public void SetFiscalYear(FiscalYear year) =>
             _dispatcher.Dispatch(new SetEmploymentYearAction(year));
 
         public void SetSalarySearchBaseRange(SalarySearchRange range) =>

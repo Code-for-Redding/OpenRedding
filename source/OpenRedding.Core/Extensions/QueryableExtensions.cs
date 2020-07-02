@@ -51,19 +51,19 @@
             // Filter by year, if available
             if (searchRequest.Year.HasValue)
             {
-                var parsedEmploymentYear = (EmploymentYear)searchRequest.Year.Value;
+                var parsedEmploymentYear = (FiscalYear)searchRequest.Year.Value;
 
                 queriedSalaries = parsedEmploymentYear switch
                 {
-                    EmploymentYear._2011 => queriedSalaries.Where(e => e.Year == 2011),
-                    EmploymentYear._2012 => queriedSalaries.Where(e => e.Year == 2012),
-                    EmploymentYear._2013 => queriedSalaries.Where(e => e.Year == 2013),
-                    EmploymentYear._2014 => queriedSalaries.Where(e => e.Year == 2014),
-                    EmploymentYear._2015 => queriedSalaries.Where(e => e.Year == 2015),
-                    EmploymentYear._2016 => queriedSalaries.Where(e => e.Year == 2016),
-                    EmploymentYear._2017 => queriedSalaries.Where(e => e.Year == 2017),
-                    EmploymentYear._2018 => queriedSalaries.Where(e => e.Year == 2018),
-                    EmploymentYear._2019 => queriedSalaries.Where(e => e.Year == 2019),
+                    FiscalYear._2011 => queriedSalaries.Where(e => e.Year == 2011),
+                    FiscalYear._2012 => queriedSalaries.Where(e => e.Year == 2012),
+                    FiscalYear._2013 => queriedSalaries.Where(e => e.Year == 2013),
+                    FiscalYear._2014 => queriedSalaries.Where(e => e.Year == 2014),
+                    FiscalYear._2015 => queriedSalaries.Where(e => e.Year == 2015),
+                    FiscalYear._2016 => queriedSalaries.Where(e => e.Year == 2016),
+                    FiscalYear._2017 => queriedSalaries.Where(e => e.Year == 2017),
+                    FiscalYear._2018 => queriedSalaries.Where(e => e.Year == 2018),
+                    FiscalYear._2019 => queriedSalaries.Where(e => e.Year == 2019),
                     _ => queriedSalaries
                 };
             }

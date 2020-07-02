@@ -1,6 +1,6 @@
 ﻿namespace OpenRedding.Domain.Salaries.Enums
 {
-    public enum EmploymentYear
+    public enum FiscalYear
     {
         AllYears,
         _2011,

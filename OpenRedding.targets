@@ -7,11 +7,11 @@
         <Nullable>enable</Nullable>
         <WarningsAsErrors>CS8600;CS8602;CS8603</WarningsAsErrors>
     </PropertyGroup>
-    <ItemGroup>
+    <ItemGroup Condition="'$(Configuration)' != 'Release'">
         <AdditionalFiles Include="$(MSBuildThisFileDirectory)StyleCop.json" Link="StyleCop.json" />
         <AdditionalFiles Include="$(MSBuildThisFileDirectory)OpenRedding.ruleset" Link="OpenRedding.ruleset" />
     </ItemGroup>
-    <ItemGroup>
+    <ItemGroup Condition="'$(Configuration)' != 'Release'">
         <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" />
     </ItemGroup>

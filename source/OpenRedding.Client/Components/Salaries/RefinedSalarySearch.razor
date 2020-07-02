@@ -3,9 +3,9 @@
 @using Fluxor
 @using OpenRedding.Client.Components.Common
 @using OpenRedding.Client.Components.Dropdowns.Salaries
+@using OpenRedding.Client.Models.Salaries.Dropdowns
 @using OpenRedding.Client.Services
 @using OpenRedding.Client.Store.State
-@using OpenRedding.Domain.Common.ViewModels
 @using OpenRedding.Domain.Salaries.Dtos
 @using OpenRedding.Domain.Salaries.Enums
 
@@ -60,8 +60,8 @@
                                 Label="Agency"
                                 LabelCss="col-form-label"
                                 ExistingSelection="Enum.TryParse<EmployeeAgency>(State.Value.SearchRequest?.Agency, true, out var agency) ? agency : EmployeeAgency.AllAgencies"
-                                DropdownOptions="employeeAgencySelectOptions"
-                                ValueSelectedHandler="OnAgencySelected" />
+                                DropdownOptions="agencyDropdownFactory?.GetDropdownOptions()"
+                                ValueSelectedHandler="(agency) => StateFacade.SetEmployeeAgency(agency)" />
                     </div>
 
                     @* Status *@
@@ -72,8 +72,8 @@
                                 Label="Status"
                                 LabelCss="col-form-label"
                                 ExistingSelection="Enum.TryParse<EmployeeStatus>(State.Value.SearchRequest?.Status, true, out var status) ? status : EmployeeStatus.AllStatuses"
-                                DropdownOptions="employeeStatusSelectOptions"
-                                ValueSelectedHandler="OnStatusSelected" />
+                                DropdownOptions="statusDropdownFactory?.GetDropdownOptions()"
+                                ValueSelectedHandler="(status) => StateFacade.SetEmployeeStatus(status)" />
                     </div>
                 </div>
 
@@ -81,30 +81,98 @@
                 <div class="row justify-content-center">
                     @* Year *@
                     <div class="col-md-4">
-                        <EmploymentYearDropdown ExistingSelection="GetExistingEmploymentYear()"
-                                                LabelCss="col-form-label" />
+                        <OpenReddingDropdown 
+                                TEnum="FiscalYear"
+                                DropdownId="fiscal-year-dropdown"
+                                Label="Fiscal Year"
+                                LabelCss="col-form-label"
+                                ExistingSelection="GetExistingFiscalYear()"
+                                DropdownOptions="fiscalYearDropdownFactory?.GetDropdownOptions()"
+                                ValueSelectedHandler="(year) => StateFacade.SetFiscalYear(year)" />
                     </div>
 
                     @* Base pay range *@
                     <div class="col-md-4">
-                        <PayRangeDropdown Context="SalarySearchContext.BasePayRange"
-                                          ExistingSelection="GetExistingPayRangeOption(SalarySearchContext.BasePayRange)"
-                                          LabelCss="col-form-label" />
+                        <OpenReddingDropdown 
+                                TEnum="SalarySearchRange"
+                                DropdownId="base-pay-range-dropdown"
+                                Label="Base Pay Range"
+                                LabelCss="col-form-label"
+                                ExistingSelection="GetExistingPayRangeOption(SalarySearchContext.BasePayRange)"
+                                DropdownOptions="salaryRangeDropdownFactory?.GetDropdownOptions()"
+                                ValueSelectedHandler="(range) => StateFacade.SetSalarySearchBaseRange(range)" />
                     </div>
 
                     @* Total pay range*@
                     <div class="col-md-4">
-                        <PayRangeDropdown Context="SalarySearchContext.TotalPayRange"
-                                          ExistingSelection="GetExistingPayRangeOption(SalarySearchContext.TotalPayRange)"
-                                          LabelCss="col-form-label" />
+                        <OpenReddingDropdown 
+                                TEnum="SalarySearchRange"
+                                DropdownId="total-pay-range-dropdown"
+                                Label="Total Pay Range"
+                                LabelCss="col-form-label"
+                                ExistingSelection="GetExistingPayRangeOption(SalarySearchContext.TotalPayRange)"
+                                DropdownOptions="salaryRangeDropdownFactory?.GetDropdownOptions()"
+                                ValueSelectedHandler="(range) => StateFacade.SetSalarySearchTotalRange(range)" />
                     </div>
                 </div>
 
                 @* Sort options *@
                 <div class="row justify-content-center">
-                    <SortFieldDropdown ExistingFieldSelection="Enum.TryParse<SalarySortField>(State.Value.SearchRequest?.SortField, out var sortField) ? sortField : SalarySortField.Default"
-                                       ExistingOptionSelection="Enum.TryParse<SalarySortByOption>(State.Value.SearchRequest?.SortBy, out var sortBy) ? sortBy : SalarySortByOption.Default"
-                                       LabelCss="col-form-label" />
+                    <div class="d-flex flex-column">
+                        <OpenReddingDropdown 
+                                TEnum="SalarySortField"
+                                DropdownId="salary-sort-field-dropdown"
+                                Label="Sort Options"
+                                LabelCss="col-form-label"
+                                ExistingSelection="Enum.TryParse<SalarySortField>(State.Value.SearchRequest?.SortField, out var sortField) ? sortField : SalarySortField.Default"
+                                DropdownOptions="sortFieldDropdownFactory?.GetDropdownOptions()"
+                                ValueSelectedHandler="(field) => StateFacade.SetSalarySortField(field)" />
+
+                        @* Sort by *@
+                        <div class="py-2 btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
+                            @* Default order *@
+                            @if (existingSortOption == SalarySortByOption.Default)
+                            {
+                                <label class="btn btn-outline-primary active">
+                                    <input type="radio" name="options" id="sort-by-default" autocomplete="off" checked @onclick="() => StateFacade.SetSalarySortBy(SalarySortByOption.Default)" /><span>Default</span>
+                                </label>
+                            }
+                            else
+                            {
+                                <label class="btn btn-outline-primary">
+                                    <input type="radio" name="options" id="sort-by-default" autocomplete="off" @onclick="() => StateFacade.SetSalarySortBy(SalarySortByOption.Default)" /><span>Default</span>
+                                </label>
+                            }
+
+                            @* Ascending order *@
+                            @if (existingSortOption == SalarySortByOption.Ascending)
+                            {
+                                <label class="btn btn-outline-primary active">
+                                    <input type="radio" name="options" id="sort-by-ascending" autocomplete="off" checked @onclick="() => StateFacade.SetSalarySortBy(SalarySortByOption.Ascending)" /><span>Ascending</span>
+                                </label>
+                            }
+                            else
+                            {
+                                <label class="btn btn-outline-primary">
+                                    <input type="radio" name="options" id="sort-by-ascending" autocomplete="off" @onclick="() => StateFacade.SetSalarySortBy(SalarySortByOption.Ascending)" /><span>Ascending</span>
+                                </label>
+                            }
+
+                            @* Descending order *@
+                            @if (existingSortOption == SalarySortByOption.Descending)
+                            {
+                                <label class="btn btn-outline-primary active">
+                                    <input type="radio" name="options" id="sort-by-descending" autocomplete="off" checked @onclick="() => StateFacade.SetSalarySortBy(SalarySortByOption.Descending)" /><span>Descending</span>
+                                </label>
+                            }
+                            else
+                            {
+                                <label class="btn btn-outline-primary">
+                                    <input type="radio" name="options" id="sort-by-descending" autocomplete="off" @onclick="() => StateFacade.SetSalarySortBy(SalarySortByOption.Descending)" /><span>Descending</span>
+                                </label>
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -127,15 +195,15 @@
                     }
                     else
                     {
-                        <button disabled class="btn btn-outline-info cursor-not-allowed" type="button" data-toggle="tooltip" data-placement="bottom" title="Please enter valid values in the fields above before attempting to search.">Search</button>
+                        <button disabled style="cursor: not-allowed;" class="btn btn-outline-info" type="button" data-toggle="tooltip" data-placement="bottom" title="Please enter valid values in the fields above before attempting to search.">Search</button>
                     }
 
                     @if (State.Value.IsTableRefresh)
                     {
                         <span class="px-1"></span>
-                        <button disabled class="btn btn btn-outline-success cursor-not-allowed" type="button">Reset</button>
+                        <button disabled style="cursor: not-allowed;" class="btn btn btn-outline-success cursor-not-allowed" type="button">Reset</button>
                         <span class="px-1"></span>
-                        <button disabled class="btn btn btn-outline-danger cursor-not-allowed" type="button">Download</button>
+                        <button disabled style="cursor: not-allowed;" class="btn btn btn-outline-danger cursor-not-allowed" type="button">Download</button>
                     }
                     else
                     {
@@ -179,13 +247,21 @@
 
     private string? jobTitle;
 
+    private SalarySortByOption existingSortOption;
+
     private bool isValidEmployeeName = true;
 
     private bool isValidJobTitle = true;
 
-    private OpenReddingEnumSelectViewModel<EmployeeAgency> employeeAgencySelectOptions = new OpenReddingEnumSelectViewModel<EmployeeAgency>();
+    private EmployeeStatusDropdownFactory? statusDropdownFactory;
 
-    private OpenReddingEnumSelectViewModel<EmployeeStatus> employeeStatusSelectOptions = new OpenReddingEnumSelectViewModel<EmployeeStatus>();
+    private EmployeeAgencyDropdownFactory? agencyDropdownFactory;
+
+    private FiscalYearDropdownFactory? fiscalYearDropdownFactory;
+
+    private SalaryRangeDropdownFactory? salaryRangeDropdownFactory;
+
+    private SortFieldDropdownFactory? sortFieldDropdownFactory;
 
     [Parameter]
     public int ResultCount { get; set; }
@@ -200,6 +276,13 @@
     {
         await base.OnInitializedAsync();
 
+        // Assign the values for the dropdown markup
+        statusDropdownFactory = new EmployeeStatusDropdownFactory();
+        agencyDropdownFactory = new EmployeeAgencyDropdownFactory();
+        fiscalYearDropdownFactory = new FiscalYearDropdownFactory();
+        salaryRangeDropdownFactory = new SalaryRangeDropdownFactory();
+        sortFieldDropdownFactory = new SortFieldDropdownFactory();
+
         if (State.Value.SearchRequest is null)
         {
             return;
@@ -208,18 +291,7 @@
         // Set search values from the original query
         employeeName = State.Value.SearchRequest.Name;
         jobTitle = State.Value.SearchRequest.JobTitle;
-
-        employeeStatusSelectOptions
-            .AddOption(EmployeeStatus.AllStatuses, "All Statuses")
-            .AddOption(EmployeeStatus.FullTime, "Full-time")
-            .AddOption(EmployeeStatus.PartTime, "Part-time")
-            .AddOption(EmployeeStatus.Other, "Other");
-
-        employeeAgencySelectOptions
-            .AddOption(EmployeeAgency.AllAgencies, "All Agencies")
-            .AddOption(EmployeeAgency.Redding, "Redding")
-            .AddOption(EmployeeAgency.ShastaCounty, "Shasta County")
-            .AddOption(EmployeeAgency.Other, "Other");
+        existingSortOption = Enum.TryParse<SalarySortByOption>(State.Value.SearchRequest.SortBy, out var sortBy) ? sortBy : SalarySortByOption.Default;
     }
 
     protected override void Dispose(bool disposing)
@@ -230,18 +302,18 @@
         }
     }
 
-    private EmploymentYear GetExistingEmploymentYear()
+    private FiscalYear GetExistingFiscalYear()
     {
         if (State.Value.SearchRequest is null)
         {
-            return EmploymentYear.AllYears;
+            return FiscalYear.AllYears;
         }
         else if (State.Value.SearchRequest.Year.HasValue)
         {
-            return Enum.TryParse<EmploymentYear>(State.Value.SearchRequest.Year.Value.ToString(), true, out var year) ? year : EmploymentYear.AllYears;
+            return Enum.TryParse<FiscalYear>(State.Value.SearchRequest.Year.Value.ToString(), true, out var year) ? year : FiscalYear.AllYears;
         }
 
-        return EmploymentYear.AllYears;
+        return FiscalYear.AllYears;
     }
 
     private SalarySearchRange GetExistingPayRangeOption(SalarySearchContext context)
@@ -263,21 +335,25 @@
     private void IsValidEmployeeNameHandler(bool isValid)
     {
         isValidEmployeeName = isValid;
+        StateHasChanged();
     }
 
     private void IsValidJobTitleHandler(bool isValid)
     {
         isValidJobTitle = isValid;
+        StateHasChanged();
     }
 
     private void EmployeeNameInputHandler(string? updatedEmployeeValue)
     {
         employeeName = updatedEmployeeValue;
+        StateHasChanged();
     }
 
     private void JobTitleInputHandler(string? updatedJobtTileHandler)
     {
         jobTitle = updatedJobtTileHandler;
+        StateHasChanged();
     }
 
     private void OnResetClicked()
@@ -286,16 +362,6 @@
         jobTitle = string.Empty;
 
         StateFacade.SetCurrentSearchRequest(new EmployeeSalarySearchRequestDto(), true);
-    }
-
-    private void OnAgencySelected(EmployeeAgency agency)
-    {
-        StateFacade.SetEmployeeAgency(agency, true);
-    }
-
-    private void OnStatusSelected(EmployeeStatus status)
-    {
-        StateFacade.SetEmployeeStatus(status, true);
     }
 
 }

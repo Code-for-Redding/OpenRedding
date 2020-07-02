@@ -2,7 +2,7 @@
 
 @using Fluxor
 @using OpenRedding.Client.Components.Common
-@using OpenRedding.Client.Models
+@using OpenRedding.Client.Models.Salaries.Dropdowns
 @using OpenRedding.Client.Services
 @using OpenRedding.Client.Store.State
 @using OpenRedding.Domain.Salaries.Dtos
@@ -49,7 +49,7 @@
                 LabelCss="col-form-label text-white-90"
                 ExistingSelection="Enum.TryParse<EmployeeAgency>(State.Value.SearchRequest?.Agency, true, out var agency) ? agency : EmployeeAgency.AllAgencies"
                 DropdownOptions="agencyDropdownFactory?.GetDropdownOptions()"
-                ValueSelectedHandler="OnAgencySelected" />
+                ValueSelectedHandler="(agency) => StateFacade.SetEmployeeAgency(agency)" />
     </div>
 
     @* Status *@
@@ -60,7 +60,7 @@
                              LabelCss="col-form-label text-white-90"
                              ExistingSelection="Enum.TryParse<EmployeeStatus>(State.Value.SearchRequest?.Status, true, out var status) ? status : EmployeeStatus.AllStatuses"
                              DropdownOptions="statusDropdownFactory?.GetDropdownOptions()"
-                             ValueSelectedHandler="OnStatusSelected" />
+                             ValueSelectedHandler="(status) => StateFacade.SetEmployeeStatus(status)" />
     </div>
 
     @* Search button *@
@@ -150,16 +150,6 @@
     private void JobTitleInputHandler(string? updatedJobtTileHandler)
     {
         jobTitle = updatedJobtTileHandler;
-    }
-
-    private void OnAgencySelected(EmployeeAgency agency)
-    {
-        StateFacade.SetEmployeeAgency(agency);
-    }
-
-    private void OnStatusSelected(EmployeeStatus status)
-    {
-        StateFacade.SetEmployeeStatus(status);
     }
 
 }

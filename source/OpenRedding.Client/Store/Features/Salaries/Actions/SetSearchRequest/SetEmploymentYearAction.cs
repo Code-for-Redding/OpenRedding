@@ -4,9 +4,9 @@
 
     public class SetEmploymentYearAction
     {
-        public SetEmploymentYearAction(EmploymentYear year) =>
+        public SetEmploymentYearAction(FiscalYear year) =>
             Year = year;
 
-        public EmploymentYear Year { get; }
+        public FiscalYear Year { get; }
     }
 }
