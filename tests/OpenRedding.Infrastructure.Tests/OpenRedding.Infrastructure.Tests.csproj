@@ -1,7 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../../OpenRedding.targets" />
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
