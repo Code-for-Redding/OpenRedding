@@ -187,6 +187,7 @@
                     @if (isValidEmployeeName && isValidJobTitle && !State.Value.IsTableRefresh)
                     {
                         <button @onclick="(() => StateFacade.LoadEmployeesOnSearchClicked(string.IsNullOrWhiteSpace(employeeName) ? string.Empty : employeeName, string.IsNullOrWhiteSpace(jobTitle) ? string.Empty : jobTitle))"
+                                id="refined-salary-search-button"
                                 class="btn btn-outline-info"
                                 type="button"
                                 data-toggle="tooltip"
@@ -195,7 +196,7 @@
                     }
                     else
                     {
-                        <button disabled style="cursor: not-allowed;" class="btn btn-outline-info" type="button" data-toggle="tooltip" data-placement="bottom" title="Please enter valid values in the fields above before attempting to search.">Search</button>
+                        <button id="refined-salary-search-b" disabled style="cursor: not-allowed;" class="btn btn-outline-info" type="button" data-toggle="tooltip" data-placement="bottom" title="Please enter valid values in the fields above before attempting to search.">Search</button>
                     }
 
                     @if (State.Value.IsTableRefresh)
@@ -249,9 +250,9 @@
 
     private SalarySortByOption existingSortOption;
 
-    private bool isValidEmployeeName = true;
+    private bool isValidEmployeeName;
 
-    private bool isValidJobTitle = true;
+    private bool isValidJobTitle;
 
     private EmployeeStatusDropdownFactory? statusDropdownFactory;
 

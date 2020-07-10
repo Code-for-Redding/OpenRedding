@@ -1,7 +1,6 @@
 ﻿namespace OpenRedding.Infrastructure.Persistence.Repositories
 {
     using System;
-    using System.Collections.Generic;
     using System.Data;
     using System.Threading;
     using System.Threading.Tasks;
@@ -20,26 +19,23 @@
             _dbConnection = _dbTransaction.Connection;
         }
 
-        public async Task<int> AddEmployeeAsync(Employee employee, CancellationToken cancellationToken)
+        public Task<int> AddEmployeeAsync(Employee employee, CancellationToken cancellationToken)
         {
             const string insertSql = @"
-INSERT INTO OpenRedding.dbo.Employees
-(
-    EmployeeName,
-    JobTitle,
-    BasePay,
-    Benefits,
-    OtherPay,
-    OvertimePay,
-    PensionDebt,
-    TotalPay,
-    TotalPayWithBenefits,
-    Year,
-    EmployeeAgency,
-    EmployeeStatus
-)
-VALUES
-(
+INSERT INTO [dbo].[Employees] (
+    [EmployeeName],
+    [JobTitle],
+    [BasePay],
+    [Benefits],
+    [OtherPay],
+    [OvertimePay],
+    [PensionDebt],
+    [TotalPay],
+    [TotalPayWithBenefits],
+    [Year],
+    [EmployeeAgency],
+    [EmployeeStatus]
+) VALUES (
     @EmployeeName,
     @JobTitle,
     @BasePay,
@@ -53,6 +49,7 @@ VALUES
     @EmployeeAgency,
     @EmployeeStatus
 );";
+
             var insertCommand = new CommandDefinition(
                 insertSql,
                 parameters: new
@@ -74,12 +71,25 @@ VALUES
                 transaction: _dbTransaction,
                 cancellationToken: cancellationToken);
 
-            return await _dbConnection.ExecuteAsync(insertCommand);
+            return _dbConnection.ExecuteAsync(insertCommand);
         }
 
-        public Task AddEmployeesAsync(IEnumerable<Employee> employees, CancellationToken cancellationToken)
+        public Task<Employee?> GetEmployeeById(int id, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            const string employeeRetrievalSql = @"
+SELECT
+    *
+FROM [dbo].[Employees]
+WHERE [EmployeeId] = @id;
+";
+
+            var retrievalCommand = new CommandDefinition(
+                employeeRetrievalSql,
+                parameters: new { id },
+                transaction: _dbTransaction,
+                cancellationToken: cancellationToken);
+
+            return _dbConnection.QueryFirstOrDefaultAsync<Employee?>(retrievalCommand);
         }
     }
 }

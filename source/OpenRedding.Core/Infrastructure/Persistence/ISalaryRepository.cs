@@ -3,6 +3,7 @@ namespace OpenRedding.Core.Data
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+    using OpenRedding.Domain.Salaries.Dtos;
     using OpenRedding.Domain.Salaries.Entities;
 
     public interface ISalaryRepository
@@ -10,5 +11,7 @@ namespace OpenRedding.Core.Data
         Task<int> AddEmployeeAsync(Employee employee, CancellationToken cancellationToken);
 
         Task AddEmployeesAsync(IEnumerable<Employee> employees, CancellationToken cancellationToken);
+
+        Task<Employee?> GetEmployeeById(int id, CancellationToken cancellationToken);
     }
 }
