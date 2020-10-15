@@ -18,7 +18,8 @@
       }
     },
     "OpenRedding.Api": {
-      "commandName": "Project",
+        "commandName": "Project",
+        "commandLineArgs": "seed",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
