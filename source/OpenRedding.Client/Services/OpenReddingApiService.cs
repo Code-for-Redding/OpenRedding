@@ -1,4 +1,4 @@
-﻿namespace OpenRedding.Client
+namespace OpenRedding.Client
 {
     using System.Collections.Generic;
     using System.Net.Http;
@@ -84,24 +84,16 @@
             return _httpClient.GetJsonAsync<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>>(searchRequestUrl);
         }
 
-        public Task<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>> GetEmployeesSalariesFromLinkAsync(string link)
-        {
-            return _httpClient.GetJsonAsync<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>>(link);
-        }
+        public Task<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>> GetEmployeesSalariesFromLinkAsync(string link) =>
+            _httpClient.GetJsonAsync<OpenReddingPagedViewModel<EmployeeSalarySearchResultDto>>(link);
 
-        public Task<EmployeeSalaryDetailViewModel> GetEmployeeSalaryDetailFromId(string id)
-        {
-            return _httpClient.GetJsonAsync<EmployeeSalaryDetailViewModel>($"{_apiBaseUrl}/salaries/{id}");
-        }
+        public Task<EmployeeSalaryDetailViewModel> GetEmployeeSalaryDetailFromId(string id) =>
+            _httpClient.GetJsonAsync<EmployeeSalaryDetailViewModel>($"{_apiBaseUrl}/salaries/{id}");
 
-        public Task<EmployeeSalaryDetailViewModel> GetEmployeeSalaryDetailFromLink(string link)
-        {
-            return _httpClient.GetJsonAsync<EmployeeSalaryDetailViewModel>(link);
-        }
+        public Task<EmployeeSalaryDetailViewModel> GetEmployeeSalaryDetailFromLink(string link) =>
+            _httpClient.GetJsonAsync<EmployeeSalaryDetailViewModel>(link);
 
-        public Task<OpenReddingLink> GetDownloadCsvLink(EmployeeSalarySearchRequestDto? searchRequest)
-        {
-            return _httpClient.PostJsonAsync<OpenReddingLink>($"{_apiBaseUrl}/salaries/download", searchRequest ?? new EmployeeSalarySearchRequestDto());
-        }
+        public Task<OpenReddingLink> GetDownloadCsvLink(EmployeeSalarySearchRequestDto? searchRequest) =>
+            _httpClient.PostJsonAsync<OpenReddingLink>($"{_apiBaseUrl}/salaries/download", searchRequest ?? new EmployeeSalarySearchRequestDto());
     }
 }

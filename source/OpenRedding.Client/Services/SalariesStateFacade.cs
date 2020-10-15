@@ -1,4 +1,4 @@
-﻿namespace OpenRedding.Client.Services
+namespace OpenRedding.Client.Services
 {
     using Fluxor;
     using OpenRedding.Client.Store.Features.Salaries.Actions.DownloadSalaryCsv;
@@ -24,7 +24,6 @@
         /*
          * Employee table and detail interactions
          */
-
         public void LoadAllEmployees() =>
             _dispatcher.Dispatch(new LoadEmployeeSalariesAction(null));
 
@@ -43,7 +42,6 @@
         /*
          * Search Request Interactions
          */
-
         public void LoadEmployeesOnSearchClicked(string name, string jobTitle) =>
             _dispatcher.Dispatch(new LoadEmployeesOnSearchClickedAction(name, jobTitle));
 
@@ -80,7 +78,6 @@
         /*
          * Download Salary CSV Interactions
          */
-
         public void DownloadSalaryCsv() =>
             _dispatcher.Dispatch(new DownloadSalaryCsvAction());
     }
