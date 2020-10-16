@@ -1,7 +1,7 @@
 # Open Redding
 ### An public data portal for the city of Redding, built for the people, by the people
 
-[![Build Status](https://dev.azure.com/joey32793/Open%20Redding/_apis/build/status/joey32793.OpenRedding?branchName=master)](https://dev.azure.com/joey32793/Open%20Redding/_build/latest?definitionId=4&branchName=master)
+[![Build Status](https://joeymckenzie.visualstudio.com/Open%20Redding/_apis/build/status/JoeyMckenzie.OpenRedding?branchName=master)](https://joeymckenzie.visualstudio.com/Open%20Redding/_build/latest?definitionId=8&branchName=master)
 
 ## What is Open Redding?
 Open Redding is a portal for various data pertaining to the city of Redding. The project seeks to aggregate and provide a centralize any and all datasets pertaining to various categories of publicly available data. Examples include: public salary information distributed by Transparent California, zoning data provided by the Redding ArcGIS team, budget and financial information distributed by the city, etc. Our goal is to provide the denizens of our city and online hub to view, analyze, and explore the publicly available datasets in one place to help them stay informed.
