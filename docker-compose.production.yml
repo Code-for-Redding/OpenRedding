@@ -9,7 +9,18 @@ services:
       - "5003:443"
     environment:
       ASPNETCORE_ENVIRONMENT: Production
+      WAIT_HOSTS: open_redding_sql_server:1433
       AzureStorageConnectionString: ${AZURE_STORAGE_CONNECTION_STRING}
       SalaryCsvContainer: ${SALARY_CSV_CONTAINER}
       ConnectionString: ${CONNECTION_STRING}
       GatewayBaseUrl: ${GATEWAY_BASE_URL}
+    build:
+      context: .
+      dockerfile: source/OpenRedding.Api/Dockerfile.production
+    depends_on: 
+      - open_redding_sql_server
+
+  open_redding_sql_server:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      ACCEPT_EULA: "Y"
