@@ -26,14 +26,6 @@ namespace OpenRedding.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Retrieve the connection string from environment source and cancel bootstrap if none is found
-            var connectionString = Configuration["ConnectionString"];
-
-            if (string.IsNullOrWhiteSpace(connectionString))
-            {
-                throw new ArgumentException("Database connection string is null");
-            }
-
             // Adding API layer dependencies
             services
                 .AddControllers()

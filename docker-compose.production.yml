@@ -23,4 +23,5 @@ services:
   open_redding_sql_server:
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
+      SA_PASSWORD: ${SA_PASSWORD}
       ACCEPT_EULA: "Y"

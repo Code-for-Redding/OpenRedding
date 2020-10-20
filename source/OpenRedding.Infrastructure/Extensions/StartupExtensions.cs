@@ -22,6 +22,11 @@
             Validate.NotNull(configuration, nameof(configuration));
 
             var connectionString = configuration["ConnectionString"];
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new ArgumentException("Database connection string is null");
+            }
+
             var migrationsAssembly = Assembly.GetExecutingAssembly().FullName;
             void DbContextOptions(SqlServerDbContextOptionsBuilder builder)
             {
