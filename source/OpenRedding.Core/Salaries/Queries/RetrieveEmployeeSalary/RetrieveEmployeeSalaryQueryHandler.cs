@@ -85,7 +85,14 @@ namespace OpenRedding.Core.Salaries.Queries.RetrieveEmployeeSalary
             };
         }
 
-        private decimal GetPayDelta(decimal employeePay, decimal averagePay) =>
-            (employeePay - averagePay) / employeePay;
+        private decimal GetPayDelta(decimal employeePay, decimal averagePay)
+        {
+            if (employeePay.Equals(decimal.Zero))
+            {
+                return decimal.Zero;
+            }
+
+            return (employeePay - averagePay) / employeePay;
+        }
     }
 }
